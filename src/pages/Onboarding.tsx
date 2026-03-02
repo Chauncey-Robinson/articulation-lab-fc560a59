@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { updateState, setState, getState } from "@/lib/store";
+import { updateState } from "@/lib/store";
 
 const useCases = ["MBA", "Consulting", "Strategy", "Legal", "Policy"];
 const tones = ["Direct", "Analytical", "Socratic"];
@@ -37,7 +37,7 @@ export default function Onboarding() {
             >
               <p className="metric-label mb-2">Step 1 of 2</p>
               <h1 className="text-2xl font-light tracking-tight text-foreground mb-8">
-                Primary use case
+                What are you preparing for?
               </h1>
               <div className="flex flex-col gap-2">
                 {useCases.map((uc) => (
@@ -70,7 +70,7 @@ export default function Onboarding() {
             >
               <p className="metric-label mb-2">Step 2 of 2</p>
               <h1 className="text-2xl font-light tracking-tight text-foreground mb-8">
-                Preferred tone
+                How should the tool challenge you?
               </h1>
               <div className="flex flex-col gap-2">
                 {tones.map((t) => (

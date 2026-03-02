@@ -49,7 +49,7 @@ export default function ContentInput() {
     <div className="max-w-lg mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-light tracking-tight text-foreground">
-          What are you working on?
+          What are you preparing to explain?
         </h1>
       </div>
 
@@ -67,7 +67,7 @@ export default function ContentInput() {
               disabled={text.trim().length < 30}
               className="mt-4 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-30"
             >
-              Prepare Drill
+              Start Rehearsal
             </button>
           </motion.div>
         ) : (
@@ -99,7 +99,7 @@ export default function ContentInput() {
                 onClick={handleSave}
                 className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Begin Drill
+                Begin Rehearsal
               </button>
             </div>
           </motion.div>
