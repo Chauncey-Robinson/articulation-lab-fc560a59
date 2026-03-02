@@ -14,6 +14,11 @@ import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
+function ResetRoute() {
+  localStorage.removeItem("cognitive-drill-state");
+  return <Navigate to="/onboarding" replace />;
+}
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const state = getState();
   if (!state.profile.onboarded) {
@@ -30,6 +35,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/reset" element={<ResetRoute />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/input" element={<ProtectedRoute><ContentInput /></ProtectedRoute>} />

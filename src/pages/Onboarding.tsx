@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { updateState } from "@/lib/store";
+import { updateState, setState, getState } from "@/lib/store";
 
 const useCases = ["MBA", "Consulting", "Strategy", "Legal", "Policy"];
 const tones = ["Direct", "Analytical", "Socratic"];
