@@ -4,25 +4,11 @@ import { Link } from "react-router-dom";
 import WaveformVisualizer from "@/components/WaveformVisualizer";
 import { getState, updateState } from "@/lib/store";
 
-type DrillPhase = "prompt" | "recording" | "feedback" | "application" | "app-feedback" | "complete";
-
-interface Feedback {
-  completeness: string;
-  structure: string;
-  clarity: string;
-  precision: string;
-  followUp: string | null;
-}
+type Phase = "prompt" | "recording" | "feedback" | "application" | "app-feedback" | "complete";
 
 const FOLLOW_UPS = [
-  "What assumption underlies this idea?",
-  "How would you defend this in a meeting?",
-  "This explanation is abstract. Provide a concrete example.",
-];
-
-const APP_FEEDBACK_LINES = [
-  { label: "Application Depth", value: "Moderate" },
-  { label: "Suggestion", value: "Improve by adding constraints or stakeholder perspective." },
+  "Can you give a concrete example?",
+  "How would you defend this point in a meeting?",
 ];
 
 export default function Drill() {
@@ -30,58 +16,26 @@ export default function Drill() {
   const concepts = state.concepts;
 
   const [conceptIndex, setConceptIndex] = useState(0);
-  const [phase, setPhase] = useState<DrillPhase>(concepts.length > 0 ? "prompt" : "complete");
+  const [phase, setPhase] = useState<Phase>(concepts.length > 0 ? "prompt" : "complete");
   const [transcript, setTranscript] = useState("");
   const [followUpCount, setFollowUpCount] = useState(0);
-  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [currentFollowUp, setCurrentFollowUp] = useState("");
   const [isRecording, setIsRecording] = useState(false);
 
   const currentConcept = concepts[conceptIndex];
 
-  const simulateRecording = useCallback(() => {
+  const simulateRecording = useCallback((nextPhase: Phase, feedbackFollowUp?: string) => {
     setIsRecording(true);
     setPhase("recording");
-    // Simulate 3-second recording
     setTimeout(() => {
       setIsRecording(false);
-      setTranscript("The concept relates to strategic decision-making under constraints, where stakeholders must balance short-term pressures against long-term value creation...");
-      
-      // Generate simulated feedback
-      const needsFollowUp = followUpCount < 2 && Math.random() > 0.4;
-      setFeedback({
-        completeness: "Partial",
-        structure: "Adequate",
-        clarity: "Moderate",
-        precision: "Needs specificity",
-        followUp: needsFollowUp ? FOLLOW_UPS[followUpCount] : null,
-      });
-      setPhase("feedback");
+      setTranscript("The concept relates to strategic decision-making under constraints, balancing short-term pressures against long-term value creation...");
+      if (feedbackFollowUp) setCurrentFollowUp(feedbackFollowUp);
+      setPhase(nextPhase);
     }, 3000);
-  }, [followUpCount]);
-
-  const handleFollowUp = () => {
-    setFollowUpCount((c) => c + 1);
-    setTranscript("");
-    setFeedback(null);
-    setPhase("prompt");
-  };
-
-  const handleApplicationMode = () => {
-    setTranscript("");
-    setPhase("application");
-  };
-
-  const simulateApplicationRecording = () => {
-    setIsRecording(true);
-    setTimeout(() => {
-      setIsRecording(false);
-      setTranscript("In a consulting engagement, I would apply this by framing the client's decision as a trade-off matrix...");
-      setPhase("app-feedback");
-    }, 3000);
-  };
+  }, []);
 
   const handleNext = () => {
-    // Update concept strength
     updateState((s) => ({
       ...s,
       concepts: s.concepts.map((c) =>
@@ -89,15 +43,27 @@ export default function Drill() {
           ? { ...c, strength: "building" as const, drillCount: c.drillCount + 1, lastArticulated: new Date().toISOString() }
           : c
       ),
-      retentionScore: Math.min(100, s.retentionScore + 5),
+      drillResults: [
+        ...s.drillResults,
+        {
+          conceptId: currentConcept?.id || "",
+          date: new Date().toISOString(),
+          completeness: 70,
+          structure: 75,
+          clarity: 65,
+          precision: 60,
+          specificity: 55,
+          applicationDepth: "moderate" as const,
+        },
+      ],
     }));
 
     if (conceptIndex < concepts.length - 1) {
       setConceptIndex((i) => i + 1);
       setPhase("prompt");
       setTranscript("");
-      setFeedback(null);
       setFollowUpCount(0);
+      setCurrentFollowUp("");
     } else {
       setPhase("complete");
     }
@@ -105,200 +71,154 @@ export default function Drill() {
 
   if (concepts.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <p className="text-sm text-muted-foreground mb-4">No concepts available for drilling.</p>
-        <Link
-          to="/input"
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-        >
-          Input Content
+      <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
+        <p className="text-sm text-muted-foreground mb-4">Nothing to drill yet.</p>
+        <Link to="/input" className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">
+          Add Content
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh]">
+    <div className="flex flex-col items-center justify-center min-h-[70vh]">
       <AnimatePresence mode="wait">
         {phase === "prompt" && (
-          <motion.div
-            key="prompt"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="text-center w-full max-w-2xl"
-          >
-            <p className="metric-label mb-6">
-              Concept {conceptIndex + 1} of {concepts.length}
+          <motion.div key="prompt" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="text-center w-full max-w-xl">
+            <p className="text-xs text-muted-foreground mb-8">
+              Idea {conceptIndex + 1} of {concepts.length}
             </p>
 
-            {followUpCount > 0 && feedback?.followUp ? (
-              <p className="drill-question mb-10">{feedback.followUp}</p>
-            ) : (
-              <p className="drill-question mb-10">
-                Explain the core idea in your own words.
-              </p>
-            )}
+            <p className="text-2xl md:text-3xl font-light leading-relaxed tracking-tight text-foreground mb-10 max-w-lg mx-auto">
+              {followUpCount > 0 && currentFollowUp ? currentFollowUp : "Explain the core idea in your own words."}
+            </p>
 
-            <div className="mb-8 rounded-lg border border-border bg-card px-5 py-4">
-              <p className="text-xs text-muted-foreground mb-1">Concept</p>
+            <div className="mb-10 rounded-lg border border-border bg-card px-5 py-4 max-w-md mx-auto">
               <p className="text-sm text-foreground leading-relaxed">{currentConcept.text}</p>
             </div>
 
             <button
-              onClick={simulateRecording}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              onClick={() => simulateRecording("feedback", "")}
+              className="inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
               <span className="h-2 w-2 rounded-full bg-primary-foreground animate-pulse-subtle" />
-              Begin Recording
+              Record
             </button>
           </motion.div>
         )}
 
         {phase === "recording" && (
-          <motion.div
-            key="recording"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-center w-full max-w-2xl"
-          >
-            <p className="metric-label mb-6">Listening</p>
-            <div className="mb-8">
-              <WaveformVisualizer active={isRecording} />
-            </div>
-            <p className="text-xs text-muted-foreground">Speak clearly. Recording will end automatically.</p>
+          <motion.div key="recording" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center w-full max-w-xl">
+            <p className="text-xs text-muted-foreground mb-8">Listening...</p>
+            <WaveformVisualizer active={isRecording} />
           </motion.div>
         )}
 
-        {phase === "feedback" && feedback && (
-          <motion.div
-            key="feedback"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="w-full max-w-2xl"
-          >
-            <p className="metric-label mb-6">Evaluation</p>
-
-            <div className="rounded-xl border border-border bg-card p-6 mb-6">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                {(["completeness", "structure", "clarity", "precision"] as const).map((key) => (
-                  <div key={key}>
-                    <p className="text-xs text-muted-foreground mb-1 capitalize">{key}</p>
-                    <p className="font-medium text-foreground">{feedback[key]}</p>
-                  </div>
-                ))}
-              </div>
+        {phase === "feedback" && (
+          <motion.div key="feedback" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="w-full max-w-xl">
+            <div className="rounded-xl border border-border bg-card p-6 mb-6 space-y-3">
+              <p className="text-sm text-foreground leading-relaxed">Clear structure.</p>
+              <p className="text-sm text-foreground leading-relaxed">Missing: concrete example.</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">Try again with one real scenario.</p>
             </div>
 
             {transcript && (
-              <div className="rounded-lg border border-border bg-surface-sunken px-5 py-4 mb-6">
-                <p className="text-xs text-muted-foreground mb-1">Your response</p>
-                <p className="text-sm text-foreground/80 leading-relaxed">{transcript}</p>
+              <div className="rounded-lg bg-surface-sunken px-5 py-4 mb-6">
+                <p className="text-xs text-muted-foreground mb-1">What you said</p>
+                <p className="text-sm text-foreground/70 leading-relaxed">{transcript}</p>
               </div>
             )}
 
             <div className="flex gap-3 justify-center">
-              {feedback.followUp && followUpCount < 3 && (
+              {followUpCount < 2 && (
                 <button
-                  onClick={handleFollowUp}
-                  className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                  onClick={() => {
+                    setFollowUpCount((c) => c + 1);
+                    setCurrentFollowUp(FOLLOW_UPS[followUpCount] || "");
+                    setTranscript("");
+                    setPhase("prompt");
+                  }}
+                  className="rounded-full border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
                 >
-                  Respond to Probe
+                  Try Again
                 </button>
               )}
               <button
-                onClick={handleApplicationMode}
-                className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                onClick={() => {
+                  setTranscript("");
+                  setPhase("application");
+                }}
+                className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Application Mode
+                Continue
               </button>
             </div>
           </motion.div>
         )}
 
         {phase === "application" && (
-          <motion.div
-            key="application"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="text-center w-full max-w-2xl"
-          >
-            <p className="metric-label mb-6">Application</p>
-            <p className="drill-question mb-10">
-              How would you apply this in a real professional scenario?
+          <motion.div key="application" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="text-center w-full max-w-xl">
+            <p className="text-2xl md:text-3xl font-light leading-relaxed tracking-tight text-foreground mb-10 max-w-lg mx-auto">
+              How would you apply this in a real professional situation?
             </p>
-
             <button
-              onClick={simulateApplicationRecording}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              onClick={() => simulateRecording("app-feedback", "")}
+              className="inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
               <span className="h-2 w-2 rounded-full bg-primary-foreground animate-pulse-subtle" />
-              Record Response
+              Record
             </button>
           </motion.div>
         )}
 
         {phase === "app-feedback" && (
-          <motion.div
-            key="app-feedback"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="w-full max-w-2xl"
-          >
-            <p className="metric-label mb-6">Application Evaluation</p>
-
+          <motion.div key="app-feedback" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="w-full max-w-xl">
             <div className="rounded-xl border border-border bg-card p-6 mb-6 space-y-3">
-              {APP_FEEDBACK_LINES.map((line) => (
-                <div key={line.label}>
-                  <p className="text-xs text-muted-foreground mb-0.5">{line.label}</p>
-                  <p className="text-sm font-medium text-foreground">{line.value}</p>
-                </div>
-              ))}
+              <p className="text-sm text-foreground leading-relaxed">Strong insight.</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">Consider stakeholder constraints next time.</p>
             </div>
 
             {transcript && (
-              <div className="rounded-lg border border-border bg-surface-sunken px-5 py-4 mb-6">
-                <p className="text-xs text-muted-foreground mb-1">Your response</p>
-                <p className="text-sm text-foreground/80 leading-relaxed">{transcript}</p>
+              <div className="rounded-lg bg-surface-sunken px-5 py-4 mb-6">
+                <p className="text-xs text-muted-foreground mb-1">What you said</p>
+                <p className="text-sm text-foreground/70 leading-relaxed">{transcript}</p>
               </div>
             )}
 
             <button
               onClick={handleNext}
-              className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              {conceptIndex < concepts.length - 1 ? "Next Concept" : "Complete Session"}
+              {conceptIndex < concepts.length - 1 ? "Next Idea" : "Finish"}
             </button>
           </motion.div>
         )}
 
         {phase === "complete" && (
-          <motion.div
-            key="complete"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center w-full max-w-md"
-          >
-            <p className="metric-label mb-2">Session Complete</p>
+          <motion.div key="complete" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center w-full max-w-md">
             <h2 className="text-2xl font-light tracking-tight text-foreground mb-8">
-              {concepts.length} concept{concepts.length !== 1 ? "s" : ""} drilled
+              Session complete.
             </h2>
-            <div className="flex gap-3 justify-center">
+
+            <div className="rounded-xl border border-border bg-card p-6 mb-8 text-left space-y-2">
+              <p className="text-xs text-muted-foreground mb-3">Today's Insight</p>
+              <p className="text-sm text-foreground">• You explain ideas clearly.</p>
+              <p className="text-sm text-foreground">• You stay abstract when applying them.</p>
+              <p className="text-sm text-muted-foreground">• Next time: add a specific example.</p>
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
               <Link
-                to="/dashboard"
-                className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                to="/home"
+                className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                View Metrics
+                Finish
               </Link>
               <Link
-                to="/graph"
-                className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                to="/progress"
+                className="text-xs text-muted-foreground underline-offset-4 hover:underline"
               >
-                Cognitive Graph
+                View Progress
               </Link>
             </div>
           </motion.div>

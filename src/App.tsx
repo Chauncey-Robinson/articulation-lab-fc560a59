@@ -6,10 +6,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { getState } from "@/lib/store";
 import Layout from "@/components/Layout";
 import Onboarding from "@/pages/Onboarding";
-import Dashboard from "@/pages/Dashboard";
+import Home from "@/pages/Home";
 import ContentInput from "@/pages/ContentInput";
 import Drill from "@/pages/Drill";
-import CognitiveGraph from "@/pages/CognitiveGraph";
+import Progress from "@/pages/Progress";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,11 +36,11 @@ const App = () => (
         <Routes>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/reset" element={<ResetRoute />} />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/input" element={<ProtectedRoute><ContentInput /></ProtectedRoute>} />
           <Route path="/drill" element={<ProtectedRoute><Drill /></ProtectedRoute>} />
-          <Route path="/graph" element={<ProtectedRoute><CognitiveGraph /></ProtectedRoute>} />
+          <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

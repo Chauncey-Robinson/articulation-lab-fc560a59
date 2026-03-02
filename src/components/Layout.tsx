@@ -2,10 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const navItems = [
-  { path: "/dashboard", label: "Overview" },
-  { path: "/input", label: "Input" },
+  { path: "/home", label: "Home" },
   { path: "/drill", label: "Drill" },
-  { path: "/graph", label: "Graph" },
+  { path: "/progress", label: "Progress" },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -14,13 +13,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-6">
-          <Link to="/dashboard" className="text-sm font-semibold tracking-tight text-foreground">
+        <div className="mx-auto flex h-14 max-w-2xl items-center justify-between px-6">
+          <Link to="/home" className="text-sm font-semibold tracking-tight text-foreground">
             Cognitive Drill
           </Link>
           <nav className="flex items-center gap-1">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isActive = location.pathname === item.path || (item.path === "/drill" && location.pathname === "/input");
               return (
                 <Link
                   key={item.path}
@@ -42,12 +41,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-4xl px-6 py-10">
+      <main className="mx-auto max-w-2xl px-6 py-10">
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           {children}
         </motion.div>
