@@ -29,17 +29,21 @@ export default function Home() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="max-w-md"
       >
-        <h1 className="text-3xl md:text-4xl font-light tracking-tight text-foreground leading-snug mb-10">
-          Ready to sharpen
+        <h1 className="text-3xl md:text-4xl font-light tracking-tight text-foreground leading-snug mb-4">
+          Practice explaining
           <br />
-          your thinking?
+          what you're learning.
         </h1>
+
+        <p className="text-sm text-muted-foreground mb-10">
+          One idea. Two attempts. Sharper articulation.
+        </p>
 
         <Link
           to="/input"
           className="inline-flex rounded-full bg-primary px-8 py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
-          Start 7-Minute Drill
+          Start 7-Minute Rehearsal
         </Link>
 
         {lastSessionText && (
