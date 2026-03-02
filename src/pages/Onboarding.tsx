@@ -20,7 +20,7 @@ export default function Onboarding() {
       articulationDepth: "moderate",
       applicationClarity: "low",
     }));
-    navigate("/dashboard");
+    navigate("/home");
   };
 
   return (
