@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navTabs = [
   { path: "/home", label: "Home" },
-  { path: "/drill", label: "Drill" },
+  { path: "/drill", label: "Practice" },
   { path: "/progress", label: "Progress" },
 ];
 

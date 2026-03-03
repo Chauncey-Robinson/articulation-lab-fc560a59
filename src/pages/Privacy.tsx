@@ -61,7 +61,7 @@ export default function Privacy() {
             }}
           >
             <span className="absolute top-4 right-4 text-[13px]">🔒</span>
-            <p className="text-sm font-medium text-foreground mb-1">Private mode</p>
+            <p className="text-sm font-medium text-foreground mb-1">Keep everything private</p>
             <p className="text-[13px] text-muted-foreground leading-[1.5]">
               Your sessions are never stored, shared, or used to train any model. Ever.
             </p>

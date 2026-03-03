@@ -56,7 +56,7 @@ function getContextLabel(selections: string[]): string {
   if (joined.includes("go blank") || joined.includes("freeze")) return "CLARITY UNDER PRESSURE";
   if (joined.includes("remember") || joined.includes("notes")) return "RETENTION";
   if (joined.includes("meetings")) return "COMMUNICATION";
-  return "7-MINUTE DRILL";
+  return "PRACTICE";
 }
 
 function getTodayStr(): string {

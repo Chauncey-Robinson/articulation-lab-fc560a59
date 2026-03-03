@@ -43,25 +43,25 @@ export default function Summary() {
 
   let nudge = "";
   if (totalSessions === 1) {
-    nudge = "That was your first drill. The second one is easier.";
+    nudge = "First one done. Come back tomorrow.";
   } else if (streakCount >= 3) {
-    nudge = `🔥 ${streakCount}-day streak. Come back tomorrow to keep it.`;
+    nudge = `🔥 ${streakCount} days in a row. Come back tomorrow.`;
   } else if (streakCount <= 2 && streakCount > 0) {
-    nudge = `Day ${streakCount}. Come back tomorrow — it takes 7 days to build a habit.`;
+    nudge = "First one done. Come back tomorrow.";
   }
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <div className="max-w-[460px] mx-auto w-full">
-        <h1 className="font-serif text-[1.8rem] text-foreground mb-1">Session complete.</h1>
+        <h1 className="font-serif text-[1.8rem] text-foreground mb-1">Nice work.</h1>
         <p className="text-[13px] text-muted-foreground mb-7">{contextLabel} · 2 attempts</p>
 
         <div className="rounded-2xl border border-border bg-card overflow-hidden mb-4">
-          <Row label="WHAT YOU GOT RIGHT" value={summary.what_worked} />
-          <Row label="CORE GAP" value={summary.core_gap} border />
+          <Row label="WHAT WORKED" value={summary.what_worked} />
+          <Row label="WHAT TO WORK ON NEXT TIME" value={summary.core_gap} border />
           <div className="px-5 py-4" style={{ background: "hsl(var(--meeting-card))" }}>
             <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-1">
-              SAY THIS TOMORROW
+              TRY SAYING THIS
             </p>
             <p className="text-sm italic leading-relaxed" style={{ color: "hsl(var(--meeting-text))" }}>
               "{summary.meeting_line}"
@@ -81,7 +81,7 @@ export default function Summary() {
             to="/input"
             className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity text-center block"
           >
-            Drill Again
+            Practice something else
           </Link>
           <Link
             to="/progress"
