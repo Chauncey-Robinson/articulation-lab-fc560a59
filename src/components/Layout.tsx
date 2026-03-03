@@ -1,26 +1,25 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
-  { path: "/", label: "Home" },
-  { path: "/drill", label: "Drill" },
+  { path: "/input", label: "Home" },
+  { path: "/drill", label: "Rehearsal" },
   { path: "/progress", label: "Progress" },
 ];
 
 export default function Layout() {
   const location = useLocation();
   const { muted, toggleMute } = useApp();
+  const { signOut } = useAuth();
 
-  const isActive = (path: string) => {
-    if (path === "/") return location.pathname === "/";
-    return location.pathname.startsWith(path);
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-background">
         <div className="mx-auto flex h-14 max-w-[620px] items-center justify-between px-6">
-          <Link to="/" className="font-serif text-base text-foreground">
+          <Link to="/input" className="font-serif text-base text-foreground">
             Cognitive Drill
           </Link>
           <div className="flex items-center gap-5">
@@ -46,6 +45,12 @@ export default function Layout() {
               aria-label={muted ? "Unmute" : "Mute"}
             >
               {muted ? "🔇" : "🔊"}
+            </button>
+            <button
+              onClick={signOut}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              Sign out
             </button>
           </div>
         </div>
