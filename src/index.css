@@ -4,91 +4,77 @@
 
 @layer base {
   :root {
-    /* #EEECE8 → hsl(36, 16%, 92%) */
+    /* Page background: #EEECE8 */
     --background: 36 16% 92%;
-    /* #1A1A1A → hsl(0, 0%, 10%) */
-    --foreground: 0 0% 10%;
+    /* Body text: #2C2A27 */
+    --foreground: 30 6% 16%;
 
-    /* white cards */
+    /* Card: white */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card-foreground: 30 6% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 30 6% 16%;
 
-    /* #4B5FD4 → hsl(231, 56%, 56%) */
-    --primary: 231 56% 56%;
+    /* Primary button: #2C2A27 dark warm brown */
+    --primary: 30 6% 16%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 36 10% 85%;
-    --secondary-foreground: 0 0% 10%;
+    /* Secondary button: white bg, border */
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 30 6% 16%;
 
+    /* Muted: #9A9690 */
     --muted: 36 10% 88%;
-    /* #888 */
-    --muted-foreground: 0 0% 53%;
+    --muted-foreground: 30 3% 59%;
 
-    --accent: 231 30% 95%;
-    --accent-foreground: 231 56% 45%;
+    /* Accent: #C8954A warm amber */
+    --accent: 30 55% 54%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    /* #D8D6D2 → hsl(36, 6%, 83%) */
-    --border: 36 6% 83%;
-    --input: 36 6% 83%;
-    --ring: 231 56% 56%;
+    /* Borders: #E0DDD8 */
+    --border: 36 8% 86%;
+    --input: 36 8% 86%;
+    --ring: 30 55% 54%;
 
     --radius: 12px;
 
-    /* Dark card for AI challenge */
-    /* #1a1917 */
-    --surface-dark: 40 6% 10%;
-    /* #e8e6e2 */
-    --surface-dark-foreground: 36 12% 90%;
+    /* AI challenge card: #F0EDE6 warm cream */
+    --ai-card: 36 20% 92%;
+    --ai-card-foreground: 30 6% 16%;
+    /* AI card border: #C8A97A amber */
+    --ai-card-border: 33 44% 63%;
 
-    /* Progress blocks */
-    --block-empty: 36 10% 91%;
-    --block-low: 0 60% 90%;
-    --block-mid: 231 40% 80%;
-    --block-high: 231 56% 56%;
-  }
+    /* Meeting line card: #F5F0E4 warmest cream */
+    --meeting-card: 40 40% 93%;
+    /* Meeting line text: #8B6914 deep amber */
+    --meeting-text: 40 75% 31%;
 
-  .dark {
-    --background: 224 39% 7%;
-    --foreground: 220 14% 91%;
+    /* Section background: #F7F5F1 */
+    --section: 36 20% 96%;
 
-    --card: 224 30% 12%;
-    --card-foreground: 220 14% 91%;
+    /* Selected card: #F5F0E4 bg, #C8A97A border */
+    --selected: 40 40% 93%;
+    --selected-border: 33 44% 63%;
 
-    --popover: 224 30% 12%;
-    --popover-foreground: 220 14% 91%;
+    /* Progress bar fill: same as primary */
+    --progress-fill: 30 6% 16%;
+    --progress-empty: 36 8% 86%;
 
-    --primary: 231 56% 60%;
-    --primary-foreground: 0 0% 100%;
+    /* Splash/sign-in bg: #FAFAF8 */
+    --surface-light: 60 14% 97%;
 
-    --secondary: 224 20% 18%;
-    --secondary-foreground: 220 14% 91%;
+    /* Legal text: #C0BDB8 */
+    --legal: 30 4% 74%;
 
-    --muted: 224 20% 18%;
-    --muted-foreground: 220 10% 55%;
-
-    --accent: 231 30% 20%;
-    --accent-foreground: 231 40% 75%;
-
-    --destructive: 0 50% 40%;
-    --destructive-foreground: 0 0% 95%;
-
-    --border: 224 20% 20%;
-    --input: 224 20% 20%;
-    --ring: 231 56% 60%;
-
-    --surface-dark: 224 30% 8%;
-    --surface-dark-foreground: 220 14% 85%;
-
-    --block-empty: 224 20% 18%;
-    --block-low: 0 40% 30%;
-    --block-mid: 231 30% 35%;
-    --block-high: 231 56% 60%;
+    /* Block colors for progress */
+    --block-empty: 36 20% 93%;
+    --block-low: 0 40% 90%;
+    --block-mid: 36 40% 85%;
+    --block-high: 33 44% 63%;
   }
 }
 
@@ -100,6 +86,7 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

@@ -17,34 +17,41 @@ serve(async (req) => {
 
     let systemPrompt: string;
     let userMessage: string;
+    let maxTokens = 300;
 
-    if (type === "challenge") {
+    if (type === "taste") {
+      systemPrompt = `You are a warm, sharp thinking coach. The user just did their very first practice explanation. Give them ONE specific observation in under 40 words. Be precise but encouraging — this is their first attempt. Do not ask a question. Do not give generic praise. Start with 'You' or 'Your'. Name something specific about what they actually wrote.`;
+      userMessage = `Source: ${source}\nExplanation: ${explanation}`;
+      maxTokens = 150;
+    } else if (type === "challenge") {
       systemPrompt = `You are a sharp, economy-of-words thinking coach.
-The user pasted source material and wrote a first explanation.
-Your job:
-1. Identify the single biggest gap: missing logic, vague claim, no example, weak structure, or unexplained assumption.
-2. Adapt your challenge style to what they wrote:
-   — If vague or scattered: be direct. Tell them exactly what's missing, then ask one question.
-   — If confident but incomplete: be analytical. Name the specific gap, then ask one question.
-   — If structured but shallow: be Socratic. Ask one question that forces depth — don't give the answer.
-3. Never ask two questions. Never summarise what they wrote back to them. Never open with praise.
-4. Keep your entire response under 60 words.
+Read the user's explanation carefully.
+Find the single biggest gap: missing logic, vague claim, no example, weak structure, or unexplained assumption.
+Adapt your style to what they wrote:
+— Vague or scattered → be direct. Name exactly what's missing. Then ask one question.
+— Confident but incomplete → be analytical. Name the specific gap. Then ask one question.
+— Structured but shallow → be Socratic. Ask one question that forces depth. Don't give the answer.
+Rules: Never ask two questions. Never summarise what they wrote back to them. Never open with praise. Never use the word 'articulation'. Keep total response under 60 words.
 Context: ${context}.`;
-      userMessage = `Source material: ${source}\n\nTheir explanation: ${explanation}`;
+      userMessage = `Source: ${source}\n\nExplanation: ${explanation}`;
+      maxTokens = 300;
     } else if (type === "summary") {
       systemPrompt = `You are a thinking coach giving a session debrief.
-Return ONLY valid JSON, no markdown, no backticks, in this shape:
+Return ONLY valid JSON. No markdown. No backticks.
+Exact shape:
 {
   "clarity": <integer 0-10>,
   "example": <integer 0-10>,
   "argument": <integer 0-10>,
   "what_worked": "<one sentence, max 25 words>",
   "core_gap": "<one sentence, max 25 words>",
-  "meeting_line": "<one sentence they could use in a real meeting right now, max 25 words>"
+  "meeting_line": "<one sentence usable in a real meeting tomorrow, max 25 words, professionally worded, not a rephrasing of the source>"
 }
-Be a coach, not a cheerleader. The meeting_line must be genuinely usable and professionally worded — not a rephrasing of the source.
+Be a coach, not a cheerleader.
+The meeting_line must be genuinely speakable out loud.
 Context: ${context}.`;
       userMessage = `Source: ${source}\nAttempt 1: ${attempt1}\nAttempt 2: ${attempt2}`;
+      maxTokens = 400;
     } else {
       return new Response(JSON.stringify({ error: "Invalid type" }), {
         status: 400,
@@ -64,7 +71,7 @@ Context: ${context}.`;
           { role: "system", content: systemPrompt },
           { role: "user", content: userMessage },
         ],
-        max_tokens: type === "challenge" ? 300 : 400,
+        max_tokens: maxTokens,
       }),
     });
 

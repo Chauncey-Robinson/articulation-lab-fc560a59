@@ -13,10 +13,10 @@ export default function MicButton({ onTranscript }: MicButtonProps) {
     <button
       type="button"
       onClick={recording ? stop : start}
-      className="text-sm transition-colors"
-      style={{ color: recording ? "#c00" : "hsl(var(--muted-foreground))" }}
+      className="text-[13px] transition-colors"
+      style={{ color: recording ? "hsl(var(--accent))" : "hsl(var(--muted-foreground))" }}
     >
-      {recording ? "⏹ Stop recording" : "🎤 Speak instead"}
+      {recording ? "⏹ Stop" : "🎤 Speak instead"}
     </button>
   );
 }

@@ -2,43 +2,30 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
 import { useAuth } from "@/hooks/useAuth";
 
-const navLinks = [
-  { path: "/input", label: "Home" },
-  { path: "/drill", label: "Rehearsal" },
+const navTabs = [
+  { path: "/home", label: "Home" },
+  { path: "/drill", label: "Drill" },
   { path: "/progress", label: "Progress" },
 ];
 
 export default function Layout() {
   const location = useLocation();
-  const { muted, toggleMute } = useApp();
+  const { muted, toggleMute, streakCount } = useApp();
   const { signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex h-14 max-w-[620px] items-center justify-between px-6">
-          <Link to="/input" className="font-serif text-base text-foreground">
-            Cognitive Drill
-          </Link>
-          <div className="flex items-center gap-5">
-            <nav className="flex items-center gap-4">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  style={
-                    isActive(item.path)
-                      ? { color: "hsl(var(--foreground))", borderBottom: "1.5px solid hsl(40, 6%, 10%)", paddingBottom: 2 }
-                      : undefined
-                  }
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Top nav */}
+      <header className="bg-background px-6 pt-3 pb-2">
+        <div className="mx-auto flex max-w-[460px] items-center justify-between">
+          <div className="flex items-center gap-2">
+            {streakCount > 0 && (
+              <span className="text-[13px] text-foreground">🔥 {streakCount}</span>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
             <button
               onClick={toggleMute}
               className="text-base leading-none text-muted-foreground hover:text-foreground"
@@ -55,9 +42,29 @@ export default function Layout() {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-[620px] px-6 py-10">
+
+      <main className="flex-1 flex flex-col mx-auto w-full max-w-[460px] px-6 py-4">
         <Outlet />
       </main>
+
+      {/* Bottom tabs */}
+      <nav className="border-t border-border bg-background px-6 pb-safe">
+        <div className="mx-auto flex max-w-[460px] items-center justify-around py-3">
+          {navTabs.map((tab) => (
+            <Link
+              key={tab.path}
+              to={tab.path}
+              className="text-xs transition-colors"
+              style={{
+                color: isActive(tab.path) ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                fontWeight: isActive(tab.path) ? 500 : 400,
+              }}
+            >
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 }
