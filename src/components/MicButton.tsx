@@ -16,7 +16,7 @@ export default function MicButton({ onTranscript }: MicButtonProps) {
       className="text-[13px] transition-colors"
       style={{ color: recording ? "hsl(var(--accent))" : "hsl(var(--muted-foreground))" }}
     >
-      {recording ? "⏹ Stop" : "🎤 Speak instead"}
+      {recording ? "⏹ Stop" : "🎤 Say it instead"}
     </button>
   );
 }

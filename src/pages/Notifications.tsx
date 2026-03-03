@@ -13,13 +13,13 @@ export default function Notifications() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
       <div className="max-w-[460px] w-full text-center">
-        <h1 className="font-serif text-[1.6rem] text-foreground mb-8" style={{ lineHeight: 1.3 }}>
-          {"Want a\nreminder?"}
+        <h1 className="font-serif text-[1.6rem] text-foreground mb-8 whitespace-pre-line" style={{ lineHeight: 1.3 }}>
+          {"Want a nudge\nto come back?"}
         </h1>
 
         <div className="flex flex-col gap-4 text-left mb-8 mx-auto max-w-[340px]">
           {[
-            "A nudge when it's a good time to practice",
+            "A reminder when it's a good time to practise",
             "A weekly note on how you're getting better",
             "A heads up before you lose your streak",
           ].map((item) => (
@@ -34,7 +34,7 @@ export default function Notifications() {
           onClick={handleAllow}
           className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity mb-3"
         >
-          Allow notifications
+          Yes, remind me
         </button>
         <button
           onClick={() => navigate("/summary")}

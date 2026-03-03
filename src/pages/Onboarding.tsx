@@ -4,11 +4,11 @@ import { useApp } from "@/lib/AppContext";
 
 const situations = [
   "I read a lot but can't remember it weeks later",
-  "I understand ideas but go blank when explaining them",
-  "I know the material — I just freeze under pressure",
+  "I understand things but go blank when I try to explain them",
+  "I know the material — I just freeze when someone asks",
   "I take notes but never go back to them",
-  "I want to sound sharper in meetings",
-  "I learn constantly but struggle to apply it",
+  "I want to sound clearer in meetings",
+  "I learn all the time but struggle to actually use it",
 ];
 
 function getPersonalisedMessage(selected: string[]): string {
@@ -17,10 +17,10 @@ function getPersonalisedMessage(selected: string[]): string {
     return "This is built for\nexactly that moment.";
   }
   if (joined.includes("remember") || joined.includes("notes")) {
-    return "You're doing the hard part.\nThis closes the loop.";
+    return "You're already doing\nthe hard part.\nThis closes the loop.";
   }
   if (joined.includes("meetings")) {
-    return "You'll have something to say\nin every meeting.";
+    return "You'll always have\nsomething clear to say.";
   }
   return "You're in the right place.\nLet's get started.";
 }
@@ -42,7 +42,6 @@ export default function Onboarding() {
     setStep("response");
   };
 
-  // Auto-advance from response after 2.2s
   useEffect(() => {
     if (step !== "response") return;
     const timer = setTimeout(() => navigate("/taste"), 2200);
@@ -51,7 +50,7 @@ export default function Onboarding() {
 
   if (step === "response") {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: "hsl(var(--surface-light))" }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: "#FAFAF8" }}>
         <div className="text-center max-w-[300px]">
           <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-4">
             PERFECT
@@ -59,13 +58,13 @@ export default function Onboarding() {
           <h1 className="font-serif text-[1.8rem] leading-[1.3] text-foreground whitespace-pre-line">
             {getPersonalisedMessage(selected)}
           </h1>
-          <button
-            onClick={() => navigate("/taste")}
-            className="mt-10 text-xs text-legal hover:text-muted-foreground"
-          >
-            Skip →
-          </button>
         </div>
+        <button
+          onClick={() => navigate("/taste")}
+          className="fixed bottom-8 right-8 text-xs text-legal hover:text-muted-foreground"
+        >
+          Skip →
+        </button>
       </div>
     );
   }
@@ -79,7 +78,6 @@ export default function Onboarding() {
         <div className="flex-1 h-[2px] rounded-full bg-border" />
       </div>
 
-      {/* Back */}
       <button
         onClick={() => navigate(-1)}
         className="text-base text-muted-foreground hover:text-foreground mb-8 self-start"
@@ -92,7 +90,7 @@ export default function Onboarding() {
           {"Which of these\nsounds like you?"}
         </h1>
         <p className="text-[13px] text-muted-foreground mb-6">
-          Select all that apply.
+          Pick everything that fits.
         </p>
 
         <div className="flex flex-col gap-[10px] mb-8">
@@ -102,11 +100,12 @@ export default function Onboarding() {
               <button
                 key={s}
                 onClick={() => toggle(s)}
-                className="w-full text-left px-5 py-4 rounded-lg border text-sm transition-colors"
+                className="w-full text-left px-5 py-4 rounded-lg text-sm transition-colors"
                 style={{
                   background: isSelected ? "hsl(var(--selected))" : "hsl(var(--card))",
                   borderColor: isSelected ? "hsl(var(--selected-border))" : "hsl(var(--border))",
                   borderWidth: isSelected ? "1.5px" : "1px",
+                  borderStyle: "solid",
                   color: "hsl(var(--foreground))",
                 }}
               >

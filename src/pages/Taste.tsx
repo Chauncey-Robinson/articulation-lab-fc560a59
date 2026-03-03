@@ -5,7 +5,7 @@ import { getTasteFeedback } from "@/lib/ai";
 import { useTTS } from "@/hooks/useSpeech";
 import MicButton from "@/components/MicButton";
 
-const TASTE_SOURCE = "The forgetting curve shows that people lose up to 70% of new information within 24 hours — unless they actively try to retrieve it.";
+const TASTE_SOURCE = "People forget up to 70% of what they learn within 24 hours — unless they actively try to remember it.";
 
 export default function Taste() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Taste() {
       setFeedback(result);
       if (!muted) speak(result);
     } catch (e: any) {
-      setError(e.message || "Couldn't reach the AI. Check your connection and try again.");
+      setError(e.message || "Something went wrong. Check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -33,7 +33,6 @@ export default function Taste() {
   if (feedback) {
     return (
       <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
-        {/* Progress bar */}
         <div className="flex gap-1 mb-6">
           <div className="flex-1 h-[2px] rounded-full bg-primary" />
           <div className="flex-1 h-[2px] rounded-full bg-primary" />
@@ -41,14 +40,13 @@ export default function Taste() {
         </div>
 
         <div className="flex items-center justify-between mb-8">
-          <button onClick={() => { setFeedback(""); }} className="text-base text-muted-foreground hover:text-foreground">←</button>
+          <button onClick={() => setFeedback("")} className="text-base text-muted-foreground hover:text-foreground">←</button>
           <button onClick={() => navigate("/time-promise")} className="text-xs text-muted-foreground hover:text-foreground">Skip</button>
         </div>
 
         <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
           <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-3">GIVE IT A GO</p>
 
-          {/* AI feedback card */}
           <div className="rounded-lg p-5 mb-6 border-2 border-ai-card-border bg-ai-card">
             <p className="text-sm text-ai-card-foreground leading-[1.7]">{feedback}</p>
           </div>
@@ -68,7 +66,6 @@ export default function Taste() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
-      {/* Progress bar */}
       <div className="flex gap-1 mb-6">
         <div className="flex-1 h-[2px] rounded-full bg-primary" />
         <div className="flex-1 h-[2px] rounded-full bg-primary" />
@@ -84,24 +81,26 @@ export default function Taste() {
         <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-3">GIVE IT A GO</p>
 
         <h1 className="font-serif text-[1.6rem] text-foreground mb-2" style={{ marginTop: 12 }}>
-          {"Read this. Then\nexplain it back."}
+          {"We read it.\nYou explain it back."}
         </h1>
-        <p className="text-sm text-muted-foreground mb-6">
-          Read this. Then explain it back in your own words.
+        <p className="text-sm text-muted-foreground mb-5">
+          That's the whole thing. Try it now.
         </p>
 
         {/* Source card */}
-        <div className="rounded-lg p-5 mb-4 bg-section">
+        <div className="rounded-lg p-5 mb-1 bg-section">
           <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">THE IDEA</p>
-          <p className="text-sm text-foreground leading-[1.6] italic">
-            {TASTE_SOURCE}
-          </p>
+          <p className="text-sm text-foreground leading-[1.6] italic">{TASTE_SOURCE}</p>
         </div>
+
+        <p className="text-[11px] text-accent mb-4 mt-2">
+          ↑ We found this. Now explain it back.
+        </p>
 
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Explain this in your own words..."
+          placeholder="Explain it like you're telling a friend..."
           className="w-full min-h-[90px] rounded-lg border border-border bg-card px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-selected-border resize-y mb-3"
         />
         <div className="mb-6">
