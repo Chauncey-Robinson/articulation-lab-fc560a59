@@ -1,55 +1,57 @@
-import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { useApp } from "@/lib/AppContext";
 
-const navItems = [
-  { path: "/home", label: "Home" },
-  { path: "/drill", label: "Rehearsal" },
+const navLinks = [
+  { path: "/", label: "Home" },
+  { path: "/drill", label: "Drill" },
   { path: "/progress", label: "Progress" },
 ];
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
   const location = useLocation();
+  const { muted, toggleMute } = useApp();
+
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-2xl items-center justify-between px-6">
-          <Link to="/home" className="text-sm font-semibold tracking-tight text-foreground">
+      <header className="border-b border-border bg-background">
+        <div className="mx-auto flex h-14 max-w-[620px] items-center justify-between px-6">
+          <Link to="/" className="font-serif text-base text-foreground">
             Cognitive Drill
           </Link>
-          <nav className="flex items-center gap-1">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path || (item.path === "/drill" && location.pathname === "/input");
-              return (
+          <div className="flex items-center gap-5">
+            <nav className="flex items-center gap-4">
+              {navLinks.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="relative px-3 py-1.5 text-xs font-medium tracking-wide transition-colors"
-                  style={{ color: isActive ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))" }}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  style={
+                    isActive(item.path)
+                      ? { color: "hsl(var(--foreground))", borderBottom: "1.5px solid hsl(40, 6%, 10%)", paddingBottom: 2 }
+                      : undefined
+                  }
                 >
                   {item.label}
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-indicator"
-                      className="absolute inset-x-1 -bottom-[9px] h-px bg-foreground"
-                      transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    />
-                  )}
                 </Link>
-              );
-            })}
-          </nav>
+              ))}
+            </nav>
+            <button
+              onClick={toggleMute}
+              className="text-base leading-none text-muted-foreground hover:text-foreground"
+              aria-label={muted ? "Unmute" : "Mute"}
+            >
+              {muted ? "🔇" : "🔊"}
+            </button>
+          </div>
         </div>
       </header>
-      <main className="mx-auto max-w-2xl px-6 py-10">
-        <motion.div
-          key={location.pathname}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-        >
-          {children}
-        </motion.div>
+      <main className="mx-auto max-w-[620px] px-6 py-10">
+        <Outlet />
       </main>
     </div>
   );

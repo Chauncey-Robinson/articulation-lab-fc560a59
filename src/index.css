@@ -4,96 +4,91 @@
 
 @layer base {
   :root {
-    --background: 40 20% 95%;
+    /* #EEECE8 → hsl(36, 16%, 92%) */
+    --background: 36 16% 92%;
+    /* #1A1A1A → hsl(0, 0%, 10%) */
     --foreground: 0 0% 10%;
 
-    --card: 40 15% 97%;
+    /* white cards */
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 10%;
 
-    --popover: 40 20% 95%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 228 65% 55%;
+    /* #4B5FD4 → hsl(231, 56%, 56%) */
+    --primary: 231 56% 56%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 130 15% 49%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 36 10% 85%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 40 10% 90%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 36 10% 88%;
+    /* #888 */
+    --muted-foreground: 0 0% 53%;
 
-    --accent: 228 30% 92%;
-    --accent-foreground: 228 65% 40%;
+    --accent: 231 30% 95%;
+    --accent-foreground: 231 56% 45%;
 
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 10% 87%;
-    --input: 40 10% 87%;
-    --ring: 228 65% 55%;
+    /* #D8D6D2 → hsl(36, 6%, 83%) */
+    --border: 36 6% 83%;
+    --input: 36 6% 83%;
+    --ring: 231 56% 56%;
 
-    --radius: 0.5rem;
+    --radius: 12px;
 
-    --sidebar-background: 40 15% 97%;
-    --sidebar-foreground: 0 0% 25%;
-    --sidebar-primary: 228 65% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 40 10% 92%;
-    --sidebar-accent-foreground: 0 0% 15%;
-    --sidebar-border: 40 10% 87%;
-    --sidebar-ring: 228 65% 55%;
+    /* Dark card for AI challenge */
+    /* #1a1917 */
+    --surface-dark: 40 6% 10%;
+    /* #e8e6e2 */
+    --surface-dark-foreground: 36 12% 90%;
 
-    /* Custom tokens */
-    --metric-strong: 228 65% 55%;
-    --metric-moderate: 130 15% 49%;
-    --metric-weak: 0 0% 60%;
-    --surface-elevated: 40 20% 98%;
-    --surface-sunken: 40 15% 92%;
+    /* Progress blocks */
+    --block-empty: 36 10% 91%;
+    --block-low: 0 60% 90%;
+    --block-mid: 231 40% 80%;
+    --block-high: 231 56% 56%;
   }
 
   .dark {
-    --background: 224 39% 11%;
+    --background: 224 39% 7%;
     --foreground: 220 14% 91%;
 
-    --card: 224 30% 14%;
+    --card: 224 30% 12%;
     --card-foreground: 220 14% 91%;
 
-    --popover: 224 30% 14%;
+    --popover: 224 30% 12%;
     --popover-foreground: 220 14% 91%;
 
-    --primary: 228 65% 55%;
+    --primary: 231 56% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 130 15% 49%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 224 20% 18%;
+    --secondary-foreground: 220 14% 91%;
 
     --muted: 224 20% 18%;
     --muted-foreground: 220 10% 55%;
 
-    --accent: 228 30% 20%;
-    --accent-foreground: 228 40% 75%;
+    --accent: 231 30% 20%;
+    --accent-foreground: 231 40% 75%;
 
     --destructive: 0 50% 40%;
     --destructive-foreground: 0 0% 95%;
 
     --border: 224 20% 20%;
     --input: 224 20% 20%;
-    --ring: 228 65% 55%;
+    --ring: 231 56% 60%;
 
-    --surface-elevated: 224 30% 16%;
-    --surface-sunken: 224 35% 9%;
-    --metric-strong: 228 65% 60%;
-    --metric-moderate: 130 15% 55%;
-    --metric-weak: 0 0% 45%;
+    --surface-dark: 224 30% 8%;
+    --surface-dark-foreground: 220 14% 85%;
 
-    --sidebar-background: 224 35% 9%;
-    --sidebar-foreground: 220 14% 85%;
-    --sidebar-primary: 228 65% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 224 20% 18%;
-    --sidebar-accent-foreground: 220 14% 85%;
-    --sidebar-border: 224 20% 20%;
-    --sidebar-ring: 228 65% 55%;
+    --block-empty: 224 20% 18%;
+    --block-low: 0 40% 30%;
+    --block-mid: 231 30% 35%;
+    --block-high: 231 56% 60%;
   }
 }
 
@@ -104,30 +99,13 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "cv11", "ss01", "ss03";
+    font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight;
-  }
-}
-
-@layer utilities {
-  .metric-value {
-    @apply text-4xl font-light tracking-tight tabular-nums;
-  }
-
-  .metric-label {
-    @apply text-xs font-medium uppercase tracking-widest text-muted-foreground;
-  }
-
-  .drill-question {
-    @apply text-2xl md:text-3xl font-light leading-relaxed tracking-tight text-center max-w-2xl mx-auto;
-  }
-
-  .concept-tag {
-    @apply inline-flex items-center px-3 py-1 text-xs font-medium tracking-wide rounded-full border border-border bg-card text-foreground;
+    font-family: 'Lora', serif;
+    font-weight: 400;
   }
 }
