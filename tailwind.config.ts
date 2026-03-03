@@ -51,10 +51,22 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        "surface-dark": {
-          DEFAULT: "hsl(var(--surface-dark))",
-          foreground: "hsl(var(--surface-dark-foreground))",
+        "ai-card": {
+          DEFAULT: "hsl(var(--ai-card))",
+          foreground: "hsl(var(--ai-card-foreground))",
+          border: "hsl(var(--ai-card-border))",
         },
+        "meeting": {
+          card: "hsl(var(--meeting-card))",
+          text: "hsl(var(--meeting-text))",
+        },
+        section: "hsl(var(--section))",
+        selected: {
+          DEFAULT: "hsl(var(--selected))",
+          border: "hsl(var(--selected-border))",
+        },
+        "surface-light": "hsl(var(--surface-light))",
+        legal: "hsl(var(--legal))",
         block: {
           empty: "hsl(var(--block-empty))",
           low: "hsl(var(--block-low))",
