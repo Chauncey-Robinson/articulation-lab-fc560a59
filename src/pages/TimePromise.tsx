@@ -21,23 +21,23 @@ export default function TimePromise() {
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col items-center">
         <h1 className="font-serif text-[1.8rem] text-foreground text-center mb-6" style={{ lineHeight: 1.3 }}>
-          {"Built for people\nwho are always busy."}
+          {"No time? That's exactly\nwho this is for."}
         </h1>
 
         <div className="w-full rounded-lg bg-card border border-border p-5 mt-4">
           <div className="flex items-center gap-4 py-3">
             <span className="font-serif text-[1.4rem] text-accent">5 min</span>
-            <span className="text-[13px] text-foreground">Average session. Fits between meetings.</span>
+            <span className="text-[13px] text-foreground">Long enough to actually help.</span>
           </div>
           <div className="h-px bg-border" />
           <div className="flex items-center gap-4 py-3">
             <span className="font-serif text-[1.4rem] text-accent">2×</span>
-            <span className="text-[13px] text-foreground">Attempts per idea. Enough to feel the shift.</span>
+            <span className="text-[13px] text-foreground">You explain it twice. That's the whole thing.</span>
           </div>
           <div className="h-px bg-border" />
           <div className="flex items-center gap-4 py-3">
             <span className="font-serif text-[1.4rem] text-accent">1</span>
-            <span className="text-[13px] text-foreground">Line you can use tomorrow. Every time.</span>
+            <span className="text-[13px] text-foreground">Something you can actually say tomorrow.</span>
           </div>
         </div>
 
@@ -50,7 +50,7 @@ export default function TimePromise() {
             onClick={() => navigate("/privacy")}
             className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            I can do that →
+            That works for me →
           </button>
         </div>
       </div>

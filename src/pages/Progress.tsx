@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
 
 const dimensions = [
-  { key: "clarity" as const, label: "Explanation Clarity" },
-  { key: "example" as const, label: "Example Usage" },
-  { key: "argument" as const, label: "Argument Strength" },
+  { key: "clarity" as const, label: "How clearly you explained it" },
+  { key: "example" as const, label: "Whether you used an example" },
+  { key: "argument" as const, label: "How well it held together" },
 ];
 
 function getStatus(count: number) {
-  if (count >= 15) return { dot: "bg-[#7BAE7F]", label: "Strong" };
-  if (count >= 5) return { dot: "bg-accent", label: "Developing" };
-  return { dot: "bg-border", label: "Building" };
+  if (count >= 15) return { dot: "bg-[#7BAE7F]", label: "Doing great" };
+  if (count >= 5) return { dot: "bg-accent", label: "Getting better" };
+  return { dot: "bg-border", label: "Just getting started" };
 }
 
 function getBlockColor(score: number | undefined) {
@@ -53,7 +53,7 @@ export default function Progress() {
 
         {/* Accountability summary */}
         <div className="rounded-lg bg-card border border-border p-5 mb-6">
-          <h2 className="font-serif text-[1rem] text-foreground mb-3">Your habit</h2>
+          <h2 className="font-serif text-[1rem] text-foreground mb-3">How you're doing</h2>
           <p className="text-[13px] text-foreground mb-1">🔥 {streakCount}-day streak</p>
           <p className="text-[13px] text-muted-foreground mb-1">{totalSessions} total drills completed</p>
           <p className="text-[13px] text-muted-foreground mb-4">Last drilled: {lastLabel}</p>
@@ -93,7 +93,7 @@ export default function Progress() {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  {scores.length} session{scores.length !== 1 ? "s" : ""} · avg last 5: {avg5}/10
+                  {scores.length} practice{scores.length !== 1 ? "s" : ""} · recent score: {avg5} out of 10
                 </p>
               </div>
             );

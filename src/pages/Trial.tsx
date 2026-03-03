@@ -35,7 +35,7 @@ export default function Trial() {
           onClick={handleStart}
           className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
         >
-          Start drilling →
+          Start practicing →
         </button>
       </div>
     </div>

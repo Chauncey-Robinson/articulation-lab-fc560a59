@@ -23,14 +23,14 @@ export default function Home() {
           One idea. Two attempts. Sharper thinking.
         </p>
         <p className="text-xs text-accent mb-8">
-          Most sessions take under 5 minutes.
+          Takes about 5 minutes.
         </p>
 
         <Link
           to="/input"
           className="w-full max-w-[460px] rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity text-center block"
         >
-          Start Your First Drill
+          Start practicing
         </Link>
         <Link to="/progress" className="mt-4 text-[13px] text-muted-foreground underline">
           View Progress
@@ -56,8 +56,8 @@ export default function Home() {
     cardTitle = `${streakCount} Day Streak 🔥`;
     cardSubline = "Keep it going today.";
   } else if (streakCount > 0 && !drilledYesterday) {
-    cardTitle = "Don't break your streak.";
-    cardSubline = `You've drilled ${streakCount} days. One session keeps it alive.`;
+    cardTitle = `You've done ${streakCount} days in a row. Keep it going.`;
+    cardSubline = "";
   } else {
     cardTitle = "Welcome back.";
     cardSubline = `You've done ${totalSessions} drills. Ready for another?`;
@@ -100,7 +100,7 @@ export default function Home() {
           to="/input"
           className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity text-center block"
         >
-          Start Today's Drill
+          Practice today
         </Link>
         <Link to="/progress" className="mt-4 text-[13px] text-muted-foreground underline text-center block">
           View Progress

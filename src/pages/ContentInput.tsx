@@ -22,16 +22,16 @@ export default function ContentInput() {
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
         <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-1">{contextLabel}</p>
-        <p className="text-xs text-muted-foreground mb-1">Under 5 minutes · 2 attempts</p>
+        <p className="text-xs text-muted-foreground mb-1">About 5 minutes · you'll explain it twice</p>
 
         <h1 className="font-serif text-[1.4rem] text-foreground mb-5" style={{ marginTop: 4 }}>
-          {"What are you preparing\nto explain?"}
+          {"What do you want to get\nbetter at explaining?"}
         </h1>
 
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Paste notes, a summary, or key ideas."
+          placeholder="Paste what you've been reading or learning."
           className="w-full min-h-[160px] rounded-lg border border-border bg-card px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-selected-border resize-y mb-3"
         />
         <div className="mb-6">
@@ -44,7 +44,7 @@ export default function ContentInput() {
             disabled={text.trim().length < 20}
             className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Start Rehearsal
+            Let's go
           </button>
         </div>
       </div>

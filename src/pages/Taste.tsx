@@ -46,7 +46,7 @@ export default function Taste() {
         </div>
 
         <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-          <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-3">TRY IT NOW</p>
+          <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-3">GIVE IT A GO</p>
 
           {/* AI feedback card */}
           <div className="rounded-lg p-5 mb-6 border-2 border-ai-card-border bg-ai-card">
@@ -58,7 +58,7 @@ export default function Taste() {
               onClick={() => navigate("/time-promise")}
               className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
             >
-              That's what every session feels like →
+              That's what it feels like every time →
             </button>
           </div>
         </div>
@@ -81,10 +81,10 @@ export default function Taste() {
       </div>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-3">TRY IT NOW</p>
+        <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-3">GIVE IT A GO</p>
 
         <h1 className="font-serif text-[1.6rem] text-foreground mb-2" style={{ marginTop: 12 }}>
-          {"30 seconds.\nThat's all this takes."}
+          {"Read this. Then\nexplain it back."}
         </h1>
         <p className="text-sm text-muted-foreground mb-6">
           Read this. Then explain it back in your own words.
@@ -116,7 +116,7 @@ export default function Taste() {
             disabled={loading || text.trim().length < 10}
             className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {loading ? "Thinking..." : "See how I did →"}
+            {loading ? "Thinking..." : "Show me →"}
           </button>
         </div>
       </div>

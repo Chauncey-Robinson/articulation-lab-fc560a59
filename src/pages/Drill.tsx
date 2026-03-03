@@ -70,12 +70,12 @@ export default function Drill() {
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
         <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-1">
-          ATTEMPT {attempt} OF 2
+          {attempt === 1 ? "FIRST TRY" : "SECOND TRY"}
         </p>
 
         {attempt === 1 && (
           <>
-            <p className="text-xs text-accent mb-4">~2 minutes · speak freely</p>
+            <p className="text-xs text-accent mb-4">Just say what you know</p>
 
             {/* Prompt card */}
             <div
@@ -83,7 +83,7 @@ export default function Drill() {
               style={{ borderLeft: "3px solid hsl(var(--ai-card-border))" }}
             >
               <p className="text-sm text-foreground italic leading-[1.6]">
-                Explain this in your own words — as if someone in a meeting just asked you to summarise it.
+                Explain this like you're telling a friend what you just learned.
               </p>
             </div>
 
@@ -105,7 +105,7 @@ export default function Drill() {
                 disabled={loading || text.trim().length < 10}
                 className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {loading ? "Thinking..." : "Submit & Get Challenge"}
+                {loading ? "Thinking..." : "See what I missed"}
               </button>
             </div>
           </>
@@ -127,7 +127,7 @@ export default function Drill() {
             </div>
 
             <p className="text-sm text-muted-foreground mb-4">
-              Now try again. Use the challenge above.
+              Have another go. Use what it said above.
             </p>
 
             <textarea
@@ -148,7 +148,7 @@ export default function Drill() {
                 disabled={loading || text.trim().length < 10}
                 className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {loading ? "Thinking..." : "Submit Final Attempt"}
+                {loading ? "Thinking..." : "That's my best"}
               </button>
             </div>
           </>
