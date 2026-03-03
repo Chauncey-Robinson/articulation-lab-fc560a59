@@ -12,6 +12,7 @@ import Home from "@/pages/Home";
 import ContentInput from "@/pages/ContentInput";
 import Drill from "@/pages/Drill";
 import Summary from "@/pages/Summary";
+import Library from "@/pages/Library";
 import Notifications from "@/pages/Notifications";
 import Progress from "@/pages/Progress";
 import NotFound from "@/pages/NotFound";
@@ -47,10 +48,9 @@ const App = () => (
         <AppProvider>
           <BrowserRouter>
             <Routes>
-              {/* Public */}
               <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
 
-              {/* Auth-guarded onboarding flow (no layout) */}
+              {/* Onboarding flow */}
               <Route path="/onboarding" element={<RequireAuth><Onboarding /></RequireAuth>} />
               <Route path="/taste" element={<RequireAuth><Taste /></RequireAuth>} />
               <Route path="/time-promise" element={<RequireAuth><TimePromise /></RequireAuth>} />
@@ -58,15 +58,18 @@ const App = () => (
               <Route path="/trial" element={<RequireAuth><Trial /></RequireAuth>} />
               <Route path="/notifications" element={<RequireAuth><Notifications /></RequireAuth>} />
 
-              {/* Auth+onboarded app routes with layout */}
+              {/* Main app with layout */}
               <Route path="/" element={<RequireAuth><RequireOnboarded><Layout /></RequireOnboarded></RequireAuth>}>
                 <Route index element={<Navigate to="/home" replace />} />
                 <Route path="home" element={<Home />} />
-                <Route path="input" element={<ContentInput />} />
-                <Route path="drill" element={<Drill />} />
-                <Route path="summary" element={<Summary />} />
                 <Route path="progress" element={<Progress />} />
               </Route>
+
+              {/* Full-screen routes (no bottom tabs) */}
+              <Route path="/input" element={<RequireAuth><RequireOnboarded><ContentInput /></RequireOnboarded></RequireAuth>} />
+              <Route path="/practice" element={<RequireAuth><RequireOnboarded><Drill /></RequireOnboarded></RequireAuth>} />
+              <Route path="/summary" element={<RequireAuth><RequireOnboarded><Summary /></RequireOnboarded></RequireAuth>} />
+              <Route path="/library" element={<RequireAuth><RequireOnboarded><Library /></RequireOnboarded></RequireAuth>} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>

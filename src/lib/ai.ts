@@ -1,8 +1,17 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export async function getChallenge(contextLabel: string, source: string, explanation: string): Promise<string> {
+export async function extractKeyIdea(content: string): Promise<{ keyIdea: string; question: string }> {
   const { data, error } = await supabase.functions.invoke("ai-coach", {
-    body: { type: "challenge", context: contextLabel, source, explanation },
+    body: { type: "extract", content },
+  });
+  if (error) throw new Error(error.message || "AI request failed");
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+
+export async function getChallenge(contextLabel: string, keyIdea: string, explanation: string): Promise<string> {
+  const { data, error } = await supabase.functions.invoke("ai-coach", {
+    body: { type: "challenge", context: contextLabel, keyIdea, explanation },
   });
   if (error) throw new Error(error.message || "AI request failed");
   if (data?.error) throw new Error(data.error);
@@ -21,20 +30,20 @@ export async function getTasteFeedback(source: string, explanation: string): Pro
 export interface SessionSummary {
   clarity: number;
   example: number;
-  argument: number;
+  held_together: number;
   what_worked: string;
-  core_gap: string;
-  meeting_line: string;
+  work_on_next: string;
+  say_tomorrow: string;
 }
 
 export async function getSummary(
   contextLabel: string,
-  source: string,
+  keyIdea: string,
   attempt1: string,
   attempt2: string
 ): Promise<SessionSummary> {
   const { data, error } = await supabase.functions.invoke("ai-coach", {
-    body: { type: "summary", context: contextLabel, source, attempt1, attempt2 },
+    body: { type: "summary", context: contextLabel, keyIdea, attempt1, attempt2 },
   });
   if (error) throw new Error(error.message || "AI request failed");
   if (data?.error) throw new Error(data.error);

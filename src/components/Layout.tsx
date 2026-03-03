@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navTabs = [
   { path: "/home", label: "Home" },
-  { path: "/drill", label: "Practice" },
+  { path: "/input", label: "Practice" },
   { path: "/progress", label: "Progress" },
 ];
 
@@ -17,7 +17,6 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Top nav */}
       <header className="bg-background px-6 pt-3 pb-2">
         <div className="mx-auto flex max-w-[460px] items-center justify-between">
           <div className="flex items-center gap-2">
@@ -47,7 +46,6 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      {/* Bottom tabs */}
       <nav className="border-t border-border bg-background px-6 pb-safe">
         <div className="mx-auto flex max-w-[460px] items-center justify-around py-3">
           {navTabs.map((tab) => (

@@ -4,9 +4,12 @@ import type { SessionSummary } from "@/lib/ai";
 export interface SessionScore {
   clarity: number;
   example: number;
-  argument: number;
+  held_together: number;
   date: string;
   context: string;
+  key_idea: string;
+  topic_snippet: string;
+  say_tomorrow: string;
 }
 
 interface AppState {
@@ -21,9 +24,13 @@ interface AppState {
   // Context label derived from pain selections
   contextLabel: string;
 
-  // Drill state
+  // Input & drill state
   source: string;
   setSource: (s: string) => void;
+  keyIdea: string;
+  setKeyIdea: (s: string) => void;
+  keyQuestion: string;
+  setKeyQuestion: (s: string) => void;
   attempt1: string;
   setAttempt1: (a: string) => void;
   attempt2: string;
@@ -37,8 +44,9 @@ interface AppState {
   sessions: SessionScore[];
   addSession: (s: SessionScore) => void;
   streakCount: number;
-  lastDrillDate: string;
-  totalSessions: number;
+  lastPracticeDate: string;
+  totalPractices: number;
+  lastTopicSnippet: string | null;
 
   // Voice
   muted: boolean;
@@ -53,10 +61,10 @@ const Ctx = createContext<AppState | null>(null);
 
 function getContextLabel(selections: string[]): string {
   const joined = selections.join(" ");
-  if (joined.includes("go blank") || joined.includes("freeze")) return "CLARITY UNDER PRESSURE";
-  if (joined.includes("remember") || joined.includes("notes")) return "RETENTION";
-  if (joined.includes("meetings")) return "COMMUNICATION";
-  return "PRACTICE";
+  if (joined.includes("go blank") || joined.includes("freeze")) return "GETTING CLEARER";
+  if (joined.includes("remember") || joined.includes("notes")) return "MAKING IT STICK";
+  if (joined.includes("meetings")) return "SOUNDING SHARPER";
+  return "ABOUT 5 MINUTES";
 }
 
 function getTodayStr(): string {
@@ -68,14 +76,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [painSelections, setPainSelections] = useState<string[]>([]);
   const [privacyMode, setPrivacyMode] = useState<"improve" | "private">("private");
   const [source, setSource] = useState("");
+  const [keyIdea, setKeyIdea] = useState("");
+  const [keyQuestion, setKeyQuestion] = useState("");
   const [attempt1, setAttempt1] = useState("");
   const [attempt2, setAttempt2] = useState("");
   const [challengeText, setChallengeText] = useState("");
   const [summary, setSummary] = useState<SessionSummary | null>(null);
   const [sessions, setSessions] = useState<SessionScore[]>([]);
   const [streakCount, setStreakCount] = useState(0);
-  const [lastDrillDate, setLastDrillDate] = useState("");
-  const [totalSessions, setTotalSessions] = useState(0);
+  const [lastPracticeDate, setLastPracticeDate] = useState("");
+  const [totalPractices, setTotalPractices] = useState(0);
+  const [lastTopicSnippet, setLastTopicSnippet] = useState<string | null>(null);
   const [muted, setMuted] = useState(false);
   const [notificationPromptShown, setNotificationPromptShown] = useState(false);
 
@@ -84,13 +95,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addSession = (s: SessionScore) => {
     const today = getTodayStr();
     setSessions((prev) => [...prev, s]);
-    setTotalSessions((prev) => prev + 1);
+    setTotalPractices((prev) => prev + 1);
+    setLastTopicSnippet(s.topic_snippet);
 
-    // Streak logic
-    if (lastDrillDate === today) {
-      // Already drilled today, streak intact
-    } else if (lastDrillDate) {
-      const last = new Date(lastDrillDate);
+    if (lastPracticeDate === today) {
+      // Already practised today
+    } else if (lastPracticeDate) {
+      const last = new Date(lastPracticeDate);
       const now = new Date(today);
       const diff = Math.floor((now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24));
       if (diff === 1) {
@@ -101,7 +112,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } else {
       setStreakCount(1);
     }
-    setLastDrillDate(today);
+    setLastPracticeDate(today);
   };
 
   const toggleMute = () => {
@@ -119,12 +130,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         privacyMode, setPrivacyMode,
         contextLabel,
         source, setSource,
+        keyIdea, setKeyIdea,
+        keyQuestion, setKeyQuestion,
         attempt1, setAttempt1,
         attempt2, setAttempt2,
         challengeText, setChallengeText,
         summary, setSummary,
         sessions, addSession,
-        streakCount, lastDrillDate, totalSessions,
+        streakCount, lastPracticeDate, totalPractices,
+        lastTopicSnippet,
         muted, toggleMute,
         notificationPromptShown, setNotificationPromptShown,
       }}

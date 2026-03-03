@@ -59,8 +59,8 @@ export default function SignIn() {
         <h1 className="font-serif text-[2.2rem] leading-[1.2] text-foreground mb-3 whitespace-pre-line">
           {"You know more than\nyou can explain."}
         </h1>
-        <p className="text-sm text-muted-foreground mb-[52px]">
-          Practice explaining ideas until they stick.
+        <p className="text-sm text-muted-foreground mb-[52px] whitespace-pre-line">
+          {"Paste anything you're learning.\nWe'll make sure it actually sticks."}
         </p>
 
         {!emailMode ? (
