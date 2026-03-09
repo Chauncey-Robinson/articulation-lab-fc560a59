@@ -74,6 +74,18 @@ The say_tomorrow must sound like something a real person would actually say. Not
 Context: ${body.context}.`;
       userMessage = `Original idea: ${body.keyIdea}\nFirst try: ${body.attempt1}\nSecond try: ${body.attempt2}`;
       maxTokens = 400;
+    } else if (type === "scenario") {
+      // [APP] Scenario mode — generates a realistic professional situation for returning concepts
+      systemPrompt = `You are a sharp thinking coach creating a realistic scenario.
+The user has practiced this concept before and is returning to it.
+Read the key idea and topic.
+Generate ONE realistic professional situation the user is likely to face.
+Frame as a direct challenge: "A client asks..." or "Your manager wants to know..." or "Someone in a meeting challenges..."
+Under 30 words.
+Match context to content: finance content → client or board scenario; leadership content → team scenario; technical content → colleague or presentation scenario.
+Do not explain the concept. Do not give hints. Just the scenario.`;
+      userMessage = `Topic: ${body.topicSnippet}\nKey idea: ${body.keyIdea}`;
+      maxTokens = 100;
     } else {
       return new Response(JSON.stringify({ error: "Invalid type" }), {
         status: 400,

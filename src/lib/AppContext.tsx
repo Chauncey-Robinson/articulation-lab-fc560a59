@@ -1,30 +1,51 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import type { SessionSummary } from "@/lib/ai";
 
-export interface SessionScore {
+// [APP] Types matching DB schema
+export interface Concept {
+  id: string;
+  user_id: string;
+  created_at: string;
+  topic_snippet: string;
+  key_idea: string;
+  source_content: string;
+  status: "practicing" | "getting_there" | "solid";
+  next_practice_date: string;
+  last_practiced: string | null;
+  practice_count: number;
+}
+
+export interface SessionRecord {
+  id: string;
+  concept_id: string;
+  user_id: string;
+  practiced_at: string;
   clarity: number;
   example: number;
   held_together: number;
-  date: string;
-  context: string;
-  key_idea: string;
-  topic_snippet: string;
+  what_worked: string;
+  work_on_next: string;
   say_tomorrow: string;
 }
 
+export interface UserProgress {
+  current_streak: number;
+  longest_streak: number;
+  last_practice_date: string | null;
+  total_sessions: number;
+}
+
 interface AppState {
-  // Onboarding
-  onboarded: boolean;
-  setOnboarded: (v: boolean) => void;
+  // Pain selections (stored locally, asked after first practice)
   painSelections: string[];
   setPainSelections: (s: string[]) => void;
-  privacyMode: "improve" | "private";
-  setPrivacyMode: (m: "improve" | "private") => void;
-
-  // Context label derived from pain selections
+  painAsked: boolean;
+  setPainAsked: (v: boolean) => void;
   contextLabel: string;
 
-  // Input & drill state
+  // Current practice state (ephemeral)
   source: string;
   setSource: (s: string) => void;
   keyIdea: string;
@@ -40,19 +61,30 @@ interface AppState {
   summary: SessionSummary | null;
   setSummary: (s: SessionSummary | null) => void;
 
-  // Sessions & streak
-  sessions: SessionScore[];
-  addSession: (s: SessionScore) => void;
-  streakCount: number;
-  lastPracticeDate: string;
-  totalPractices: number;
-  lastTopicSnippet: string | null;
+  // Current concept being practiced
+  currentConceptId: string | null;
+  setCurrentConceptId: (id: string | null) => void;
+
+  // DB-backed data
+  concepts: Concept[];
+  progress: UserProgress;
+  loadingData: boolean;
+
+  // Actions
+  saveConceptAndSession: (params: {
+    topicSnippet: string;
+    keyIdea: string;
+    sourceContent: string;
+    summary: SessionSummary;
+    existingConceptId?: string;
+  }) => Promise<void>;
+  refreshData: () => Promise<void>;
 
   // Voice
   muted: boolean;
   toggleMute: () => void;
 
-  // Notifications prompt shown
+  // Notifications prompt
   notificationPromptShown: boolean;
   setNotificationPromptShown: (v: boolean) => void;
 }
@@ -67,14 +99,33 @@ function getContextLabel(selections: string[]): string {
   return "ABOUT 5 MINUTES";
 }
 
-function getTodayStr(): string {
-  return new Date().toISOString().split("T")[0];
+function calculateNextPracticeDate(practiceCount: number, clarity: number, example: number, heldTogether: number): string {
+  let daysToAdd: number;
+  if (practiceCount <= 1) daysToAdd = 3;
+  else if (practiceCount === 2) daysToAdd = 7;
+  else if (practiceCount === 3) daysToAdd = 14;
+  else daysToAdd = 30;
+
+  const avg = (clarity + example + heldTogether) / 3;
+  if (avg < 3) daysToAdd = Math.max(1, daysToAdd - 1);
+  if (clarity >= 5 && example >= 5 && heldTogether >= 5) daysToAdd += 3;
+
+  const date = new Date();
+  date.setDate(date.getDate() + daysToAdd);
+  return date.toISOString().split("T")[0];
+}
+
+function computeConceptStatus(practiceCount: number, avgScore: number, lastWasColdRecall: boolean): "practicing" | "getting_there" | "solid" {
+  if (practiceCount >= 3 && avgScore >= 4 && lastWasColdRecall) return "solid";
+  if (practiceCount >= 2 && avgScore >= 3) return "getting_there";
+  return "practicing";
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [onboarded, setOnboarded] = useState(false);
+  const { user } = useAuth();
+
   const [painSelections, setPainSelections] = useState<string[]>([]);
-  const [privacyMode, setPrivacyMode] = useState<"improve" | "private">("private");
+  const [painAsked, setPainAsked] = useState(false);
   const [source, setSource] = useState("");
   const [keyIdea, setKeyIdea] = useState("");
   const [keyQuestion, setKeyQuestion] = useState("");
@@ -82,38 +133,142 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [attempt2, setAttempt2] = useState("");
   const [challengeText, setChallengeText] = useState("");
   const [summary, setSummary] = useState<SessionSummary | null>(null);
-  const [sessions, setSessions] = useState<SessionScore[]>([]);
-  const [streakCount, setStreakCount] = useState(0);
-  const [lastPracticeDate, setLastPracticeDate] = useState("");
-  const [totalPractices, setTotalPractices] = useState(0);
-  const [lastTopicSnippet, setLastTopicSnippet] = useState<string | null>(null);
+  const [currentConceptId, setCurrentConceptId] = useState<string | null>(null);
   const [muted, setMuted] = useState(false);
   const [notificationPromptShown, setNotificationPromptShown] = useState(false);
 
+  // DB state
+  const [concepts, setConcepts] = useState<Concept[]>([]);
+  const [progress, setProgress] = useState<UserProgress>({
+    current_streak: 0,
+    longest_streak: 0,
+    last_practice_date: null,
+    total_sessions: 0,
+  });
+  const [loadingData, setLoadingData] = useState(true);
+
   const contextLabel = getContextLabel(painSelections);
 
-  const addSession = (s: SessionScore) => {
-    const today = getTodayStr();
-    setSessions((prev) => [...prev, s]);
-    setTotalPractices((prev) => prev + 1);
-    setLastTopicSnippet(s.topic_snippet);
+  const refreshData = useCallback(async () => {
+    if (!user) {
+      setLoadingData(false);
+      return;
+    }
+    try {
+      const [conceptsRes, progressRes] = await Promise.all([
+        supabase.from("concepts").select("*").eq("user_id", user.id).order("next_practice_date", { ascending: true }),
+        supabase.from("user_progress").select("*").eq("user_id", user.id).single(),
+      ]);
 
-    if (lastPracticeDate === today) {
-      // Already practised today
-    } else if (lastPracticeDate) {
-      const last = new Date(lastPracticeDate);
+      if (conceptsRes.data) setConcepts(conceptsRes.data as unknown as Concept[]);
+
+      if (progressRes.data) {
+        setProgress(progressRes.data as unknown as UserProgress);
+      }
+    } catch (e) {
+      console.error("Failed to load data:", e);
+    } finally {
+      setLoadingData(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
+
+  const saveConceptAndSession = useCallback(async (params: {
+    topicSnippet: string;
+    keyIdea: string;
+    sourceContent: string;
+    summary: SessionSummary;
+    existingConceptId?: string;
+  }) => {
+    if (!user) return;
+
+    const { topicSnippet, keyIdea, sourceContent, summary: sum, existingConceptId } = params;
+    const today = new Date().toISOString().split("T")[0];
+
+    let conceptId = existingConceptId;
+    let newPracticeCount = 1;
+
+    if (existingConceptId) {
+      // Update existing concept
+      const existing = concepts.find(c => c.id === existingConceptId);
+      newPracticeCount = (existing?.practice_count || 0) + 1;
+      const avgScore = (sum.clarity + sum.example + sum.held_together) / 3;
+      // For cold recall check — if practice_count was >= 3 before this session, this was cold recall
+      const wasColdRecall = (existing?.practice_count || 0) >= 3;
+      const newStatus = computeConceptStatus(newPracticeCount, avgScore, wasColdRecall);
+      const nextDate = calculateNextPracticeDate(newPracticeCount, sum.clarity, sum.example, sum.held_together);
+
+      await supabase.from("concepts").update({
+        practice_count: newPracticeCount,
+        last_practiced: today,
+        next_practice_date: nextDate,
+        status: newStatus,
+      } as any).eq("id", existingConceptId);
+    } else {
+      // Create new concept
+      const nextDate = calculateNextPracticeDate(1, sum.clarity, sum.example, sum.held_together);
+      const { data: newConcept } = await supabase.from("concepts").insert({
+        user_id: user.id,
+        topic_snippet: topicSnippet,
+        key_idea: keyIdea,
+        source_content: sourceContent,
+        status: "practicing",
+        next_practice_date: nextDate,
+        last_practiced: today,
+        practice_count: 1,
+      } as any).select().single();
+      if (newConcept) conceptId = (newConcept as any).id;
+    }
+
+    // Save session
+    if (conceptId) {
+      await supabase.from("sessions").insert({
+        concept_id: conceptId,
+        user_id: user.id,
+        clarity: sum.clarity,
+        example: sum.example,
+        held_together: sum.held_together,
+        what_worked: sum.what_worked,
+        work_on_next: sum.work_on_next,
+        say_tomorrow: sum.say_tomorrow,
+      } as any);
+    }
+
+    // Update streak
+    const newTotal = progress.total_sessions + 1;
+    let newStreak = progress.current_streak;
+    let newLongest = progress.longest_streak;
+
+    if (progress.last_practice_date === today) {
+      // Already practiced today, no streak change
+    } else if (progress.last_practice_date) {
+      const last = new Date(progress.last_practice_date);
       const now = new Date(today);
       const diff = Math.floor((now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24));
       if (diff === 1) {
-        setStreakCount((prev) => prev + 1);
+        newStreak += 1;
       } else if (diff > 1) {
-        setStreakCount(1);
+        newStreak = 1;
       }
     } else {
-      setStreakCount(1);
+      newStreak = 1;
     }
-    setLastPracticeDate(today);
-  };
+    newLongest = Math.max(newLongest, newStreak);
+
+    // Upsert user_progress
+    await supabase.from("user_progress").upsert({
+      user_id: user.id,
+      current_streak: newStreak,
+      longest_streak: newLongest,
+      last_practice_date: today,
+      total_sessions: newTotal,
+    } as any);
+
+    await refreshData();
+  }, [user, concepts, progress, refreshData]);
 
   const toggleMute = () => {
     setMuted((m) => {
@@ -125,9 +280,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider
       value={{
-        onboarded, setOnboarded,
         painSelections, setPainSelections,
-        privacyMode, setPrivacyMode,
+        painAsked, setPainAsked,
         contextLabel,
         source, setSource,
         keyIdea, setKeyIdea,
@@ -136,9 +290,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         attempt2, setAttempt2,
         challengeText, setChallengeText,
         summary, setSummary,
-        sessions, addSession,
-        streakCount, lastPracticeDate, totalPractices,
-        lastTopicSnippet,
+        currentConceptId, setCurrentConceptId,
+        concepts, progress, loadingData,
+        saveConceptAndSession, refreshData,
         muted, toggleMute,
         notificationPromptShown, setNotificationPromptShown,
       }}

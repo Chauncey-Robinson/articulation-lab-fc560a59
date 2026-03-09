@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
-import { extractKeyIdea, getChallenge, getSummary } from "@/lib/ai";
+import { extractKeyIdea, getChallenge, getSummary, getScenario } from "@/lib/ai";
 import { useTTS } from "@/hooks/useSpeech";
 import MicButton from "@/components/MicButton";
 
@@ -9,6 +9,7 @@ type Phase = "extracting" | "first" | "second";
 
 export default function Drill() {
   const navigate = useNavigate();
+  const location = useLocation();
   const app = useApp();
   const { speak } = useTTS();
 
@@ -17,14 +18,58 @@ export default function Drill() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [challengeReceived, setChallengeReceived] = useState(false);
+  const [scenarioText, setScenarioText] = useState("");
+  const [isColdRecall, setIsColdRecall] = useState(false);
 
-  // Extract key idea on mount
+  // Get source from location state or app context
+  const sourceText = (location.state as any)?.source || app.source;
+  const existingConceptId = (location.state as any)?.conceptId || app.currentConceptId;
+  const existingKeyIdea = (location.state as any)?.keyIdea || "";
+  const practiceCount = (location.state as any)?.practiceCount || 0;
+
+  useEffect(() => {
+    if (sourceText && !app.source) app.setSource(sourceText);
+  }, [sourceText]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Extract key idea on mount OR handle scenario/cold recall
   useEffect(() => {
     if (phase !== "extracting") return;
     let cancelled = false;
+
     (async () => {
       try {
-        const result = await extractKeyIdea(app.source);
+        // Cold recall mode: practice_count >= 3
+        if (practiceCount >= 3 && existingKeyIdea) {
+          setIsColdRecall(true);
+          app.setKeyIdea(existingKeyIdea);
+          app.setKeyQuestion("Explain this back to me like you are telling a friend who has never heard of this.");
+          if (existingConceptId) app.setCurrentConceptId(existingConceptId);
+          setPhase("first");
+          return;
+        }
+
+        // Scenario mode: practice_count >= 1 (second session onwards)
+        if (practiceCount >= 1 && existingKeyIdea) {
+          app.setKeyIdea(existingKeyIdea);
+          if (existingConceptId) app.setCurrentConceptId(existingConceptId);
+          try {
+            const scenario = await getScenario(
+              sourceText?.slice(0, 60) || "",
+              existingKeyIdea
+            );
+            if (cancelled) return;
+            setScenarioText(scenario);
+            app.setKeyQuestion(scenario);
+            if (!app.muted) speak(scenario);
+          } catch {
+            app.setKeyQuestion("Explain this back to me like you are telling a friend who has never heard of this.");
+          }
+          setPhase("first");
+          return;
+        }
+
+        // Standard extraction
+        const result = await extractKeyIdea(sourceText);
         if (cancelled) return;
         app.setKeyIdea(result.keyIdea);
         app.setKeyQuestion(result.question);
@@ -75,18 +120,17 @@ export default function Drill() {
       const summary = await getSummary(app.contextLabel, app.keyIdea, app.attempt1, text);
       app.setAttempt2(text);
       app.setSummary(summary);
-      const today = new Date().toISOString().split("T")[0];
-      app.addSession({
-        clarity: summary.clarity,
-        example: summary.example,
-        held_together: summary.held_together,
-        date: today,
-        context: app.contextLabel,
-        key_idea: app.keyIdea,
-        topic_snippet: app.source.slice(0, 60),
-        say_tomorrow: summary.say_tomorrow,
+
+      // Save to DB
+      await app.saveConceptAndSession({
+        topicSnippet: sourceText?.slice(0, 60) || app.keyIdea.slice(0, 60),
+        keyIdea: app.keyIdea,
+        sourceContent: sourceText || "",
+        summary,
+        existingConceptId: existingConceptId || undefined,
       });
-      navigate("/summary");
+
+      navigate("/summary", { state: { isColdRecall } });
     } catch (e: any) {
       setError(e.message || "Something went wrong. Check your connection and try again.");
     } finally {
@@ -116,21 +160,42 @@ export default function Drill() {
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
 
-        {/* Key idea card — always visible */}
-        <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">WE FOUND THIS</p>
-        <div className="rounded-lg p-5 mb-5 bg-section">
-          <p className="text-sm text-foreground leading-[1.6]">{app.keyIdea}</p>
-        </div>
+        {/* Cold recall banner */}
+        {isColdRecall && phase === "first" && (
+          <div className="mb-4">
+            <p className="text-[11px] uppercase tracking-[0.1em] text-accent mb-1">LET'S SEE IF THIS STUCK</p>
+            <p className="text-xs text-muted-foreground">No hints this time.</p>
+          </div>
+        )}
+
+        {/* Key idea card — visible unless cold recall */}
+        {!isColdRecall && (
+          <>
+            <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">HERE'S THE CORE IDEA</p>
+            <div className="rounded-lg p-5 mb-5 bg-section">
+              <p className="text-sm text-foreground leading-[1.6]">{app.keyIdea}</p>
+            </div>
+          </>
+        )}
 
         {phase === "first" && (
           <>
-            <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-2">FIRST TRY</p>
+            <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-2">NOW YOU EXPLAIN IT</p>
 
-            {/* Question card */}
-            <div className="rounded-lg p-5 mb-5 border-2 border-ai-card-border bg-ai-card relative">
-              <p className="text-sm text-ai-card-foreground italic leading-[1.6]">{app.keyQuestion}</p>
-              <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
-            </div>
+            {/* Question / scenario card */}
+            {scenarioText ? (
+              <div className="rounded-lg p-5 mb-5 border-2 border-ai-card-border bg-ai-card relative">
+                <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">HERE'S A SITUATION</p>
+                <p className="text-sm text-ai-card-foreground italic leading-[1.6]">{scenarioText}</p>
+                <p className="text-xs text-muted-foreground mt-2">How do you respond?</p>
+                <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
+              </div>
+            ) : !isColdRecall ? (
+              <div className="rounded-lg p-5 mb-5 border-2 border-ai-card-border bg-ai-card relative">
+                <p className="text-sm text-ai-card-foreground italic leading-[1.6]">{app.keyQuestion}</p>
+                <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
+              </div>
+            ) : null}
 
             <textarea
               value={text}
@@ -161,10 +226,10 @@ export default function Drill() {
             {/* AI challenge card */}
             <div className="rounded-lg p-5 mb-4 relative border-2 border-ai-card-border bg-ai-card">
               <p className="text-sm text-ai-card-foreground leading-[1.7]">{app.challengeText}</p>
-              <button onClick={replayChallenge} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺ Replay</button>
+              <button onClick={replayChallenge} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
             </div>
 
-            <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-2">SECOND TRY</p>
+            <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-2">LET'S GO DEEPER</p>
             <p className="text-[13px] text-muted-foreground mb-4">
               Have another go. Use what it said above.
             </p>
