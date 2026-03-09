@@ -10,7 +10,7 @@ const navTabs = [
 
 export default function Layout() {
   const location = useLocation();
-  const { muted, toggleMute, streakCount } = useApp();
+  const { muted, toggleMute, progress } = useApp();
   const { signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
