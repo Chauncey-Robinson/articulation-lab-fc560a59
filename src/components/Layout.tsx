@@ -10,7 +10,7 @@ const navTabs = [
 
 export default function Layout() {
   const location = useLocation();
-  const { muted, toggleMute, streakCount } = useApp();
+  const { muted, toggleMute, progress } = useApp();
   const { signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
@@ -20,8 +20,8 @@ export default function Layout() {
       <header className="bg-background px-6 pt-3 pb-2">
         <div className="mx-auto flex max-w-[460px] items-center justify-between">
           <div className="flex items-center gap-2">
-            {streakCount > 0 && (
-              <span className="text-[13px] text-foreground">🔥 {streakCount}</span>
+            {progress.current_streak > 0 && (
+              <span className="text-[13px] text-foreground">🔥 {progress.current_streak}</span>
             )}
           </div>
           <div className="flex items-center gap-3">

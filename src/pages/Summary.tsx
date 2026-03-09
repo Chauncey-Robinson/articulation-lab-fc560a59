@@ -1,12 +1,14 @@
 import { useEffect, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
 import { useTTS } from "@/hooks/useSpeech";
 
 export default function Summary() {
-  const { summary, contextLabel, muted, sessions, streakCount, totalPractices, notificationPromptShown, setNotificationPromptShown, setSource, toggleMute } = useApp();
+  const { summary, contextLabel, muted, progress, concepts, notificationPromptShown, setNotificationPromptShown, painAsked, setSource, toggleMute, currentConceptId } = useApp();
   const { speak } = useTTS();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isColdRecall = (location.state as any)?.isColdRecall;
 
   const replaySayTomorrow = useCallback(() => {
     if (summary?.say_tomorrow) speak(summary.say_tomorrow);
@@ -23,14 +25,22 @@ export default function Summary() {
 
   // Show notification prompt after first practice
   useEffect(() => {
-    if (totalPractices === 1 && !notificationPromptShown && summary) {
+    if (progress.total_sessions === 1 && !notificationPromptShown && summary) {
       const timer = setTimeout(() => {
         navigate("/notifications");
         setNotificationPromptShown(true);
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [totalPractices, notificationPromptShown, summary, navigate, setNotificationPromptShown]);
+  }, [progress.total_sessions, notificationPromptShown, summary, navigate, setNotificationPromptShown]);
+
+  // After first practice, redirect to pain selection if not asked yet
+  useEffect(() => {
+    if (progress.total_sessions === 1 && !painAsked && summary && notificationPromptShown) {
+      const timer = setTimeout(() => navigate("/pain-selection"), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [progress.total_sessions, painAsked, summary, notificationPromptShown, navigate]);
 
   if (!summary) {
     return (
@@ -41,22 +51,34 @@ export default function Summary() {
     );
   }
 
-  // Nudge logic
+  // Calculate next practice date for the current concept
+  const currentConcept = concepts.find(c => c.id === currentConceptId);
+  const nextPracticeDate = currentConcept?.next_practice_date;
+  const daysUntilNext = nextPracticeDate
+    ? Math.ceil((new Date(nextPracticeDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : 3;
+
+  // Cold recall result messaging
+  const avgScore = (summary.clarity + summary.example + summary.held_together) / 3;
+  const coldRecallMessage = isColdRecall
+    ? avgScore >= 4
+      ? "You've got this one. We'll check back in 3 weeks."
+      : "No problem. We'll do one more round soon."
+    : null;
+
+  // Streak nudge
   let nudge = "";
-  if (streakCount >= 7) {
-    nudge = `🔥 ${streakCount} days in a row. That's a real habit.`;
-  } else if (streakCount >= 3) {
-    nudge = `🔥 ${streakCount} days in a row. Come back tomorrow.`;
-  } else if (streakCount === 2) {
+  if (progress.current_streak >= 7) {
+    nudge = `🔥 ${progress.current_streak} days in a row. That's a real habit.`;
+  } else if (progress.current_streak >= 3) {
+    nudge = `🔥 ${progress.current_streak} days in a row. Come back tomorrow.`;
+  } else if (progress.current_streak === 2) {
     nudge = "Day 2. Come back tomorrow — day 3 is where it starts to feel different.";
-  } else if (totalPractices === 1) {
+  } else if (progress.total_sessions === 1) {
     nudge = "First one done. The second one is easier.";
-  } else if (streakCount === 1) {
+  } else if (progress.current_streak === 1) {
     nudge = "Good to be back. Come back tomorrow.";
   }
-
-  // Library data
-  const recentExplanations = sessions.slice(-3).reverse();
 
   const handlePracticeAgain = () => {
     setSource("");
@@ -76,13 +98,13 @@ export default function Summary() {
         <h1 className="font-serif text-[1.8rem] text-foreground mb-1">Nice work.</h1>
         <p className="text-[13px] text-muted-foreground mb-7">{contextLabel} · explained twice</p>
 
-        {/* Summary card */}
+        {/* Summary card — 3 fields only */}
         <div className="rounded-2xl bg-card overflow-hidden mb-4">
           <Row label="WHAT WORKED" value={summary.what_worked} />
-          <Row label="WORK ON NEXT TIME" value={summary.work_on_next} />
+          <Row label="ONE THING TO SHARPEN" value={summary.work_on_next} />
           <div className="px-5 py-4" style={{ background: "hsl(var(--meeting-card))" }}>
             <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-1">
-              TRY SAYING THIS
+              SAY IT TOMORROW
             </p>
             <p className="text-sm italic leading-relaxed" style={{ color: "hsl(var(--meeting-text))" }}>
               "{summary.say_tomorrow}"
@@ -93,30 +115,18 @@ export default function Summary() {
           </div>
         </div>
 
-        {/* Personal Library Card */}
-        <div className="rounded-lg p-5 mb-4 bg-section">
-          <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">YOUR EXPLANATIONS</p>
-          {totalPractices === 1 ? (
-            <>
-              <p className="text-sm text-foreground leading-[1.6] mb-2">
-                Every time you practice, we save the best way you've learned to explain something. Over time this becomes yours.
-              </p>
-              <p className="text-[13px] text-accent">1 explanation saved →</p>
-            </>
-          ) : (
-            <>
-              {recentExplanations.slice(0, totalPractices <= 4 ? 2 : 3).map((s, i) => (
-                <div key={i} className="py-2" style={{ borderBottom: i < recentExplanations.length - 1 ? "1px solid hsl(var(--border))" : "none" }}>
-                  <p className="text-[11px] text-muted-foreground mb-1">{s.topic_snippet}</p>
-                  <p className="text-[13px] text-foreground italic">"{s.say_tomorrow}"</p>
-                </div>
-              ))}
-              <Link to="/library" className="text-xs text-accent underline mt-2 inline-block">
-                See all {totalPractices} →
-              </Link>
-            </>
-          )}
-        </div>
+        {/* Spaced return info */}
+        <p className="text-[13px] text-muted-foreground text-center mb-2">
+          Good practice. You'll see this again in {daysUntilNext} days.
+        </p>
+
+        {coldRecallMessage && (
+          <p className="text-[13px] text-accent text-center mb-2">{coldRecallMessage}</p>
+        )}
+
+        <p className="text-[13px] text-foreground text-center mb-6">
+          Day {progress.current_streak} of your practice streak 🔥
+        </p>
 
         {/* Accountability nudge */}
         {nudge && (

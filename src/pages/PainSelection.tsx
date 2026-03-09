@@ -25,11 +25,11 @@ function getPersonalisedMessage(selected: string[]): string {
   return "You're in the right place.\nLet's get started.";
 }
 
-export default function Onboarding() {
+export default function PainSelection() {
   const navigate = useNavigate();
-  const { setPainSelections } = useApp();
+  const { setPainSelections, setPainAsked } = useApp();
   const [selected, setSelected] = useState<string[]>([]);
-  const [step, setStep] = useState<"pain" | "response">("pain");
+  const [step, setStep] = useState<"pick" | "response">("pick");
 
   const toggle = (s: string) => {
     setSelected((prev) =>
@@ -39,28 +39,27 @@ export default function Onboarding() {
 
   const handleNext = () => {
     setPainSelections(selected);
+    setPainAsked(true);
     setStep("response");
   };
 
   useEffect(() => {
     if (step !== "response") return;
-    const timer = setTimeout(() => navigate("/taste"), 2200);
+    const timer = setTimeout(() => navigate("/home"), 2200);
     return () => clearTimeout(timer);
   }, [step, navigate]);
 
   if (step === "response") {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: "#FAFAF8" }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-surface-light">
         <div className="text-center max-w-[300px]">
-          <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-4">
-            PERFECT
-          </p>
+          <p className="text-[11px] uppercase tracking-[0.12em] text-accent mb-4">PERFECT</p>
           <h1 className="font-serif text-[1.8rem] leading-[1.3] text-foreground whitespace-pre-line">
             {getPersonalisedMessage(selected)}
           </h1>
         </div>
         <button
-          onClick={() => navigate("/taste")}
+          onClick={() => navigate("/home")}
           className="fixed bottom-8 right-8 text-xs text-legal hover:text-muted-foreground"
         >
           Skip →
@@ -71,15 +70,8 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
-      {/* Progress bar */}
-      <div className="flex gap-1 mb-6">
-        <div className="flex-1 h-[2px] rounded-full bg-primary" />
-        <div className="flex-1 h-[2px] rounded-full bg-border" />
-        <div className="flex-1 h-[2px] rounded-full bg-border" />
-      </div>
-
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/home")}
         className="text-base text-muted-foreground hover:text-foreground mb-8 self-start"
       >
         ←
@@ -122,6 +114,12 @@ export default function Onboarding() {
             className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Next
+          </button>
+          <button
+            onClick={() => { setPainAsked(true); navigate("/home"); }}
+            className="w-full text-center mt-3 text-xs text-muted-foreground hover:text-foreground"
+          >
+            Skip
           </button>
         </div>
       </div>

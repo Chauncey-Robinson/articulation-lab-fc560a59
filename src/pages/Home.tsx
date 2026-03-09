@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
 
 export default function Home() {
-  const { sessions, streakCount, lastPracticeDate, totalPractices, lastTopicSnippet, setSource } = useApp();
+  const { concepts, progress, loadingData } = useApp();
+  const navigate = useNavigate();
 
   const today = new Date().toISOString().split("T")[0];
-  const practisedToday = lastPracticeDate === today;
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-  const practisedYesterday = lastPracticeDate === yesterday;
-  const isReturning = totalPractices > 0;
+  const isReturning = progress.total_sessions > 0;
+
+  // Find concepts due for practice
+  const dueConcepts = concepts.filter(c => c.next_practice_date <= today);
+
+  if (loadingData) {
+    return <div className="flex-1 flex items-center justify-center"><div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" /></div>;
+  }
 
   if (!isReturning) {
     return (
@@ -37,80 +42,81 @@ export default function Home() {
   }
 
   // Returning user
-  const dayCircles = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() - (6 - i));
-    const dateStr = d.toISOString().split("T")[0];
-    const done = sessions.some((s) => s.date === dateStr);
-    const isToday = dateStr === today && !practisedToday;
-    return { done, isToday };
-  });
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+  const practisedToday = progress.last_practice_date === today;
+  const practisedYesterday = progress.last_practice_date === yesterday;
 
   let cardTitle = "";
   let cardSubline = "";
 
-  if (streakCount > 0 && (practisedToday || practisedYesterday)) {
-    cardTitle = `${streakCount} days in a row 🔥`;
+  if (progress.current_streak > 0 && (practisedToday || practisedYesterday)) {
+    cardTitle = `${progress.current_streak} days in a row 🔥`;
     cardSubline = "Keep it going today.";
-  } else if (streakCount > 0 && !practisedYesterday) {
-    cardTitle = `You've done ${streakCount} days in a row.`;
+  } else if (progress.current_streak > 0 && !practisedYesterday) {
+    cardTitle = `You've done ${progress.current_streak} days in a row.`;
     cardSubline = "One practice keeps it going.";
   } else {
     cardTitle = "Good to see you back.";
-    cardSubline = `You've done ${totalPractices} practices. Ready for one more?`;
+    cardSubline = `You've done ${progress.total_sessions} practices. Ready for one more?`;
   }
-
-  const lastSession = sessions.length > 0 ? sessions[sessions.length - 1] : null;
-
-  const handlePickUp = () => {
-    if (lastTopicSnippet) setSource(lastTopicSnippet);
-  };
 
   return (
     <div className="flex-1 flex flex-col px-6">
       {/* Accountability card */}
       <div className="w-full max-w-[460px] mx-auto rounded-2xl bg-card p-5 mb-6">
         <h2 className="font-serif text-[1.1rem] text-foreground mb-1"
-          style={{ color: streakCount > 0 && !practisedYesterday && !practisedToday ? "hsl(var(--accent))" : undefined }}
+          style={{ color: progress.current_streak > 0 && !practisedYesterday && !practisedToday ? "hsl(var(--accent))" : undefined }}
         >
           {cardTitle}
         </h2>
         <p className="text-[13px] text-muted-foreground mb-4">{cardSubline}</p>
 
+        {/* 7 day circles */}
         <div className="flex gap-2 mb-3">
-          {dayCircles.map((dc, i) => (
-            <div
-              key={i}
-              className="w-7 h-7 rounded-full"
-              style={{
-                background: dc.done ? "hsl(var(--primary))" : "hsl(var(--border))",
-                animation: dc.isToday && streakCount > 0 && !practisedToday ? "pulse 2s infinite" : undefined,
-                border: dc.isToday && streakCount > 0 && !practisedToday ? "2px solid hsl(var(--accent))" : undefined,
-              }}
-            />
+          {Array.from({ length: 7 }, (_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - (6 - i));
+            const dateStr = d.toISOString().split("T")[0];
+            const done = progress.last_practice_date ? dateStr <= progress.last_practice_date : false;
+            const isToday = dateStr === today && !practisedToday;
+            return (
+              <div
+                key={i}
+                className="w-7 h-7 rounded-full"
+                style={{
+                  background: done ? "hsl(var(--primary))" : "hsl(var(--border))",
+                  animation: isToday && progress.current_streak > 0 && !practisedToday ? "pulse 2s infinite" : undefined,
+                  border: isToday && progress.current_streak > 0 && !practisedToday ? "2px solid hsl(var(--accent))" : undefined,
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Due concepts */}
+      {dueConcepts.length > 0 && (
+        <div className="w-full max-w-[460px] mx-auto mb-6">
+          {dueConcepts.slice(0, 3).map(concept => (
+            <button
+              key={concept.id}
+              onClick={() => navigate("/practice", {
+                state: {
+                  source: concept.source_content,
+                  conceptId: concept.id,
+                  keyIdea: concept.key_idea,
+                  practiceCount: concept.practice_count,
+                }
+              })}
+              className="w-full text-left rounded-lg bg-card p-4 mb-3 border border-border hover:border-selected-border transition-colors"
+            >
+              <p className="text-[10px] uppercase tracking-[0.1em] text-accent mb-1">READY TO PRACTICE</p>
+              <p className="text-sm text-foreground mb-1">{concept.topic_snippet}</p>
+              <p className="text-xs text-accent">Pick up where you left off →</p>
+            </button>
           ))}
         </div>
-
-        {/* Divider + last topic */}
-        {lastSession && (
-          <>
-            <div className="h-px my-3" style={{ background: "hsl(var(--block-empty))" }} />
-            <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-1">LAST TIME</p>
-            <p className="text-[13px] text-foreground mb-1">
-              {lastSession.topic_snippet}
-            </p>
-            {lastTopicSnippet && (
-              <Link
-                to="/input"
-                onClick={handlePickUp}
-                className="text-xs text-accent underline"
-              >
-                Pick this up again →
-              </Link>
-            )}
-          </>
-        )}
-      </div>
+      )}
 
       <div className="w-full max-w-[460px] mx-auto">
         <Link

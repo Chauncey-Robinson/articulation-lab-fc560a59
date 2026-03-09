@@ -16,7 +16,7 @@ export default function ContentInput() {
 
   const handleStart = () => {
     setSource(activeText);
-    navigate("/practice");
+    navigate("/practice", { state: { source: activeText } });
   };
 
   return (

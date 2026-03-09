@@ -27,6 +27,15 @@ export async function getTasteFeedback(source: string, explanation: string): Pro
   return data.content;
 }
 
+export async function getScenario(topicSnippet: string, keyIdea: string): Promise<string> {
+  const { data, error } = await supabase.functions.invoke("ai-coach", {
+    body: { type: "scenario", topicSnippet, keyIdea },
+  });
+  if (error) throw new Error(error.message || "AI request failed");
+  if (data?.error) throw new Error(data.error);
+  return data.content;
+}
+
 export interface SessionSummary {
   clarity: number;
   example: number;
