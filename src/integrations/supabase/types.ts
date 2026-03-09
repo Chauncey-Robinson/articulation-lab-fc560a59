@@ -14,7 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      concepts: {
+        Row: {
+          created_at: string
+          id: string
+          key_idea: string
+          last_practiced: string | null
+          next_practice_date: string
+          practice_count: number
+          source_content: string
+          status: Database["public"]["Enums"]["concept_status"]
+          topic_snippet: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key_idea: string
+          last_practiced?: string | null
+          next_practice_date?: string
+          practice_count?: number
+          source_content?: string
+          status?: Database["public"]["Enums"]["concept_status"]
+          topic_snippet: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key_idea?: string
+          last_practiced?: string | null
+          next_practice_date?: string
+          practice_count?: number
+          source_content?: string
+          status?: Database["public"]["Enums"]["concept_status"]
+          topic_snippet?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          clarity: number
+          concept_id: string
+          example: number
+          held_together: number
+          id: string
+          practiced_at: string
+          say_tomorrow: string
+          user_id: string
+          what_worked: string
+          work_on_next: string
+        }
+        Insert: {
+          clarity?: number
+          concept_id: string
+          example?: number
+          held_together?: number
+          id?: string
+          practiced_at?: string
+          say_tomorrow?: string
+          user_id: string
+          what_worked?: string
+          work_on_next?: string
+        }
+        Update: {
+          clarity?: number
+          concept_id?: string
+          example?: number
+          held_together?: number
+          id?: string
+          practiced_at?: string
+          say_tomorrow?: string
+          user_id?: string
+          what_worked?: string
+          work_on_next?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_concept_id_fkey"
+            columns: ["concept_id"]
+            isOneToOne: false
+            referencedRelation: "concepts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_progress: {
+        Row: {
+          current_streak: number
+          last_practice_date: string | null
+          longest_streak: number
+          total_sessions: number
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          last_practice_date?: string | null
+          longest_streak?: number
+          total_sessions?: number
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          last_practice_date?: string | null
+          longest_streak?: number
+          total_sessions?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +132,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      concept_status: "practicing" | "getting_there" | "solid"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +259,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      concept_status: ["practicing", "getting_there", "solid"],
+    },
   },
 } as const
