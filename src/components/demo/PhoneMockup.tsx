@@ -270,7 +270,7 @@ export default function PhoneMockup() {
       className="relative cursor-pointer select-none"
       onClick={advance}
       style={{
-        width: 260,
+        width: 280,
         borderRadius: 42,
         border: "2px solid hsl(var(--border))",
         background: "#fff",
