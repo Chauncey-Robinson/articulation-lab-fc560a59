@@ -5,12 +5,14 @@ import PhoneMockup from "@/components/demo/PhoneMockup";
 const PANEL_COUNT = 6;
 
 /* ─── animation variants ─── */
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 14 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 },
+    transition: { duration: 0.65, ease, delay: i * 0.08 },
   }),
 };
 
@@ -19,7 +21,7 @@ const slideRight = {
   visible: (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: i * 0.12 },
+    transition: { duration: 0.65, ease, delay: i * 0.12 },
   }),
 };
 
