@@ -270,28 +270,30 @@ export default function PhoneMockup() {
       className="relative cursor-pointer select-none"
       onClick={advance}
       style={{
-        width: 280,
-        borderRadius: 42,
+        width: 240,
+        height: 520,
+        borderRadius: 36,
         border: "2px solid hsl(var(--border))",
         background: "#fff",
         boxShadow:
           "0 32px 72px rgba(17,16,9,.15), 0 2px 8px rgba(17,16,9,.06)",
         overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       {/* Notch */}
-      <div className="flex justify-center pt-2.5">
-        <div className="rounded-full" style={{ width: 80, height: 22, background: "#000" }} />
+      <div className="flex justify-center pt-2 shrink-0">
+        <div className="rounded-full" style={{ width: 68, height: 20, background: "#000" }} />
       </div>
 
       {/* Screen */}
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden flex-1"
         style={{
-          margin: "4px 6px 6px",
-          borderRadius: 20,
+          margin: "3px 5px 4px",
+          borderRadius: 18,
           background: bg,
-          minHeight: 420,
         }}
       >
         <AnimatePresence mode="wait">
@@ -318,8 +320,8 @@ export default function PhoneMockup() {
       </div>
 
       {/* Home indicator */}
-      <div className="flex justify-center pb-2 pt-0.5">
-        <div className="rounded-full" style={{ width: 80, height: 4, background: "#000", opacity: 0.15 }} />
+      <div className="flex justify-center pb-1.5 pt-0.5 shrink-0">
+        <div className="rounded-full" style={{ width: 68, height: 4, background: "#000", opacity: 0.15 }} />
       </div>
     </div>
   );
