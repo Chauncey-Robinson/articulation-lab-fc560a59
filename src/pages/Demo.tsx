@@ -566,8 +566,7 @@ function Panel5({ scrollTo }: { scrollTo: (n: number) => void }) {
             className="font-serif text-[19px] font-light leading-[1.6] mt-6 max-w-[560px] mx-auto"
             style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            Built on 107 interviews. Grounded in how professionals actually fail — and what it costs
-            them.
+            107 people. Same problem. One fix.
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp} className="flex flex-wrap justify-center gap-5 mt-12">
