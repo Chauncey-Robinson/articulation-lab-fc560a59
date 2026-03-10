@@ -21,7 +21,6 @@ export default function Drill() {
   const [scenarioText, setScenarioText] = useState("");
   const [isColdRecall, setIsColdRecall] = useState(false);
 
-  // Get source from location state or app context
   const sourceText = (location.state as any)?.source || app.source;
   const existingConceptId = (location.state as any)?.conceptId || app.currentConceptId;
   const existingKeyIdea = (location.state as any)?.keyIdea || "";
@@ -121,7 +120,6 @@ export default function Drill() {
       app.setAttempt2(text);
       app.setSummary(summary);
 
-      // Save to DB
       await app.saveConceptAndSession({
         topicSnippet: sourceText?.slice(0, 60) || app.keyIdea.slice(0, 60),
         keyIdea: app.keyIdea,
@@ -143,7 +141,7 @@ export default function Drill() {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
         <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="text-sm text-muted-foreground">Reading what you shared...</p>
+        <p className="text-[15px] font-sans text-ink-3">Reading what you shared...</p>
       </div>
     );
   }
@@ -152,68 +150,72 @@ export default function Drill() {
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       {/* Nav */}
       <div className="flex items-center justify-between mb-6">
-        <button onClick={() => navigate(-1)} className="text-base text-muted-foreground hover:text-foreground">←</button>
-        <button onClick={app.toggleMute} className="text-base text-muted-foreground hover:text-foreground">
+        <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms]">←</button>
+        <button onClick={app.toggleMute} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms]">
           {app.muted ? "🔇" : "🔊"}
         </button>
       </div>
 
-      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
+      <div className="max-w-[640px] mx-auto w-full flex-1 flex flex-col">
 
         {/* Cold recall banner */}
         {isColdRecall && phase === "first" && (
-          <div className="mb-4">
-            <p className="text-[11px] uppercase tracking-[0.1em] text-accent mb-1">LET'S SEE IF THIS STUCK</p>
-            <p className="text-xs text-muted-foreground">No hints this time.</p>
+          <div className="mb-5 animate-fade-up stagger-1">
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-1">LET'S SEE IF THIS STUCK</p>
+            <p className="text-[12px] font-sans text-ink-3">No hints this time.</p>
           </div>
         )}
 
         {/* Key idea card — visible unless cold recall */}
         {!isColdRecall && (
-          <>
-            <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">HERE'S THE CORE IDEA</p>
-            <div className="rounded-lg p-5 mb-5 bg-section">
-              <p className="text-sm text-foreground leading-[1.6]">{app.keyIdea}</p>
+          <div className="animate-fade-up stagger-1">
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">HERE'S THE CORE IDEA</p>
+            <div className="bg-card rounded-[22px] border-[1.5px] border-border p-6 mb-5">
+              <p className="font-serif text-[19px] font-light leading-[1.65] text-ink-2">{app.keyIdea}</p>
             </div>
-          </>
+          </div>
         )}
 
         {phase === "first" && (
           <>
-            <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-2">NOW YOU EXPLAIN IT</p>
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-2">NOW YOU EXPLAIN IT</p>
 
             {/* Question / scenario card */}
             {scenarioText ? (
-              <div className="rounded-lg p-5 mb-5 border-2 border-ai-card-border bg-ai-card relative">
-                <p className="text-[10px] uppercase tracking-[0.1em] text-legal mb-2">HERE'S A SITUATION</p>
-                <p className="text-sm text-ai-card-foreground italic leading-[1.6]">{scenarioText}</p>
-                <p className="text-xs text-muted-foreground mt-2">How do you respond?</p>
-                <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
+              <div className="border-l-[2.5px] border-accent-bright bg-surface-2 rounded-[12px] px-[18px] py-4 mb-5 relative animate-fade-up stagger-3">
+                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2">HERE'S A SITUATION</p>
+                <p className="font-serif text-[16px] italic text-ink-2 leading-[1.6]">{scenarioText}</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">How do you respond?</p>
+                <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms]">↺</button>
               </div>
             ) : !isColdRecall ? (
-              <div className="rounded-lg p-5 mb-5 border-2 border-ai-card-border bg-ai-card relative">
-                <p className="text-sm text-ai-card-foreground italic leading-[1.6]">{app.keyQuestion}</p>
-                <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
+              <div className="border-l-[2.5px] border-accent-bright bg-surface-2 rounded-[12px] px-[18px] py-4 mb-5 relative animate-fade-up stagger-3">
+                <p className="font-serif text-[16px] italic text-ink-2 leading-[1.6]">{app.keyQuestion}</p>
+                <button onClick={replayQuestion} className="absolute bottom-3 right-4 text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms]">↺</button>
               </div>
             ) : null}
 
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Explain it like you're telling a friend..."
-              className="w-full min-h-[120px] rounded-lg border border-border bg-card px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-selected-border resize-y mb-3"
-            />
-            <div className="mb-4">
+            <div className="animate-fade-up stagger-4">
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Start your explanation…"
+                className="w-full min-h-[120px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y mb-2"
+              />
+              <p className="text-[12px] font-sans text-ink-3 mb-3">Write like you'd speak. Don't worry about being perfect.</p>
+            </div>
+
+            <div className="mb-4 animate-fade-up stagger-5">
               <MicButton onTranscript={(t) => setText(t)} />
             </div>
 
             {error && <ErrorBox message={error} />}
 
-            <div className="mt-auto">
+            <div className="mt-auto animate-fade-up stagger-6">
               <button
                 onClick={submitFirst}
                 disabled={loading || text.trim().length < 10}
-                className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {loading ? "Thinking..." : "See what I missed"}
               </button>
@@ -224,33 +226,36 @@ export default function Drill() {
         {phase === "second" && (
           <>
             {/* AI challenge card */}
-            <div className="rounded-lg p-5 mb-4 relative border-2 border-ai-card-border bg-ai-card">
-              <p className="text-sm text-ai-card-foreground leading-[1.7]">{app.challengeText}</p>
-              <button onClick={replayChallenge} className="absolute bottom-3 right-4 text-xs text-muted-foreground hover:text-foreground">↺</button>
+            <div className="bg-card rounded-[22px] border-[1.5px] border-border p-6 mb-5 relative animate-fade-up stagger-1">
+              <p className="font-serif text-[17px] font-light leading-[1.7] text-ink-2">{app.challengeText}</p>
+              <button onClick={replayChallenge} className="absolute bottom-4 right-5 text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms]">↺</button>
             </div>
 
-            <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground mb-2">LET'S GO DEEPER</p>
-            <p className="text-[13px] text-muted-foreground mb-4">
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2 animate-fade-up stagger-2">LET'S GO DEEPER</p>
+            <p className="text-[14px] font-sans text-ink-3 mb-4 animate-fade-up stagger-2">
               Have another go. Use what it said above.
             </p>
 
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Try again — you've got this..."
-              className="w-full min-h-[120px] rounded-lg border border-border bg-card px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-selected-border resize-y mb-3"
-            />
-            <div className="mb-4">
+            <div className="animate-fade-up stagger-3">
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Try again — you've got this…"
+                className="w-full min-h-[120px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y mb-3"
+              />
+            </div>
+
+            <div className="mb-4 animate-fade-up stagger-4">
               <MicButton onTranscript={(t) => setText(t)} />
             </div>
 
             {error && <ErrorBox message={error} />}
 
-            <div className="mt-auto">
+            <div className="mt-auto animate-fade-up stagger-5">
               <button
                 onClick={submitSecond}
                 disabled={loading || text.trim().length < 10}
-                className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {loading ? "Thinking..." : "That's my best"}
               </button>
@@ -264,7 +269,7 @@ export default function Drill() {
             <ErrorBox message={error} />
             <button
               onClick={() => { setError(""); setPhase("extracting"); }}
-              className="rounded-full bg-primary px-8 py-3 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity mt-4"
+              className="rounded-pill bg-primary px-8 py-3 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] mt-4"
             >
               Try again
             </button>
@@ -277,7 +282,7 @@ export default function Drill() {
 
 function ErrorBox({ message }: { message: string }) {
   return (
-    <div className="rounded-lg px-4 py-3 mb-4 text-[13px]" style={{ background: "#FFF8F5", border: "1px solid hsl(var(--block-low))", color: "#C05050" }}>
+    <div className="rounded-[12px] px-5 py-3 mb-4 text-[13px] font-sans bg-block-low border border-destructive/20 text-destructive">
       {message}
     </div>
   );
