@@ -148,6 +148,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
     <section
       id="panel-0"
       className="min-h-screen snap-start flex items-center relative overflow-hidden"
+      style={{ background: "#F8F6F2" }}
     >
       {/* Ambient glow */}
       <div
@@ -162,7 +163,10 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
           animation: "breathe 6s ease-in-out infinite",
         }}
       />
-      <div className="mx-auto w-full max-w-[1160px] px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div
+        className="mx-auto w-full items-center"
+        style={{ maxWidth: 1100, padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 360px", gap: 80 }}
+      >
         {/* Left */}
         <AnimatedSection>
           <motion.div custom={0} variants={fadeUp} className="flex items-center gap-2 mb-6">
@@ -223,7 +227,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
         </AnimatedSection>
 
         {/* Right — phone */}
-        <AnimatedSection className="flex justify-center lg:justify-end">
+        <AnimatedSection className="flex justify-center">
           <motion.div custom={2} variants={slideRight}>
             <PhoneMockup />
           </motion.div>
