@@ -193,8 +193,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
             variants={fadeUp}
             className="font-serif text-[20px] font-light leading-[1.6] text-ink-2 mt-6 max-w-[440px]"
           >
-            Practice explaining ideas until they stick. The app that trains professionals to speak
-            their knowledge under pressure.
+            Practice saying it. Until it's yours.
           </motion.p>
 
           <motion.ul custom={3} variants={fadeUp} className="mt-8 space-y-3">
