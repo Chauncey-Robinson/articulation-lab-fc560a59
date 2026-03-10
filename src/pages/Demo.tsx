@@ -193,15 +193,14 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
             variants={fadeUp}
             className="font-serif text-[20px] font-light leading-[1.6] text-ink-2 mt-6 max-w-[440px]"
           >
-            Practice explaining ideas until they stick. The app that trains professionals to speak
-            their knowledge under pressure.
+            Practice saying it. Until it's yours.
           </motion.p>
 
           <motion.ul custom={3} variants={fadeUp} className="mt-8 space-y-3">
             {[
-              "AI extracts the key idea from anything you paste — before you lift a finger",
-              "Real-world scenarios — not abstract quizzes. A sceptical CFO, a 2-minute brief, a junior asking why",
-              "Reps that compound — each concept returns at the right moment, until explanation is fluent",
+              "Paste anything. The key idea appears instantly.",
+              "Say it back. In a real situation.",
+              "Do it again. Until you own it.",
             ].map((t) => (
               <li key={t} className="flex gap-2.5 items-start text-ink-2">
                 <span className="mt-1.5 w-[7px] h-[7px] rounded-full bg-accent-bright shrink-0" />
@@ -248,11 +247,10 @@ function Panel1() {
             variants={fadeUp}
             className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground"
           >
-            You finish the course. Then nothing.
+            You finished it. Then nothing.
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            107 professionals told us the same story. They learned. They finished. They forgot — not
-            in months, but in weeks. And when the moment came to explain it, they went blank.
+            107 people told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
           </motion.p>
           <motion.div custom={3} variants={fadeUp}>
             <QuoteCard
@@ -349,17 +347,16 @@ function Panel2() {
         <AnimatedSection>
           <Eyebrow>How it works</Eyebrow>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground">
-            A gym for professional knowledge.
+            A gym for <span className="italic text-accent-bright">professional knowledge.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            Every concept you train returns at the right interval — in a new real-world scenario each
-            time. The AI adapts to your fluency score. You show up and do the rep.
+            Same concept. New situation. Right timing. You show up, say it, get sharper. That's it.
           </motion.p>
 
           <div className="mt-8 space-y-4">
             {[
-              { title: "Session", body: "4 minutes. One concept. One scenario. Not a quiz. A focused training rep." },
-              { title: "Reps compound", body: "Same concept, new scenario, right timing. Fluency builds through repetition, not review." },
+              { label: "ONE SESSION", title: "4 minutes. One idea. Say it out loud.", body: "Not a test. A rep. Like going to the gym." },
+              { label: "IT COMES BACK", title: "The same idea returns. In a new situation.", body: "Until saying it feels like nothing at all." },
             ].map((c, i) => (
               <motion.div
                 key={c.title}
@@ -367,7 +364,8 @@ function Panel2() {
                 variants={slideRight}
                 className="rounded-[16px] border-[1.5px] border-border bg-card p-5 hover:border-accent-bright hover:-translate-y-[2px] transition-all duration-[180ms]"
               >
-                <p className="font-sans text-[14px] font-semibold text-foreground">{c.title}</p>
+                <span className="font-sans text-[9px] font-semibold uppercase tracking-[0.14em] text-accent-bright">{c.label}</span>
+                <p className="font-sans text-[14px] font-semibold text-foreground mt-1">{c.title}</p>
                 <p className="font-sans text-[13px] text-ink-2 mt-1 leading-[1.5]">{c.body}</p>
               </motion.div>
             ))}
@@ -385,11 +383,10 @@ function Panel3() {
         <AnimatedSection>
           <Eyebrow>The AI does the work first</Eyebrow>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground">
-            Value before setup.
+            It does the work. <span className="italic text-accent-bright">You just talk.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            Every other tool asks you to do the work. Tag things. Build decks. Create flashcards.
-            This app reads what you paste and surfaces the training moment — immediately.
+            Paste what you studied. The app finds the one idea that matters and puts you in a real situation. No setup. No filing. Just go.
           </motion.p>
           <motion.div custom={3} variants={fadeUp}>
             <QuoteCard
@@ -475,12 +472,10 @@ function Panel4() {
             <div className="w-6 h-[2px] bg-accent-bright" />
           </motion.div>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal text-foreground">
-            No one has built this yet.
+            Nobody else does <span className="italic text-accent-bright">this.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-4 max-w-[640px] mx-auto">
-            Readwise handles the content layer. Khanmigo handles pedagogy. NotebookLM handles
-            reference. None combine active explanation training, accountability, and real-world
-            application for professionals.
+            Other apps save what you read. This one trains you to say it. That gap — between knowing and explaining — is what we close.
           </motion.p>
         </AnimatedSection>
 
@@ -570,8 +565,7 @@ function Panel5({ scrollTo }: { scrollTo: (n: number) => void }) {
             className="font-serif text-[19px] font-light leading-[1.6] mt-6 max-w-[560px] mx-auto"
             style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            Built on 107 interviews. Grounded in how professionals actually fail — and what it costs
-            them.
+            107 people. Same problem. One fix.
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp} className="flex flex-wrap justify-center gap-5 mt-12">
