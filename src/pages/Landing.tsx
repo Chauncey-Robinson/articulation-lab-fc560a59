@@ -1,75 +1,106 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useApp } from "@/lib/AppContext";
+import { useAuth } from "@/hooks/useAuth";
 import MicButton from "@/components/MicButton";
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { user } = useAuth();
+  const { setSource } = useApp();
+  const [pasteText, setPasteText] = useState("");
 
-  const handleStart = async () => {
-    // Check if user is signed in
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      // Store input for after auth
-      sessionStorage.setItem("pending_source", text);
-      navigate("/signin");
-      return;
+  const isValid = pasteText.trim().length >= 20;
+
+  const handleStart = () => {
+    setSource(pasteText);
+    if (user) {
+      navigate("/practice", { state: { source: pasteText } });
+    } else {
+      navigate("/signin", { state: { pendingSource: pasteText } });
     }
-    // User is signed in — go to practice
-    navigate("/practice", { state: { source: text } });
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 pt-12 pb-10 bg-surface-light">
-      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <p className="text-[11px] uppercase tracking-[0.12em] text-accent text-center mb-4">
-          KNOW IT. SAY IT.
-        </p>
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="flex-1 flex flex-col max-w-[1160px] mx-auto w-full px-6 py-12 md:py-24">
+        {/* Hero */}
+        <div className="flex flex-col md:flex-row gap-12 md:gap-16 flex-1">
+          {/* Left — headline + input */}
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="animate-fade-up stagger-1">
+              <span className="inline-flex items-center gap-2 text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-6">
+                <span className="w-2 h-2 rounded-full bg-accent-bright amber-pulse" />
+                EXPLANATION TRAINING
+              </span>
+            </div>
 
-        <h1 className="font-serif text-[2.2rem] leading-[1.2] text-foreground text-center mb-3 whitespace-pre-line">
-          {"You know more than\nyou can explain."}
-        </h1>
+            <h1 className="font-serif text-[clamp(2.4rem,5vw,3.6rem)] leading-[1.1] tracking-[-1px] text-foreground mb-4 animate-fade-up stagger-2">
+              You know more than<br />you can explain.
+            </h1>
 
-        <p className="text-sm text-muted-foreground text-center mb-8">
-          Practice explaining ideas until they stick.
-        </p>
+            <p className="font-sans text-[15px] text-ink-3 mb-8 max-w-[420px] animate-fade-up stagger-3">
+              Practice explaining ideas until they stick.
+            </p>
 
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder={"Paste something you want to be able to explain — an article, meeting notes, a concept from a course."}
-          className="w-full min-h-[160px] rounded-lg border border-border bg-card px-4 py-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-selected-border resize-y mb-2"
-        />
+            <div className="animate-fade-up stagger-4">
+              <textarea
+                value={pasteText}
+                onChange={(e) => setPasteText(e.target.value)}
+                placeholder="Paste something you want to be able to explain — an article, meeting notes, a concept from a course."
+                className="w-full min-h-[180px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y"
+              />
+            </div>
 
-        <p className="text-xs text-muted-foreground text-center mb-4">
-          Takes about 5 minutes. Your content stays private.
-        </p>
+            <div className="flex items-center gap-4 mt-3 mb-4 animate-fade-up stagger-5">
+              <MicButton onTranscript={(t) => setPasteText(t)} />
+              {pasteText.length > 0 && (
+                <span className="text-[11px] font-sans text-ink-3">{pasteText.length} characters</span>
+              )}
+            </div>
 
-        <div className="mb-6">
-          <MicButton onTranscript={(t) => setText(t)} />
-        </div>
+            <div className="animate-fade-up stagger-6">
+              <button
+                onClick={handleStart}
+                disabled={!isValid}
+                className="w-full max-w-[420px] rounded-pill bg-accent-bright py-4 text-[13px] font-sans font-semibold tracking-[0.05em] text-white hover:translate-y-[-2px] hover:shadow-card-hover transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              >
+                Start practicing
+              </button>
+            </div>
 
-        {error && (
-          <div className="rounded-lg px-4 py-3 mb-4 text-[13px]" style={{ background: "#FFF8F5", border: "1px solid hsl(var(--block-low))", color: "#C05050" }}>
-            {error}
+            <p className="text-[12px] font-sans text-ink-3 mt-3 animate-fade-up stagger-7">
+              Takes about 5 minutes. Your content stays private.
+            </p>
           </div>
-        )}
 
-        <div className="mt-auto">
-          <button
-            onClick={handleStart}
-            disabled={text.trim().length < 20}
-            className="w-full rounded-full bg-primary py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Start practicing
-          </button>
+          {/* Right — sample card (desktop only) */}
+          <div className="hidden md:flex flex-1 items-center justify-center">
+            <div className="w-full max-w-[440px] bg-card rounded-[22px] border-[1.5px] border-border p-8 shadow-card-hover animate-fade-up stagger-4">
+              <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-4">
+                KEY CONCEPT · EXTRACTED BY AI
+              </p>
 
-          <p className="text-[10px] text-legal text-center mt-5">
-            By continuing you agree to our Terms and Privacy Policy.
-          </p>
+              <h3 className="font-serif text-[24px] tracking-[-0.5px] text-foreground mb-3">
+                Double materiality is a two-way mirror, not a window.
+              </h3>
+
+              <p className="font-serif text-[16px] font-light leading-[1.65] text-ink-2 mb-5">
+                Most ESG practitioners look one way — at financial risk to
+                the business. The GRI framework demands you look in both
+                directions before you can say you've reported responsibly.
+              </p>
+
+              <div className="border-t border-border my-4" />
+
+              <div className="border-l-[2.5px] border-accent-bright bg-surface-2 rounded-[12px] px-[18px] py-4">
+                <p className="font-serif text-[16px] italic text-ink-2 leading-[1.6]">
+                  "Now — how would you explain that to a sceptical CFO
+                  in 30 seconds?"
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
