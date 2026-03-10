@@ -304,8 +304,14 @@ export default function PhoneMockup() {
           >
             {state === 1 ? (
               <StatePaste onDone={advance} />
+            ) : state === 0 ? (
+              <StateHome />
+            ) : state === 2 ? (
+              <StateExtracting />
+            ) : state === 3 ? (
+              <StateConcept />
             ) : (
-              <CurrentState />
+              <StateFeedback />
             )}
           </motion.div>
         </AnimatePresence>
