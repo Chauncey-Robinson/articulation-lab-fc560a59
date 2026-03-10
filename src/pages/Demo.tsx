@@ -356,8 +356,8 @@ function Panel2() {
 
           <div className="mt-8 space-y-4">
             {[
-              { title: "Session", body: "4 minutes. One concept. One scenario. Not a quiz. A focused training rep." },
-              { title: "Reps compound", body: "Same concept, new scenario, right timing. Fluency builds through repetition, not review." },
+              { label: "ONE SESSION", title: "4 minutes. One idea. Say it out loud.", body: "Not a test. A rep. Like going to the gym." },
+              { label: "IT COMES BACK", title: "The same idea returns. In a new situation.", body: "Until saying it feels like nothing at all." },
             ].map((c, i) => (
               <motion.div
                 key={c.title}
@@ -365,7 +365,8 @@ function Panel2() {
                 variants={slideRight}
                 className="rounded-[16px] border-[1.5px] border-border bg-card p-5 hover:border-accent-bright hover:-translate-y-[2px] transition-all duration-[180ms]"
               >
-                <p className="font-sans text-[14px] font-semibold text-foreground">{c.title}</p>
+                <span className="font-sans text-[9px] font-semibold uppercase tracking-[0.14em] text-accent-bright">{c.label}</span>
+                <p className="font-sans text-[14px] font-semibold text-foreground mt-1">{c.title}</p>
                 <p className="font-sans text-[13px] text-ink-2 mt-1 leading-[1.5]">{c.body}</p>
               </motion.div>
             ))}
