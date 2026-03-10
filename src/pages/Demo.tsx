@@ -248,11 +248,10 @@ function Panel1() {
             variants={fadeUp}
             className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground"
           >
-            You finish the course. Then nothing.
+            You finished it. Then nothing.
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            107 professionals told us the same story. They learned. They finished. They forgot — not
-            in months, but in weeks. And when the moment came to explain it, they went blank.
+            107 people told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
           </motion.p>
           <motion.div custom={3} variants={fadeUp}>
             <QuoteCard
