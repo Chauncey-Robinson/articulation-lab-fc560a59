@@ -13,6 +13,7 @@ import Progress from "@/pages/Progress";
 import Notifications from "@/pages/Notifications";
 import PainSelection from "@/pages/PainSelection";
 import NotFound from "@/pages/NotFound";
+import Demo from "@/pages/Demo";
 import { AppProvider } from "@/lib/AppContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import IPhoneFrame from "@/components/IPhoneFrame";
