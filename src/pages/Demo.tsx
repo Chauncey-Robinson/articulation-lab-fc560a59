@@ -473,12 +473,10 @@ function Panel4() {
             <div className="w-6 h-[2px] bg-accent-bright" />
           </motion.div>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal text-foreground">
-            No one has built this yet.
+            Nobody else does <span className="italic text-accent-bright">this.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-4 max-w-[640px] mx-auto">
-            Readwise handles the content layer. Khanmigo handles pedagogy. NotebookLM handles
-            reference. None combine active explanation training, accountability, and real-world
-            application for professionals.
+            Other apps save what you read. This one trains you to say it. That gap — between knowing and explaining — is what we close.
           </motion.p>
         </AnimatedSection>
 
