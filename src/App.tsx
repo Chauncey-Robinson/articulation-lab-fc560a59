@@ -15,6 +15,7 @@ import PainSelection from "@/pages/PainSelection";
 import NotFound from "@/pages/NotFound";
 import { AppProvider } from "@/lib/AppContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import IPhoneFrame from "@/components/IPhoneFrame";
 
 const queryClient = new QueryClient();
 
