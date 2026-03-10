@@ -384,11 +384,10 @@ function Panel3() {
         <AnimatedSection>
           <Eyebrow>The AI does the work first</Eyebrow>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground">
-            Value before setup.
+            It does the work. <span className="italic text-accent-bright">You just talk.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            Every other tool asks you to do the work. Tag things. Build decks. Create flashcards.
-            This app reads what you paste and surfaces the training moment — immediately.
+            Paste what you studied. The app finds the one idea that matters and puts you in a real situation. No setup. No filing. Just go.
           </motion.p>
           <motion.div custom={3} variants={fadeUp}>
             <QuoteCard
