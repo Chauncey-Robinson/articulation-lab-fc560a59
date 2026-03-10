@@ -165,7 +165,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
       />
       <div
         className="mx-auto w-full items-center"
-        style={{ maxWidth: 1100, padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 360px", gap: 80 }}
+        style={{ maxWidth: 1100, padding: "0 24px", display: "grid", gridTemplateColumns: "1fr 280px", gap: 80 }}
       >
         {/* Left */}
         <AnimatedSection>
