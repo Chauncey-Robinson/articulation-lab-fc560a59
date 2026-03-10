@@ -199,9 +199,9 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
 
           <motion.ul custom={3} variants={fadeUp} className="mt-8 space-y-3">
             {[
-              "AI extracts the key idea from anything you paste — before you lift a finger",
-              "Real-world scenarios — not abstract quizzes. A sceptical CFO, a 2-minute brief, a junior asking why",
-              "Reps that compound — each concept returns at the right moment, until explanation is fluent",
+              "Paste anything. The key idea appears instantly.",
+              "Say it back. In a real situation.",
+              "Do it again. Until you own it.",
             ].map((t) => (
               <li key={t} className="flex gap-2.5 items-start text-ink-2">
                 <span className="mt-1.5 w-[7px] h-[7px] rounded-full bg-accent-bright shrink-0" />
