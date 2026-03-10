@@ -348,11 +348,10 @@ function Panel2() {
         <AnimatedSection>
           <Eyebrow>How it works</Eyebrow>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground">
-            A gym for professional knowledge.
+            A gym for <span className="italic text-accent-bright">professional knowledge.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            Every concept you train returns at the right interval — in a new real-world scenario each
-            time. The AI adapts to your fluency score. You show up and do the rep.
+            Same concept. New situation. Right timing. You show up, say it, get sharper. That's it.
           </motion.p>
 
           <div className="mt-8 space-y-4">
