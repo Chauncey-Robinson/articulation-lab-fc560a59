@@ -45,6 +45,7 @@ const App = () => (
                 {/* Landing is the entry point — public */}
                 <Route path="/" element={<PublicOnly><Landing /></PublicOnly>} />
                 <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
+                <Route path="/demo" element={<Demo />} />
 
                 {/* Main app with bottom tabs */}
                 <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
