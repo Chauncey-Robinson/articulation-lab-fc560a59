@@ -39,32 +39,36 @@ const App = () => (
     <TooltipProvider>
       <AuthProvider>
         <AppProvider>
-          <IPhoneFrame>
-            <BrowserRouter>
-              <Routes>
-                {/* Landing is the entry point — public */}
-                <Route path="/" element={<PublicOnly><Landing /></PublicOnly>} />
-                <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
-                <Route path="/demo" element={<Demo />} />
+          <BrowserRouter>
+            <Routes>
+              {/* Demo is a standalone desktop page — no phone frame */}
+              <Route path="/demo" element={<Demo />} />
 
-                {/* Main app with bottom tabs */}
-                <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
-                  <Route path="home" element={<Home />} />
-                </Route>
+              {/* All other routes use the iPhone frame */}
+              <Route path="/*" element={
+                <IPhoneFrame>
+                  <Routes>
+                    <Route path="/" element={<PublicOnly><Landing /></PublicOnly>} />
+                    <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
 
-                {/* Full-screen routes */}
-                <Route path="/input" element={<RequireAuth><ContentInput /></RequireAuth>} />
-                <Route path="/practice" element={<RequireAuth><Drill /></RequireAuth>} />
-                <Route path="/summary" element={<RequireAuth><Summary /></RequireAuth>} />
-                <Route path="/library" element={<RequireAuth><Library /></RequireAuth>} />
-                <Route path="/progress" element={<RequireAuth><Progress /></RequireAuth>} />
-                <Route path="/notifications" element={<RequireAuth><Notifications /></RequireAuth>} />
-                <Route path="/pain-selection" element={<RequireAuth><PainSelection /></RequireAuth>} />
+                    <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
+                      <Route path="home" element={<Home />} />
+                    </Route>
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </IPhoneFrame>
+                    <Route path="/input" element={<RequireAuth><ContentInput /></RequireAuth>} />
+                    <Route path="/practice" element={<RequireAuth><Drill /></RequireAuth>} />
+                    <Route path="/summary" element={<RequireAuth><Summary /></RequireAuth>} />
+                    <Route path="/library" element={<RequireAuth><Library /></RequireAuth>} />
+                    <Route path="/progress" element={<RequireAuth><Progress /></RequireAuth>} />
+                    <Route path="/notifications" element={<RequireAuth><Notifications /></RequireAuth>} />
+                    <Route path="/pain-selection" element={<RequireAuth><PainSelection /></RequireAuth>} />
+
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </IPhoneFrame>
+              } />
+            </Routes>
+          </BrowserRouter>
         </AppProvider>
       </AuthProvider>
     </TooltipProvider>
