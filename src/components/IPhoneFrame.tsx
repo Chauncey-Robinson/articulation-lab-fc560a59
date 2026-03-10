@@ -44,7 +44,6 @@ function HomeIndicator() {
 export default function IPhoneFrame({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
 
-  // On small screens, render app full-screen without frame
   if (isMobile) {
     return <>{children}</>;
   }
@@ -52,7 +51,7 @@ export default function IPhoneFrame({ children }: { children: React.ReactNode })
   return (
     <div
       className="flex items-center justify-center min-h-screen"
-      style={{ background: "linear-gradient(145deg, #1A1A1A, #111111)" }}
+      style={{ background: "#1A1A1A" }}
     >
       {/* Outer shell */}
       <div
@@ -62,15 +61,10 @@ export default function IPhoneFrame({ children }: { children: React.ReactNode })
           height: 852,
           borderRadius: 55,
           background: "linear-gradient(145deg, #5A5A5A, #3A3A3A)",
-          boxShadow: `
-            0 0 0 1px rgba(255,255,255,0.08) inset,
-            0 40px 80px -20px rgba(0,0,0,0.6),
-            0 0 40px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.15)
-          `,
+          boxShadow: "0 32px 64px rgba(17,16,9,0.14), 0 2px 8px rgba(17,16,9,0.06), 0 0 0 1px rgba(255,255,255,0.08) inset, inset 0 1px 0 rgba(255,255,255,0.15)",
         }}
       >
-        {/* Subtle gloss reflection */}
+        {/* Gloss */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -80,88 +74,22 @@ export default function IPhoneFrame({ children }: { children: React.ReactNode })
         />
 
         {/* Side buttons — left: volume */}
-        <div
-          className="absolute"
-          style={{
-            left: -2.5,
-            top: 180,
-            width: 3,
-            height: 32,
-            borderRadius: "2px 0 0 2px",
-            background: "linear-gradient(180deg, #555, #3A3A3A)",
-          }}
-        />
-        <div
-          className="absolute"
-          style={{
-            left: -2.5,
-            top: 230,
-            width: 3,
-            height: 32,
-            borderRadius: "2px 0 0 2px",
-            background: "linear-gradient(180deg, #555, #3A3A3A)",
-          }}
-        />
+        <div className="absolute" style={{ left: -2.5, top: 180, width: 3, height: 32, borderRadius: "2px 0 0 2px", background: "linear-gradient(180deg, #555, #3A3A3A)" }} />
+        <div className="absolute" style={{ left: -2.5, top: 230, width: 3, height: 32, borderRadius: "2px 0 0 2px", background: "linear-gradient(180deg, #555, #3A3A3A)" }} />
         {/* Side button — right: power */}
-        <div
-          className="absolute"
-          style={{
-            right: -2.5,
-            top: 220,
-            width: 3,
-            height: 48,
-            borderRadius: "0 2px 2px 0",
-            background: "linear-gradient(180deg, #555, #3A3A3A)",
-          }}
-        />
+        <div className="absolute" style={{ right: -2.5, top: 220, width: 3, height: 48, borderRadius: "0 2px 2px 0", background: "linear-gradient(180deg, #555, #3A3A3A)" }} />
 
         {/* Inner bezel */}
-        <div
-          className="absolute"
-          style={{
-            top: 12,
-            left: 12,
-            right: 12,
-            bottom: 12,
-            borderRadius: 44,
-            background: "#000",
-          }}
-        >
+        <div className="absolute" style={{ top: 12, left: 12, right: 12, bottom: 12, borderRadius: 44, background: "#000" }}>
           {/* Dynamic Island */}
-          <div
-            className="absolute z-20"
-            style={{
-              top: 11,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: 126,
-              height: 37,
-              borderRadius: 20,
-              background: "#000",
-            }}
-          />
+          <div className="absolute z-20" style={{ top: 11, left: "50%", transform: "translateX(-50%)", width: 126, height: 37, borderRadius: 20, background: "#000" }} />
 
           {/* Screen area */}
-          <div
-            className="absolute overflow-hidden flex flex-col"
-            style={{
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              borderRadius: 44,
-              background: "hsl(var(--background))",
-            }}
-          >
-            {/* Status bar */}
+          <div className="absolute overflow-hidden flex flex-col" style={{ top: 0, left: 0, right: 0, bottom: 0, borderRadius: 44, background: "hsl(var(--background))" }}>
             <StatusBar />
-
-            {/* App content */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden relative">
               {children}
             </div>
-
-            {/* Home indicator */}
             <HomeIndicator />
           </div>
         </div>

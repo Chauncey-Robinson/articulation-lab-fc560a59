@@ -14,15 +14,18 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["Lora", "Georgia", "serif"],
-        sans: ["DM Sans", "system-ui", "sans-serif"],
+        serif: ["Cormorant Garamond", "Georgia", "serif"],
+        sans: ["Instrument Sans", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
+        "border-strong": "hsl(var(--border-strong))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "ink-2": "hsl(var(--ink-2))",
+        "ink-3": "hsl(var(--ink-3))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -42,6 +45,12 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          bright: "hsl(var(--amber-bright))",
+          pale: "hsl(var(--amber-pale))",
+        },
+        sage: {
+          DEFAULT: "hsl(var(--sage))",
+          pale: "hsl(var(--sage-pale))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -56,7 +65,7 @@ export default {
           foreground: "hsl(var(--ai-card-foreground))",
           border: "hsl(var(--ai-card-border))",
         },
-        "meeting": {
+        meeting: {
           card: "hsl(var(--meeting-card))",
           text: "hsl(var(--meeting-text))",
         },
@@ -66,6 +75,7 @@ export default {
           border: "hsl(var(--selected-border))",
         },
         "surface-light": "hsl(var(--surface-light))",
+        "surface-2": "hsl(var(--surface-2))",
         legal: "hsl(var(--legal))",
         block: {
           empty: "hsl(var(--block-empty))",
@@ -78,6 +88,12 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        pill: "100px",
+      },
+      boxShadow: {
+        "card-hover": "0 8px 24px rgba(17,16,9,0.08)",
+        "phone": "0 32px 64px rgba(17,16,9,0.14), 0 2px 8px rgba(17,16,9,0.06)",
+        "modal": "0 24px 48px rgba(17,16,9,0.18)",
       },
     },
   },

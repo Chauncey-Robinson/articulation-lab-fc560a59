@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 const navTabs = [
   { path: "/home", label: "Home" },
   { path: "/input", label: "Practice" },
+  { path: "/library", label: "Library" },
   { path: "/progress", label: "Progress" },
 ];
 
@@ -21,20 +22,20 @@ export default function Layout() {
         <div className="mx-auto flex max-w-[460px] items-center justify-between">
           <div className="flex items-center gap-2">
             {progress.current_streak > 0 && (
-              <span className="text-[13px] text-foreground">🔥 {progress.current_streak}</span>
+              <span className="text-[13px] font-sans font-medium text-foreground">🔥 {progress.current_streak}</span>
             )}
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={toggleMute}
-              className="text-base leading-none text-muted-foreground hover:text-foreground"
+              className="text-[15px] leading-none text-ink-3 hover:text-foreground transition-colors duration-[180ms]"
               aria-label={muted ? "Unmute" : "Mute"}
             >
               {muted ? "🔇" : "🔊"}
             </button>
             <button
               onClick={signOut}
-              className="text-xs text-muted-foreground hover:text-foreground"
+              className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms]"
             >
               Sign out
             </button>
@@ -52,10 +53,9 @@ export default function Layout() {
             <Link
               key={tab.path}
               to={tab.path}
-              className="text-xs transition-colors"
+              className="text-[12px] font-sans font-medium transition-colors duration-[180ms]"
               style={{
-                color: isActive(tab.path) ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
-                fontWeight: isActive(tab.path) ? 500 : 400,
+                color: isActive(tab.path) ? "hsl(var(--foreground))" : "hsl(var(--ink-3))",
               }}
             >
               {tab.label}

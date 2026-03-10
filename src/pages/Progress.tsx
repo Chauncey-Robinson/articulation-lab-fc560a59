@@ -8,7 +8,7 @@ export default function Progress() {
 
   let streakCopy = "";
   if (progress.current_streak === 0) {
-    streakCopy = "Start your first practice today.";
+    streakCopy = "Start your first session today.";
   } else if (progress.current_streak <= 6) {
     streakCopy = "You're building something. Keep going.";
   } else if (progress.current_streak <= 29) {
@@ -19,51 +19,51 @@ export default function Progress() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
-      <div className="max-w-[460px] mx-auto w-full">
-        <Link to="/home" className="text-base text-muted-foreground hover:text-foreground mb-6 inline-block">←</Link>
+      <div className="max-w-[640px] mx-auto w-full">
+        <Link to="/home" className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms] mb-6 inline-block">←</Link>
 
-        <h1 className="font-serif text-[1.8rem] text-foreground mb-8">How you're doing</h1>
+        <h1 className="font-serif text-[2rem] text-foreground mb-10 animate-fade-up stagger-1">How you're doing.</h1>
 
         {progress.total_sessions === 0 ? (
           <div className="text-center py-16">
-            <p className="text-sm text-muted-foreground mb-6">Complete a practice to see how you're getting on.</p>
+            <p className="text-[14px] font-sans text-ink-3 mb-6">Complete a session to see how you're getting on.</p>
             <Link
               to="/input"
-              className="rounded-full bg-primary px-8 py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+              className="inline-block rounded-pill bg-primary px-8 py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms]"
             >
-              Start practising
+              Start practicing
             </Link>
           </div>
         ) : (
           <>
             {/* Three numbers */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="rounded-lg bg-card p-5 text-center">
-                <p className="font-serif text-[2rem] text-accent">{practicingCount}</p>
-                <p className="text-xs text-muted-foreground mt-1">concepts practicing</p>
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              <div className="bg-card rounded-[22px] border-[1.5px] border-border p-6 text-center animate-fade-up stagger-2">
+                <p className="font-serif text-[3rem] leading-none text-foreground">{practicingCount}</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">concepts</p>
               </div>
-              <div className="rounded-lg bg-card p-5 text-center">
-                <p className="font-serif text-[2rem] text-accent">{progress.current_streak}</p>
-                <p className="text-xs text-muted-foreground mt-1">day streak</p>
+              <div className="bg-card rounded-[22px] border-[1.5px] border-border p-6 text-center animate-fade-up stagger-3">
+                <p className="font-serif text-[3rem] leading-none text-foreground">{progress.current_streak}</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">day streak</p>
               </div>
-              <div className="rounded-lg bg-card p-5 text-center">
-                <p className="font-serif text-[2rem] text-accent">{progress.total_sessions}</p>
-                <p className="text-xs text-muted-foreground mt-1">practices total</p>
+              <div className="bg-card rounded-[22px] border-[1.5px] border-border p-6 text-center animate-fade-up stagger-4">
+                <p className="font-serif text-[3rem] leading-none text-foreground">{progress.total_sessions}</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">sessions</p>
               </div>
             </div>
 
-            <p className="text-[13px] text-muted-foreground text-center mb-8">{streakCopy}</p>
+            <p className="text-[14px] font-sans text-ink-3 text-center mb-10 animate-fade-up stagger-5">{streakCopy}</p>
 
             {/* Library link */}
-            <div className="rounded-lg bg-card p-5">
+            <div className="bg-card rounded-[22px] border-[1.5px] border-border p-6 animate-fade-up stagger-6">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-foreground">Your explanations</p>
-                <Link to="/library" className="text-[13px] text-accent underline">
-                  {concepts.length} saved →
+                <p className="text-[15px] font-sans font-medium text-foreground">Your library</p>
+                <Link to="/library" className="text-[13px] font-sans text-accent font-medium hover:underline">
+                  {concepts.length} concepts →
                 </Link>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                The clearest thing you said in each practice.
+              <p className="text-[12px] font-sans text-ink-3 mt-1">
+                Every concept you've trained, ready to revisit.
               </p>
             </div>
           </>
