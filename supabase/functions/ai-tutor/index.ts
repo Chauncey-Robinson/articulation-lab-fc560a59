@@ -180,6 +180,93 @@ Return using the provided tool.`;
       }];
       toolChoice = { type: "function", function: { name: "evaluate_application" } };
 
+    } else if (type === "dialogue") {
+      systemPrompt = `You are a knowledgeable tutor having a conversation about a specific topic.
+Context — Lesson: "${body.lessonTitle}"
+Key idea: "${body.keyIdea}"
+Full content: "${body.lessonContent}"
+
+Rules:
+- Answer questions clearly and concisely (under 80 words)
+- Challenge the user's thinking with follow-up questions
+- Connect ideas to real-world applications
+- If they ask something outside the lesson scope, gently redirect
+- Be conversational, not lecturing`;
+      const msgs = body.messages || [];
+      userMessage = msgs.length > 0 ? msgs[msgs.length - 1].content : "Tell me about this topic.";
+      maxTokens = 300;
+
+      // For dialogue, pass the full conversation history
+      const requestBody: any = {
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...msgs,
+        ],
+        max_tokens: maxTokens,
+      };
+
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const status = response.status;
+        if (status === 429) return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        if (status === 402) return new Response(JSON.stringify({ error: "AI usage limit reached." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        const t = await response.text();
+        console.error("AI gateway error:", status, t);
+        return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
+      const data = await response.json();
+      const content = data.choices?.[0]?.message?.content || "";
+      return new Response(JSON.stringify({ content }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    } else if (type === "generate_flashcards") {
+      systemPrompt = `You are creating flashcards from lesson content. For each lesson provided, create 2 flashcards.
+Each flashcard should have:
+- A "front" with a question or prompt (concise, under 15 words)
+- A "back" with the answer (concise, under 30 words)
+Focus on key concepts and understanding, not trivial details.
+Return using the provided tool. Maximum 10 flashcards total.`;
+      const lessonsText = body.lessons.map((l: any) => `Title: ${l.title}\nKey idea: ${l.key_idea}\nContent: ${l.content}`).join("\n\n---\n\n");
+      userMessage = lessonsText;
+      maxTokens = 1500;
+      useToolCalling = true;
+      tools = [{
+        type: "function",
+        function: {
+          name: "create_flashcards",
+          description: "Create flashcards from lesson content",
+          parameters: {
+            type: "object",
+            properties: {
+              flashcards: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    front: { type: "string", description: "Question or prompt shown on front of card" },
+                    back: { type: "string", description: "Answer shown on back of card" }
+                  },
+                  required: ["front", "back"],
+                  additionalProperties: false
+                }
+              }
+            },
+            required: ["flashcards"],
+            additionalProperties: false
+          }
+        }
+      }];
+      toolChoice = { type: "function", function: { name: "create_flashcards" } };
+
     } else {
       return new Response(JSON.stringify({ error: "Invalid type" }), {
         status: 400,
@@ -212,41 +299,25 @@ Return using the provided tool.`;
 
     if (!response.ok) {
       const status = response.status;
-      if (status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), {
-          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (status === 402) {
-        return new Response(JSON.stringify({ error: "AI usage limit reached." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      if (status === 429) return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (status === 402) return new Response(JSON.stringify({ error: "AI usage limit reached." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const t = await response.text();
       console.error("AI gateway error:", status, t);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const data = await response.json();
 
-    // Handle tool calling responses
     if (useToolCalling) {
       const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
       if (toolCall) {
         const parsed = JSON.parse(toolCall.function.arguments);
-        return new Response(JSON.stringify(parsed), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return new Response(JSON.stringify(parsed), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
     }
 
-    // Handle regular text responses
     const content = data.choices?.[0]?.message?.content || "";
-    return new Response(JSON.stringify({ content }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(JSON.stringify({ content }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     console.error("ai-tutor error:", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {

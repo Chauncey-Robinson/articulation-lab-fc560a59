@@ -12,6 +12,10 @@ import Quiz from "@/pages/Quiz";
 import TeachBack from "@/pages/TeachBack";
 import Apply from "@/pages/Apply";
 import Analytics from "@/pages/Analytics";
+import Dialogue from "@/pages/Dialogue";
+import Flashcards from "@/pages/Flashcards";
+import TestConfig from "@/pages/TestConfig";
+import Deadlines from "@/pages/Deadlines";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
 import { TutorProvider } from "@/lib/TutorContext";
@@ -41,10 +45,8 @@ const App = () => (
         <TutorProvider>
           <BrowserRouter>
             <Routes>
-              {/* Demo is standalone — no phone frame */}
               <Route path="/demo" element={<Demo />} />
 
-              {/* All other routes use the iPhone frame */}
               <Route path="/*" element={
                 <IPhoneFrame>
                   <Routes>
@@ -59,6 +61,10 @@ const App = () => (
                     <Route path="/quiz/:moduleId" element={<RequireAuth><Quiz /></RequireAuth>} />
                     <Route path="/teach-back/:lessonId" element={<RequireAuth><TeachBack /></RequireAuth>} />
                     <Route path="/apply/:lessonId" element={<RequireAuth><Apply /></RequireAuth>} />
+                    <Route path="/dialogue/:lessonId" element={<RequireAuth><Dialogue /></RequireAuth>} />
+                    <Route path="/flashcards/:moduleId" element={<RequireAuth><Flashcards /></RequireAuth>} />
+                    <Route path="/test-config/:moduleId" element={<RequireAuth><TestConfig /></RequireAuth>} />
+                    <Route path="/deadlines" element={<RequireAuth><Deadlines /></RequireAuth>} />
                     <Route path="/analytics" element={<RequireAuth><Analytics /></RequireAuth>} />
 
                     <Route path="*" element={<NotFound />} />

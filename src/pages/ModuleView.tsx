@@ -49,13 +49,12 @@ export default function ModuleView() {
             {completedCount}/{lessons.length} LESSONS COMPLETE
           </p>
           <h1 className="font-serif text-[1.8rem] text-foreground mb-2">{module.title}</h1>
-          {/* Progress bar */}
           <div className="w-full h-1.5 bg-border rounded-pill">
             <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0}%` }} />
           </div>
         </div>
 
-        {/* Path selection */}
+        {/* Path selection — Learn or Test */}
         {!allCompleted && nextLesson && (
           <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-2">
             <button onClick={() => navigate(`/study/${nextLesson.id}`)}
@@ -64,11 +63,11 @@ export default function ModuleView() {
               <p className="text-[13px] font-sans font-semibold text-foreground">Learn</p>
               <p className="text-[11px] font-sans text-ink-3 mt-1">Study the next lesson</p>
             </button>
-            <button onClick={() => navigate(`/quiz/${module.id}`)}
+            <button onClick={() => navigate(`/test-config/${module.id}`)}
               className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-left hover:border-accent hover:translate-y-[-2px] transition-all duration-[180ms]">
               <p className="text-[20px] mb-2">🧪</p>
               <p className="text-[13px] font-sans font-semibold text-foreground">Test</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">Quiz on what you know</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">Quiz, flashcards & more</p>
             </button>
           </div>
         )}
@@ -77,7 +76,7 @@ export default function ModuleView() {
           <div className="bg-sage/10 rounded-[16px] border-[1.5px] border-sage/30 p-5 mb-6 text-center animate-fade-up stagger-2">
             <p className="text-[20px] mb-2">🎉</p>
             <p className="text-[14px] font-sans font-medium text-foreground">All lessons completed!</p>
-            <button onClick={() => navigate(`/quiz/${module.id}`)}
+            <button onClick={() => navigate(`/test-config/${module.id}`)}
               className="mt-3 rounded-pill bg-primary px-6 py-3 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all">
               Test your knowledge
             </button>
@@ -103,16 +102,12 @@ export default function ModuleView() {
           </button>
         ))}
 
-        {/* Teach back / Apply buttons */}
+        {/* Dialogue button */}
         {completedCount > 0 && (
           <div className="mt-6 flex flex-col gap-3 animate-fade-up stagger-6">
-            <button onClick={() => { const l = lessons.find(l => l.completed); if (l) navigate(`/teach-back/${l.id}`); }}
-              className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              Teach it back
-            </button>
-            <button onClick={() => { const l = lessons.find(l => l.completed); if (l) navigate(`/apply/${l.id}`); }}
-              className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              Apply in real life
+            <button onClick={() => { const l = lessons.find(l => l.completed); if (l) navigate(`/dialogue/${l.id}`); }}
+              className="w-full rounded-pill border-[1.5px] border-accent/30 bg-accent-pale/10 py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all flex items-center justify-center gap-2">
+              💬 Ask questions about this material
             </button>
           </div>
         )}

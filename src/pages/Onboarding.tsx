@@ -6,6 +6,11 @@ const professions = ["Student", "Engineer", "Manager", "Designer", "Researcher",
 const degrees = ["High School", "Bachelor's", "Master's", "PhD", "Self-taught", "Other"];
 const interestOptions = ["Business", "Technology", "Science", "Health", "Finance", "Leadership", "Psychology", "Law", "Design", "Marketing"];
 const ageRanges = ["18-24", "25-34", "35-44", "45-54", "55+"];
+const presentationOptions = [
+  { key: "text", emoji: "📝", label: "Text summaries", desc: "Clear, concise written explanations" },
+  { key: "infographics", emoji: "📊", label: "Infographics", desc: "Visual breakdowns of key ideas" },
+  { key: "podcast", emoji: "🎧", label: "Podcast style", desc: "Conversational audio explanations" },
+];
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -15,15 +20,21 @@ export default function Onboarding() {
   const [degree, setDegree] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
   const [ageRange, setAgeRange] = useState("");
+  const [presentations, setPresentations] = useState<string[]>(["text"]);
   const [saving, setSaving] = useState(false);
 
   const toggleInterest = (i: string) => {
     setInterests(prev => prev.includes(i) ? prev.filter(x => x !== i) : [...prev, i]);
   };
 
+  const togglePresentation = (key: string) => {
+    setPresentations(prev => prev.includes(key) ? prev.filter(x => x !== key) : [...prev, key]);
+  };
+
   const handleFinish = async () => {
     setSaving(true);
     await saveProfile({ profession, degree, interests, age_range: ageRange, onboarded: true });
+    localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
     setSaving(false);
     navigate("/dashboard");
   };
@@ -35,12 +46,14 @@ export default function Onboarding() {
     navigate("/dashboard");
   };
 
+  const totalSteps = 5;
+
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-8 pb-10">
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
         {/* Progress dots */}
         <div className="flex gap-2 mb-8">
-          {[0, 1, 2, 3].map(i => (
+          {Array.from({ length: totalSteps }).map((_, i) => (
             <div key={i} className="h-1 flex-1 rounded-pill transition-colors duration-300" style={{ background: i <= step ? "hsl(var(--accent))" : "hsl(var(--border))" }} />
           ))}
         </div>
@@ -95,6 +108,33 @@ export default function Onboarding() {
         )}
 
         {step === 3 && (
+          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
+            <h1 className="font-serif text-[2rem] text-foreground mb-2">How do you learn best?</h1>
+            <p className="text-[14px] font-sans text-ink-3 mb-6">Pick your preferred format for digesting info.</p>
+            <div className="flex flex-col gap-3 mb-6">
+              {presentationOptions.map(opt => (
+                <button key={opt.key} onClick={() => togglePresentation(opt.key)}
+                  className={`rounded-[16px] border-[1.5px] px-5 py-4 text-left transition-all duration-[180ms] ${
+                    presentations.includes(opt.key) ? "border-accent bg-accent-pale/20" : "border-border bg-card hover:border-accent"
+                  }`}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[20px]">{opt.emoji}</span>
+                    <div>
+                      <p className="text-[14px] font-sans font-medium text-foreground">{opt.label}</p>
+                      <p className="text-[12px] font-sans text-ink-3">{opt.desc}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setStep(4)} disabled={presentations.length === 0}
+              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
+              Continue
+            </button>
+          </div>
+        )}
+
+        {step === 4 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">How old are you?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">Last one. Promise.</p>
