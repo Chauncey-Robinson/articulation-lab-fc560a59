@@ -53,6 +53,198 @@ export type Database = {
         }
         Relationships: []
       }
+      lessons: {
+        Row: {
+          completed: boolean | null
+          content: string
+          created_at: string | null
+          id: string
+          key_idea: string
+          lesson_order: number
+          module_id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          content: string
+          created_at?: string | null
+          id?: string
+          key_idea: string
+          lesson_order?: number
+          module_id: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          key_idea?: string
+          lesson_order?: number
+          module_id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      modules: {
+        Row: {
+          completed_lessons: number | null
+          created_at: string | null
+          id: string
+          lesson_count: number | null
+          source_content: string
+          source_type: string
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed_lessons?: number | null
+          created_at?: string | null
+          id?: string
+          lesson_count?: number | null
+          source_content?: string
+          source_type?: string
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed_lessons?: number | null
+          created_at?: string | null
+          id?: string
+          lesson_count?: number | null
+          source_content?: string
+          source_type?: string
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age_range: string | null
+          created_at: string | null
+          degree: string | null
+          gender: string | null
+          interests: string[] | null
+          onboarded: boolean | null
+          profession: string | null
+          user_id: string
+        }
+        Insert: {
+          age_range?: string | null
+          created_at?: string | null
+          degree?: string | null
+          gender?: string | null
+          interests?: string[] | null
+          onboarded?: boolean | null
+          profession?: string | null
+          user_id: string
+        }
+        Update: {
+          age_range?: string | null
+          created_at?: string | null
+          degree?: string | null
+          gender?: string | null
+          interests?: string[] | null
+          onboarded?: boolean | null
+          profession?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      quiz_attempts: {
+        Row: {
+          ai_feedback: string | null
+          attempted_at: string | null
+          id: string
+          is_correct: boolean | null
+          question_id: string
+          user_answer: string
+          user_id: string
+        }
+        Insert: {
+          ai_feedback?: string | null
+          attempted_at?: string | null
+          id?: string
+          is_correct?: boolean | null
+          question_id: string
+          user_answer: string
+          user_id: string
+        }
+        Update: {
+          ai_feedback?: string | null
+          attempted_at?: string | null
+          id?: string
+          is_correct?: boolean | null
+          question_id?: string
+          user_answer?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_questions: {
+        Row: {
+          correct_answer: string | null
+          created_at: string | null
+          id: string
+          lesson_id: string
+          options: Json | null
+          question: string
+          question_type: string
+          user_id: string
+        }
+        Insert: {
+          correct_answer?: string | null
+          created_at?: string | null
+          id?: string
+          lesson_id: string
+          options?: Json | null
+          question: string
+          question_type?: string
+          user_id: string
+        }
+        Update: {
+          correct_answer?: string | null
+          created_at?: string | null
+          id?: string
+          lesson_id?: string
+          options?: Json | null
+          question?: string
+          question_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sessions: {
         Row: {
           clarity: number

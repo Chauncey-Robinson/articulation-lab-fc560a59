@@ -1,20 +1,20 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Layout from "@/components/Layout";
 import SignIn from "@/pages/SignIn";
 import Landing from "@/pages/Landing";
-import ContentInput from "@/pages/ContentInput";
-import Drill from "@/pages/Drill";
-import Summary from "@/pages/Summary";
-import Home from "@/pages/Home";
-import Library from "@/pages/Library";
-import Progress from "@/pages/Progress";
-import Notifications from "@/pages/Notifications";
-import PainSelection from "@/pages/PainSelection";
+import Onboarding from "@/pages/Onboarding";
+import Dashboard from "@/pages/Dashboard";
+import Upload from "@/pages/Upload";
+import ModuleView from "@/pages/ModuleView";
+import LessonStudy from "@/pages/LessonStudy";
+import Quiz from "@/pages/Quiz";
+import TeachBack from "@/pages/TeachBack";
+import Apply from "@/pages/Apply";
+import Analytics from "@/pages/Analytics";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
-import { AppProvider } from "@/lib/AppContext";
+import { TutorProvider } from "@/lib/TutorContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import IPhoneFrame from "@/components/IPhoneFrame";
 
@@ -30,7 +30,7 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 function PublicOnly({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="min-h-screen bg-background" />;
-  if (user) return <Navigate to="/home" replace />;
+  if (user) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 
@@ -38,10 +38,10 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <AppProvider>
+        <TutorProvider>
           <BrowserRouter>
             <Routes>
-              {/* Demo is a standalone desktop page — no phone frame */}
+              {/* Demo is standalone — no phone frame */}
               <Route path="/demo" element={<Demo />} />
 
               {/* All other routes use the iPhone frame */}
@@ -51,17 +51,15 @@ const App = () => (
                     <Route path="/" element={<PublicOnly><Landing /></PublicOnly>} />
                     <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
 
-                    <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
-                      <Route path="home" element={<Home />} />
-                    </Route>
-
-                    <Route path="/input" element={<RequireAuth><ContentInput /></RequireAuth>} />
-                    <Route path="/practice" element={<RequireAuth><Drill /></RequireAuth>} />
-                    <Route path="/summary" element={<RequireAuth><Summary /></RequireAuth>} />
-                    <Route path="/library" element={<RequireAuth><Library /></RequireAuth>} />
-                    <Route path="/progress" element={<RequireAuth><Progress /></RequireAuth>} />
-                    <Route path="/notifications" element={<RequireAuth><Notifications /></RequireAuth>} />
-                    <Route path="/pain-selection" element={<RequireAuth><PainSelection /></RequireAuth>} />
+                    <Route path="/onboarding" element={<RequireAuth><Onboarding /></RequireAuth>} />
+                    <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+                    <Route path="/upload" element={<RequireAuth><Upload /></RequireAuth>} />
+                    <Route path="/module/:id" element={<RequireAuth><ModuleView /></RequireAuth>} />
+                    <Route path="/study/:id" element={<RequireAuth><LessonStudy /></RequireAuth>} />
+                    <Route path="/quiz/:moduleId" element={<RequireAuth><Quiz /></RequireAuth>} />
+                    <Route path="/teach-back/:lessonId" element={<RequireAuth><TeachBack /></RequireAuth>} />
+                    <Route path="/apply/:lessonId" element={<RequireAuth><Apply /></RequireAuth>} />
+                    <Route path="/analytics" element={<RequireAuth><Analytics /></RequireAuth>} />
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
@@ -69,7 +67,7 @@ const App = () => (
               } />
             </Routes>
           </BrowserRouter>
-        </AppProvider>
+        </TutorProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
