@@ -26,10 +26,8 @@ export default function LessonStudy() {
     if (!lesson || !user) return;
     setMarking(true);
 
-    // Update lesson
     await supabase.from("lessons").update({ completed: true } as any).eq("id", lesson.id);
 
-    // Update module completed count
     const { data: allLessons } = await supabase.from("lessons").select("completed").eq("module_id", lesson.module_id);
     const completedCount = allLessons ? allLessons.filter((l: any) => l.completed).length + 1 : 1;
     const totalLessons = allLessons ? allLessons.length : 1;
@@ -41,8 +39,6 @@ export default function LessonStudy() {
 
     await refreshModules();
     setMarking(false);
-
-    // Navigate to next action
     navigate(`/module/${lesson.module_id}`);
   };
 
@@ -93,13 +89,13 @@ export default function LessonStudy() {
           )}
 
           <div className="grid grid-cols-2 gap-3">
-            <button onClick={() => navigate(`/teach-back/${lesson.id}`)}
+            <button onClick={() => navigate(`/dialogue/${lesson.id}`)}
               className="rounded-pill border-[1.5px] border-border bg-card py-3 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              Teach it back
+              💬 Discuss
             </button>
-            <button onClick={() => navigate(`/quiz/${lesson.module_id}`)}
+            <button onClick={() => navigate(`/test-config/${lesson.module_id}`)}
               className="rounded-pill border-[1.5px] border-border bg-card py-3 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              Quiz me
+              🧪 Test me
             </button>
           </div>
         </div>

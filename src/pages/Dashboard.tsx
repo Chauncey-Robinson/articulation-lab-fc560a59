@@ -35,6 +35,13 @@ export default function Dashboard() {
   const activeModules = modules.filter(m => m.status !== "completed");
   const completedModules = modules.filter(m => m.status === "completed");
 
+  // Check deadlines from localStorage
+  const deadlines = JSON.parse(localStorage.getItem("tutor_deadlines") || "[]");
+  const upcomingDeadlines = deadlines.filter((d: any) => {
+    const diff = Math.ceil((new Date(d.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+    return diff >= 0 && diff <= 7;
+  });
+
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-24">
       <div className="max-w-[460px] mx-auto w-full">
@@ -57,6 +64,26 @@ export default function Dashboard() {
             <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""}</p>
           )}
         </div>
+
+        {/* Deadline alerts */}
+        {upcomingDeadlines.length > 0 && (
+          <div className="mb-4 animate-fade-up stagger-2">
+            {upcomingDeadlines.map((d: any) => {
+              const diff = Math.ceil((new Date(d.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+              return (
+                <div key={d.moduleId} className="bg-accent-bright/10 border-[1.5px] border-accent-bright/30 rounded-[14px] px-4 py-3 mb-2 flex items-center justify-between">
+                  <div>
+                    <p className="text-[12px] font-sans font-medium text-foreground">{d.moduleTitle}</p>
+                    <p className="text-[11px] font-sans text-accent-bright">{diff === 0 ? "Due today!" : diff === 1 ? "Due tomorrow" : `${diff} days left`}</p>
+                  </div>
+                  <button onClick={() => navigate(`/module/${d.moduleId}`)} className="text-[11px] font-sans font-medium text-accent hover:text-foreground transition-colors">
+                    Go →
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Stats row */}
         {progress.total_sessions > 0 && (
@@ -94,7 +121,6 @@ export default function Dashboard() {
                   )}
                 </div>
                 <h3 className="font-serif text-[18px] text-foreground leading-tight mb-1">{mod.title}</h3>
-                {/* Progress bar */}
                 {mod.lesson_count > 0 && (
                   <div className="w-full h-1 bg-border rounded-pill mt-3">
                     <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${(mod.completed_lessons / mod.lesson_count) * 100}%` }} />
@@ -131,6 +157,7 @@ export default function Dashboard() {
         {/* Bottom nav */}
         <div className="flex justify-center gap-6 mt-4">
           <Link to="/analytics" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
+          <Link to="/deadlines" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
         </div>
       </div>
     </div>
