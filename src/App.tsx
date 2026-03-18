@@ -16,6 +16,7 @@ import Dialogue from "@/pages/Dialogue";
 import Flashcards from "@/pages/Flashcards";
 import TestConfig from "@/pages/TestConfig";
 import Deadlines from "@/pages/Deadlines";
+import LearnConfig from "@/pages/LearnConfig";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
 import { TutorProvider } from "@/lib/TutorContext";
