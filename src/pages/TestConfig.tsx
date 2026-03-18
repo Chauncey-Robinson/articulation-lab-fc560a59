@@ -11,6 +11,12 @@ const testModes = [
   { key: "apply", emoji: "🌍", label: "Apply", desc: "Use knowledge in real-life scenarios" },
 ];
 
+const durationOptions = [
+  { key: "5", label: "5 min", desc: "Quick session" },
+  { key: "10", label: "10 min", desc: "Standard" },
+  { key: "15", label: "15 min", desc: "Deep practice" },
+];
+
 export default function TestConfig() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
@@ -19,6 +25,7 @@ export default function TestConfig() {
   const [loading, setLoading] = useState(true);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedMode, setSelectedMode] = useState("quiz");
+  const [duration, setDuration] = useState("10");
 
   useEffect(() => {
     if (!user || !moduleId) return;
@@ -40,6 +47,9 @@ export default function TestConfig() {
   const handleStart = () => {
     const firstLesson = lessons.find(l => selectedTopics.includes(l.id));
     if (!firstLesson) return;
+
+    // Store test config
+    localStorage.setItem(`test_config_${moduleId}`, JSON.stringify({ duration, selectedTopics }));
 
     switch (selectedMode) {
       case "quiz":
@@ -78,6 +88,20 @@ export default function TestConfig() {
         <h1 className="font-serif text-[1.8rem] text-foreground mb-2 animate-fade-up stagger-1">Test your knowledge.</h1>
         <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">5-10 minutes is all you need.</p>
 
+        {/* Duration */}
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-2">DURATION</p>
+        <div className="flex gap-3 mb-6">
+          {durationOptions.map(d => (
+            <button key={d.key} onClick={() => setDuration(d.key)}
+              className={`flex-1 rounded-[14px] border-[1.5px] py-3 text-center transition-all duration-[180ms] animate-fade-up stagger-2 ${
+                duration === d.key ? "border-accent bg-accent-pale/20" : "border-border bg-card hover:border-accent"
+              }`}>
+              <p className="text-[13px] font-sans font-semibold text-foreground">{d.label}</p>
+              <p className="text-[11px] font-sans text-ink-3">{d.desc}</p>
+            </button>
+          ))}
+        </div>
+
         {/* Test mode */}
         <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">TEST MODE</p>
         <div className="grid grid-cols-2 gap-3 mb-6">
@@ -112,6 +136,10 @@ export default function TestConfig() {
             </button>
           ))}
         </div>
+
+        <p className="text-[12px] font-sans text-ink-3 mb-4 animate-fade-up stagger-5">
+          ⚡ Max 10 questions per session for best retention.
+        </p>
 
         <button onClick={handleStart} disabled={selectedTopics.length === 0}
           className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-40 mt-auto animate-fade-up stagger-6">
