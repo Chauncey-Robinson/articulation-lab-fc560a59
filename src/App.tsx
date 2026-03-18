@@ -57,6 +57,7 @@ const App = () => (
                     <Route path="/onboarding" element={<RequireAuth><Onboarding /></RequireAuth>} />
                     <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
                     <Route path="/upload" element={<RequireAuth><Upload /></RequireAuth>} />
+                    <Route path="/learn-config/:moduleId" element={<RequireAuth><LearnConfig /></RequireAuth>} />
                     <Route path="/module/:id" element={<RequireAuth><ModuleView /></RequireAuth>} />
                     <Route path="/study/:id" element={<RequireAuth><LessonStudy /></RequireAuth>} />
                     <Route path="/quiz/:moduleId" element={<RequireAuth><Quiz /></RequireAuth>} />
