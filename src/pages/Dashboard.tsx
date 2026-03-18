@@ -42,6 +42,11 @@ export default function Dashboard() {
     return diff >= 0 && diff <= 7;
   });
 
+  // Compute overall completion %
+  const totalLessons = modules.reduce((a, m) => a + m.lesson_count, 0);
+  const doneLessons = modules.reduce((a, m) => a + m.completed_lessons, 0);
+  const overallPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
+
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-24">
       <div className="max-w-[460px] mx-auto w-full">
@@ -61,7 +66,7 @@ export default function Dashboard() {
           {modules.length === 0 ? (
             <p className="text-[14px] font-sans text-ink-3">Upload something to start learning.</p>
           ) : (
-            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""}</p>
+            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""} · {overallPct}% complete</p>
           )}
         </div>
 
@@ -86,7 +91,7 @@ export default function Dashboard() {
         )}
 
         {/* Stats row */}
-        {progress.total_sessions > 0 && (
+        {(progress.total_sessions > 0 || modules.length > 0) && (
           <div className="grid grid-cols-3 gap-3 mb-6 animate-fade-up stagger-2">
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
               <p className="font-serif text-[2rem] leading-none text-foreground">{modules.length}</p>
@@ -97,8 +102,8 @@ export default function Dashboard() {
               <p className="text-[11px] font-sans text-ink-3 mt-1">streak</p>
             </div>
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
-              <p className="font-serif text-[2rem] leading-none text-foreground">{progress.total_sessions}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">sessions</p>
+              <p className="font-serif text-[2rem] leading-none text-foreground">{overallPct}%</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">progress</p>
             </div>
           </div>
         )}
