@@ -282,7 +282,7 @@ function Panel1() {
   return (
     <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -458,7 +458,7 @@ function Panel3() {
   return (
     <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -683,7 +683,7 @@ function Panel4() {
       style={{ background: "hsl(var(--background))" }}>
       {/* Grid overlay */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -843,7 +843,7 @@ function Panel5() {
       style={{ background: "hsl(var(--background))" }}>
       {/* Grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -1036,7 +1036,7 @@ function Panel6() {
   return (
     <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -1143,7 +1143,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
       style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
