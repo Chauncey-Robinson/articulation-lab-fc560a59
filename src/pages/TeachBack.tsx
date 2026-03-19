@@ -34,6 +34,7 @@ export default function TeachBack() {
     try {
       const fb = await getTeachBackFeedback(lesson.key_idea, explanation);
       setFeedback(fb);
+      speak(fb);
     } catch (e: any) {
       setError(e.message || "Something went wrong.");
     } finally {
