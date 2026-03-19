@@ -14,6 +14,7 @@ export default function Flashcards() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { speak, stop } = useTTS();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cards, setCards] = useState<Flashcard[]>([]);
