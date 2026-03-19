@@ -558,10 +558,8 @@ function Panel3() {
           {/* Output card */}
           <motion.div custom={2} variants={slideRight} className="relative">
             <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
-              <div className="absolute -left-[120px] top-[20%] hidden lg:block">
-                <HudCallout label="AI generated" side="left" delay={0.6} />
-              </div>
-              <div className="absolute -right-[120px] top-[60%] hidden lg:block">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <HudCallout label="AI generated" side="right" delay={0.6} />
                 <HudCallout label="5 lessons" side="right" delay={0.8} />
               </div>
               <div className="flex items-center gap-2 mb-3">
