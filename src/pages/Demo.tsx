@@ -1017,7 +1017,7 @@ function Panel5() {
   );
 }
 
-/* PANEL 6 — COMPARISON */
+/* PANEL 6 — COMPARISON (HUD style) */
 function Panel6() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -1034,54 +1034,103 @@ function Panel6() {
   ] as const;
 
   return (
-    <section id="panel-6" className="min-h-screen snap-start flex items-center relative" style={{ background: "#F8F6F2" }}>
+    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
+
+      {/* Top diagnostic */}
+      <motion.div className="absolute top-8 left-8 pointer-events-none"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.3 }}>
+        <div className="flex items-center gap-2">
+          <motion.div className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 8px hsla(32,82%,51%,0.6)" }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(32,82%,51%,0.5)" }}>Competitive analysis · Live</span>
+        </div>
+      </motion.div>
+
       <div className="mx-auto w-full max-w-[1100px] px-8">
         <CinematicSection className="text-center mb-12">
-          <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-[1px] bg-accent-bright" />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-accent-bright">Why now</span>
-            <div className="w-8 h-[1px] bg-accent-bright" />
+          <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-5">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Market Scan
+            </span>
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal text-foreground">
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal" style={{ color: "#F8F6F2" }}>
             Nobody else does{" "}
-            <span className="italic text-accent-bright">this.</span>
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>this.</span>
           </motion.h2>
         </CinematicSection>
 
         <motion.div ref={ref} initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease }}
-          className="rounded-[20px] border-[1.5px] border-border bg-card overflow-hidden max-w-[900px] mx-auto"
-          style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.06)" }}>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="font-sans text-[12px] font-medium text-ink-3 p-4">Feature</th>
-                <th className="font-sans text-[12px] font-semibold text-accent-bright p-4 text-center">This App</th>
-                <th className="font-sans text-[12px] font-medium text-ink-3 p-4 text-center">Readwise</th>
-                <th className="font-sans text-[12px] font-medium text-ink-3 p-4 text-center">NotebookLM</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(([feat, us, rw, nb]) => (
-                <tr key={feat as string} className="border-b border-border last:border-0 hover:bg-surface-light transition-colors">
-                  <td className="font-sans text-[13px] text-ink-2 p-4">{feat as string}</td>
-                  <td className="text-center p-4"><span className="text-accent-bright font-semibold text-[16px]">✓</span></td>
-                  <td className="text-center p-4">
-                    {rw === "partial" ? <span className="text-sage font-semibold">✓*</span>
-                      : rw ? <span className="text-sage font-semibold">✓</span>
-                      : <span className="text-border-strong">✗</span>}
-                  </td>
-                  <td className="text-center p-4">
-                    {nb ? <span className="text-sage font-semibold">✓</span> : <span className="text-border-strong">✗</span>}
-                  </td>
+          className="relative max-w-[900px] mx-auto">
+          <HudCard className="!p-0 overflow-hidden">
+            <table className="w-full text-left">
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                  <th className="font-sans text-[11px] font-medium p-4" style={{ color: "rgba(255,255,255,0.3)" }}>Feature</th>
+                  <th className="font-sans text-[11px] font-bold p-4 text-center" style={{ color: "hsl(var(--amber-bright))" }}>This App</th>
+                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(255,255,255,0.3)" }}>Readwise</th>
+                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(255,255,255,0.3)" }}>NotebookLM</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="font-sans text-[11px] text-ink-3 p-4 border-t border-border">
-            *Readwise surfaces highlights; it does not test explanation ability
-          </p>
+              </thead>
+              <tbody>
+                {rows.map(([feat, us, rw, nb], rowIdx) => (
+                  <motion.tr key={feat as string}
+                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.4, delay: rowIdx * 0.08, ease }}>
+                    <td className="font-sans text-[12px] p-4" style={{ color: "rgba(255,255,255,0.5)" }}>{feat as string}</td>
+                    <td className="text-center p-4">
+                      <motion.span className="font-semibold text-[16px]" style={{ color: "hsl(var(--amber-bright))" }}
+                        animate={{ textShadow: ["0 0 0px transparent", "0 0 8px hsla(32,82%,51%,0.4)", "0 0 0px transparent"] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: rowIdx * 0.15 }}>✓</motion.span>
+                    </td>
+                    <td className="text-center p-4">
+                      {rw === "partial" ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓*</span>
+                        : rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
+                        : <span style={{ color: "rgba(255,255,255,0.15)" }}>✗</span>}
+                    </td>
+                    <td className="text-center p-4">
+                      {nb ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
+                        : <span style={{ color: "rgba(255,255,255,0.15)" }}>✗</span>}
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex items-center gap-2 p-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <motion.div className="w-1.5 h-1.5 rounded-full"
+                style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+              <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+                *Readwise surfaces highlights; does not test explanation ability
+              </span>
+            </div>
+          </HudCard>
+
+          {/* Callouts on the side */}
+          <div className="absolute -left-[130px] top-[20%] hidden lg:block">
+            <HudCallout label="Unique features" side="left" delay={0.5} />
+          </div>
+          <div className="absolute -right-[110px] top-[50%] hidden lg:block">
+            <HudCallout label="6 exclusives" side="right" delay={0.7} />
+          </div>
         </motion.div>
       </div>
     </section>
