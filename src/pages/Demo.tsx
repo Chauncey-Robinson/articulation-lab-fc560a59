@@ -273,57 +273,95 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
   );
 }
 
-/* PANEL 1 — THE PROBLEM */
+/* PANEL 1 — THE PROBLEM (HUD style) */
 function Panel1() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const parallaxY = useTransform(scrollYProgress, [0, 1], [60, -60]);
 
   return (
-    <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
+    <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
+      <FloatingParticles />
+
+      {/* Diagnostic overlay */}
+      <motion.div className="absolute top-8 left-8 pointer-events-none"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.5 }}>
+        <div className="flex items-center gap-2 mb-1">
+          <motion.div className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 8px hsla(8,50%,52%,0.6)" }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
+          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(8,50%,52%,0.7)" }}>Warning · Knowledge decay detected</span>
+        </div>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.15)" }}>DIAG-001 · RETENTION FAILURE</span>
+      </motion.div>
+
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <CinematicSection>
-          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-2 mb-6">
-            <div className="w-8 h-[1px] bg-accent-bright" />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-accent-bright">The problem</span>
+          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-3 mb-6">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 12px hsla(8,50%,52%,0.6)" }}
+              animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsl(8,50%,52%)" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "hsl(8,50%,52%)" }}>System · Alert</span>
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1] text-foreground" style={{ letterSpacing: "-1.5px" }}>
-            You finished it.
-            <br />
-            <span className="italic text-accent-bright">Then nothing.</span>
+
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1]" style={{ letterSpacing: "-1.5px", color: "#F8F6F2" }}>
+            You finished it.<br />
+            <span className="italic" style={{ color: "hsl(8,50%,52%)" }}>Then nothing.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] text-ink-2 mt-8">
+          <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8" style={{ color: "rgba(255,255,255,0.45)" }}>
             107 professionals told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
           </motion.p>
-          <motion.div custom={3} variants={fadeUp}
-            className="rounded-[16px] border-[1.5px] border-border bg-card p-6 mt-8"
-            style={{ borderLeft: "3px solid hsl(var(--amber-bright))" }}>
-            <p className="font-serif text-[17px] italic leading-[1.55] text-ink-2">
-              "I started forgetting the details in the weeks after. When it came to applying it in a real engagement — I couldn't structure my thoughts."
-            </p>
-            <p className="font-sans text-[11px] text-ink-3 mt-3">— ESG Professional, GRI Certification, 2025</p>
+
+          <motion.div custom={3} variants={fadeUp}>
+            <HudCard delay={0.3} style={{ borderLeft: "2px solid hsl(8,50%,52%)" }}>
+              <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "rgba(255,255,255,0.6)" }}>
+                "I started forgetting the details in the weeks after. When it came to applying it — I couldn't structure my thoughts."
+              </p>
+              <p className="font-sans text-[10px] mt-3" style={{ color: "rgba(255,255,255,0.25)" }}>— ESG Professional, GRI Certification, 2025</p>
+            </HudCard>
           </motion.div>
         </CinematicSection>
 
         <CinematicSection>
           <motion.div style={{ y: parallaxY }}>
-            <motion.div custom={0} variants={slideRight} className="mb-8">
-              <span className="font-serif leading-none text-foreground" style={{ fontSize: "clamp(72px,8vw,100px)" }}>
-                87<span className="italic text-accent-bright">%</span>
-              </span>
-              <p className="font-sans text-[14px] text-ink-3 mt-3 max-w-[340px]">
-                of professionals say real-life application is the most important feature they're missing.
-              </p>
+            <motion.div custom={0} variants={slideRight} className="relative">
+              <HudCard delay={0.1}>
+                <div className="absolute -right-[100px] top-[30%] hidden lg:block">
+                  <HudCallout label="Survey data" side="right" delay={0.4} />
+                </div>
+                <span className="font-serif leading-none" style={{ fontSize: "clamp(72px,8vw,100px)", color: "#F8F6F2" }}>
+                  87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span>
+                </span>
+                <p className="font-sans text-[14px] mt-3 max-w-[340px]" style={{ color: "rgba(255,255,255,0.35)" }}>
+                  of professionals say real-life application is the most important feature they're missing.
+                </p>
+              </HudCard>
             </motion.div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mt-4">
               {[
-                { stat: "4×", desc: "times a professional revisits material before it sticks" },
-                { stat: "£0", desc: "the value of knowledge that can't be explained" },
+                { stat: "4×", desc: "times revisited before it sticks", tag: "RETENTION" },
+                { stat: "£0", desc: "value of knowledge that can't be explained", tag: "FLUENCY" },
               ].map((c, i) => (
-                <motion.div key={c.stat} custom={i + 1} variants={slideRight}
-                  className="rounded-[16px] border-[1.5px] border-border bg-card p-5 hover:border-accent-bright hover:-translate-y-1 transition-all duration-300">
-                  <span className="font-serif text-[36px] text-foreground">{c.stat}</span>
-                  <p className="font-sans text-[12px] text-ink-3 mt-1 leading-[1.45]">{c.desc}</p>
+                <motion.div key={c.stat} custom={i + 1} variants={slideRight}>
+                  <HudCard delay={(i + 2) * 0.15}>
+                    <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded mb-2 inline-block"
+                      style={{ background: "hsla(8,50%,52%,0.12)", color: "hsl(8,50%,52%)" }}>{c.tag}</span>
+                    <span className="font-serif text-[36px] block" style={{ color: "#F8F6F2" }}>{c.stat}</span>
+                    <p className="font-sans text-[11px] mt-1 leading-[1.45]" style={{ color: "rgba(255,255,255,0.3)" }}>{c.desc}</p>
+                    <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                      <motion.div className="w-1.5 h-1.5 rounded-full"
+                        style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 4px hsl(8,50%,52%)" }}
+                        animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+                      <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Critical</span>
+                    </div>
+                  </HudCard>
                 </motion.div>
               ))}
             </div>
@@ -415,59 +453,146 @@ function Panel2() {
   );
 }
 
-/* PANEL 3 — UPLOAD & EXTRACT */
+/* PANEL 3 — UPLOAD & EXTRACT (HUD style) */
 function Panel3() {
   return (
-    <section id="panel-3" className="min-h-screen snap-start flex items-center relative" style={{ background: "#F8F6F2" }}>
+    <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
+      <FloatingParticles />
+
+      {/* Top-right system label */}
+      <motion.div className="absolute top-8 right-8 pointer-events-none text-right"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.3 }}>
+        <div className="flex items-center gap-2 justify-end mb-1">
+          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(32,82%,51%,0.5)" }}>Ingestion pipeline · Active</span>
+          <motion.div className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "hsl(var(--sage))", boxShadow: "0 0 8px hsl(var(--sage))" }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+        </div>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.12)" }}>MOD-GEN v2.1 · GEMINI-2.5-FLASH</span>
+      </motion.div>
+
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <CinematicSection>
-          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-2 mb-6">
-            <div className="w-8 h-[1px] bg-accent-bright" />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-accent-bright">Step 1 · Upload</span>
+          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-3 mb-6">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Content Ingestion
+            </span>
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground">
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05]" style={{ color: "#F8F6F2" }}>
             Paste anything.{" "}
-            <span className="italic text-accent-bright">The AI does the rest.</span>
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>The AI does the rest.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            Drop in your study notes, textbook passages, or certification material. The AI extracts the key ideas and builds a structured module with lessons.
+          <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "rgba(255,255,255,0.45)" }}>
+            Drop in your study notes, textbook passages, or certification material. The AI extracts key ideas and builds structured modules.
           </motion.p>
+
+          {/* Pipeline steps */}
+          <div className="mt-8 space-y-3">
+            {[
+              { step: "01", title: "Text extraction", desc: "Raw content parsed and cleaned", icon: "📄" },
+              { step: "02", title: "Key idea isolation", desc: "AI identifies core concepts per section", icon: "🧠" },
+              { step: "03", title: "Module generation", desc: "Structured lessons with quiz questions", icon: "📦" },
+            ].map((s, i) => (
+              <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
+                <HudCard delay={i * 0.12}>
+                  <div className="flex items-start gap-4">
+                    <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <span className="text-[16px]">{s.icon}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
+                      </div>
+                      <p className="font-sans text-[13px] font-semibold" style={{ color: "#F8F6F2" }}>{s.title}</p>
+                      <p className="font-sans text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{s.desc}</p>
+                    </div>
+                    <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
+                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                      animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
+                  </div>
+                </HudCard>
+              </motion.div>
+            ))}
+          </div>
         </CinematicSection>
 
         <CinematicSection className="flex flex-col gap-4">
-          <motion.div custom={0} variants={slideRight}
-            className="rounded-[16px] border-[1.5px] border-border bg-card p-5">
-            <span className="font-sans text-[9px] uppercase tracking-[0.14em] text-ink-3">You paste this →</span>
-            <p className="font-serif text-[11px] font-light leading-[1.6] text-ink-2 mt-2">
-              "GRI 3 requires organisations to determine which topics are material to their business… double materiality considers both financial materiality and impact materiality…"
-            </p>
+          {/* Input card */}
+          <motion.div custom={0} variants={slideRight}>
+            <HudCard delay={0.1}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                  style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.4)" }}>Input</span>
+                <HudCallout label="Raw text" side="right" delay={0.3} />
+              </div>
+              <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                "GRI 3 requires organisations to determine which topics are material… double materiality considers both financial and impact materiality…"
+              </p>
+            </HudCard>
           </motion.div>
 
-          <motion.div custom={1} variants={slideRight} className="flex flex-col items-center gap-1 py-1">
-            <motion.span className="text-accent-bright text-[24px]"
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-              ↓
-            </motion.span>
-            <span className="font-sans text-[10px] uppercase tracking-[0.14em] text-ink-3">AI generates a module</span>
+          {/* Arrow */}
+          <motion.div custom={1} variants={fadeUp} className="flex flex-col items-center gap-1 py-1">
+            <motion.div className="flex flex-col items-center"
+              animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+              <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, hsla(32,82%,51%,0.6), hsla(32,82%,51%,0.1))" }} />
+              <div className="w-0 h-0" style={{ borderLeft: "4px solid transparent", borderRight: "4px solid transparent", borderTop: "5px solid hsla(32,82%,51%,0.5)" }} />
+            </motion.div>
+            <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.2)" }}>Processing</span>
           </motion.div>
 
-          <motion.div custom={2} variants={slideRight}
-            className="rounded-[16px] border-[1.5px] border-accent-bright bg-card p-5">
-            <span className="font-sans text-[9px] uppercase tracking-[0.12em] font-semibold text-accent-bright">✦ Module generated</span>
-            <p className="font-serif text-[18px] text-foreground mt-2">GRI Standards</p>
-            <p className="font-sans text-[12px] text-ink-3 mt-1">5 lessons · 12 quiz questions</p>
-            <div className="mt-3 space-y-1.5">
-              {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
-                <div key={l} className="flex items-center gap-2 font-sans text-[11px] text-ink-2">
-                  <span className="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-bold"
-                    style={{ background: "hsl(var(--amber-pale))", color: "hsl(var(--amber-bright))" }}>
-                    {i + 1}
-                  </span>
-                  {l}
-                </div>
-              ))}
-            </div>
+          {/* Output card */}
+          <motion.div custom={2} variants={slideRight} className="relative">
+            <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
+              <div className="absolute -left-[120px] top-[20%] hidden lg:block">
+                <HudCallout label="AI generated" side="left" delay={0.6} />
+              </div>
+              <div className="absolute -right-[120px] top-[60%] hidden lg:block">
+                <HudCallout label="5 lessons" side="right" delay={0.8} />
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Module generated</span>
+              </div>
+              <p className="font-serif text-[18px]" style={{ color: "#F8F6F2" }}>GRI Standards</p>
+              <p className="font-sans text-[11px] mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>5 lessons · 12 quiz questions</p>
+              <div className="mt-3 space-y-1.5">
+                {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
+                  <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                    initial={{ opacity: 0, x: 10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}>
+                    <motion.span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold shrink-0"
+                      style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))" }}
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}>
+                      {i + 1}
+                    </motion.span>
+                    {l}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <motion.div className="w-1.5 h-1.5 rounded-full"
+                  style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                  animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Ready · Module compiled</span>
+              </div>
+            </HudCard>
           </motion.div>
         </CinematicSection>
       </div>
@@ -892,7 +1017,7 @@ function Panel5() {
   );
 }
 
-/* PANEL 6 — COMPARISON */
+/* PANEL 6 — COMPARISON (HUD style) */
 function Panel6() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -909,85 +1034,160 @@ function Panel6() {
   ] as const;
 
   return (
-    <section id="panel-6" className="min-h-screen snap-start flex items-center relative" style={{ background: "#F8F6F2" }}>
+    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
+
+      {/* Top diagnostic */}
+      <motion.div className="absolute top-8 left-8 pointer-events-none"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.3 }}>
+        <div className="flex items-center gap-2">
+          <motion.div className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 8px hsla(32,82%,51%,0.6)" }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(32,82%,51%,0.5)" }}>Competitive analysis · Live</span>
+        </div>
+      </motion.div>
+
       <div className="mx-auto w-full max-w-[1100px] px-8">
         <CinematicSection className="text-center mb-12">
-          <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-[1px] bg-accent-bright" />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-accent-bright">Why now</span>
-            <div className="w-8 h-[1px] bg-accent-bright" />
+          <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-5">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Market Scan
+            </span>
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal text-foreground">
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal" style={{ color: "#F8F6F2" }}>
             Nobody else does{" "}
-            <span className="italic text-accent-bright">this.</span>
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>this.</span>
           </motion.h2>
         </CinematicSection>
 
         <motion.div ref={ref} initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease }}
-          className="rounded-[20px] border-[1.5px] border-border bg-card overflow-hidden max-w-[900px] mx-auto"
-          style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.06)" }}>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="font-sans text-[12px] font-medium text-ink-3 p-4">Feature</th>
-                <th className="font-sans text-[12px] font-semibold text-accent-bright p-4 text-center">This App</th>
-                <th className="font-sans text-[12px] font-medium text-ink-3 p-4 text-center">Readwise</th>
-                <th className="font-sans text-[12px] font-medium text-ink-3 p-4 text-center">NotebookLM</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(([feat, us, rw, nb]) => (
-                <tr key={feat as string} className="border-b border-border last:border-0 hover:bg-surface-light transition-colors">
-                  <td className="font-sans text-[13px] text-ink-2 p-4">{feat as string}</td>
-                  <td className="text-center p-4"><span className="text-accent-bright font-semibold text-[16px]">✓</span></td>
-                  <td className="text-center p-4">
-                    {rw === "partial" ? <span className="text-sage font-semibold">✓*</span>
-                      : rw ? <span className="text-sage font-semibold">✓</span>
-                      : <span className="text-border-strong">✗</span>}
-                  </td>
-                  <td className="text-center p-4">
-                    {nb ? <span className="text-sage font-semibold">✓</span> : <span className="text-border-strong">✗</span>}
-                  </td>
+          className="relative max-w-[900px] mx-auto">
+          <HudCard className="!p-0 overflow-hidden">
+            <table className="w-full text-left">
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                  <th className="font-sans text-[11px] font-medium p-4" style={{ color: "rgba(255,255,255,0.3)" }}>Feature</th>
+                  <th className="font-sans text-[11px] font-bold p-4 text-center" style={{ color: "hsl(var(--amber-bright))" }}>This App</th>
+                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(255,255,255,0.3)" }}>Readwise</th>
+                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(255,255,255,0.3)" }}>NotebookLM</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="font-sans text-[11px] text-ink-3 p-4 border-t border-border">
-            *Readwise surfaces highlights; it does not test explanation ability
-          </p>
+              </thead>
+              <tbody>
+                {rows.map(([feat, us, rw, nb], rowIdx) => (
+                  <motion.tr key={feat as string}
+                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.4, delay: rowIdx * 0.08, ease }}>
+                    <td className="font-sans text-[12px] p-4" style={{ color: "rgba(255,255,255,0.5)" }}>{feat as string}</td>
+                    <td className="text-center p-4">
+                      <motion.span className="font-semibold text-[16px]" style={{ color: "hsl(var(--amber-bright))" }}
+                        animate={{ textShadow: ["0 0 0px transparent", "0 0 8px hsla(32,82%,51%,0.4)", "0 0 0px transparent"] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: rowIdx * 0.15 }}>✓</motion.span>
+                    </td>
+                    <td className="text-center p-4">
+                      {rw === "partial" ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓*</span>
+                        : rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
+                        : <span style={{ color: "rgba(255,255,255,0.15)" }}>✗</span>}
+                    </td>
+                    <td className="text-center p-4">
+                      {nb ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
+                        : <span style={{ color: "rgba(255,255,255,0.15)" }}>✗</span>}
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex items-center gap-2 p-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <motion.div className="w-1.5 h-1.5 rounded-full"
+                style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+              <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+                *Readwise surfaces highlights; does not test explanation ability
+              </span>
+            </div>
+          </HudCard>
+
+          {/* Callouts on the side */}
+          <div className="absolute -left-[130px] top-[20%] hidden lg:block">
+            <HudCallout label="Unique features" side="left" delay={0.5} />
+          </div>
+          <div className="absolute -right-[110px] top-[50%] hidden lg:block">
+            <HudCallout label="6 exclusives" side="right" delay={0.7} />
+          </div>
         </motion.div>
       </div>
     </section>
   );
 }
 
-/* PANEL 7 — CINEMATIC CLOSE */
+/* PANEL 7 — CINEMATIC CLOSE (HUD style) */
 function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
   return (
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "hsl(var(--foreground))" }}>
+      style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
       <FloatingParticles />
+
+      {/* Central radial glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute" style={{
           top: "20%", left: "50%", transform: "translateX(-50%)", width: 1000, height: 1000, borderRadius: "50%",
           background: "radial-gradient(circle, hsla(32,82%,51%,0.08) 0%, transparent 50%)",
+          animation: "breathe 8s ease-in-out infinite",
         }} />
+      </div>
+
+      {/* Rotating rings */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
+          <svg width="700" height="700" viewBox="0 0 700 700">
+            <circle cx="350" cy="350" r="320" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx="350" cy="350" r="320" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" strokeDasharray="8 24" />
+            <circle cx="350" cy="350" r="240" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+          </svg>
+        </motion.div>
       </div>
 
       <div className="mx-auto w-full max-w-[1100px] px-8 text-center relative z-10">
         <CinematicSection>
           <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-8">
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em]"
-              style={{ color: "rgba(255,255,255,0.35)" }}>
-              The opportunity
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Mission Brief
             </span>
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
           </motion.div>
 
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif font-normal leading-[1.05] mx-auto max-w-[800px]"
-            style={{ fontSize: "clamp(40px,5vw,64px)", letterSpacing: "-2px", color: "hsl(var(--background))" }}>
+            style={{ fontSize: "clamp(40px,5vw,64px)", letterSpacing: "-2px", color: "#F8F6F2" }}>
             Train your knowledge.{" "}
             <motion.span className="italic" style={{ color: "hsl(var(--amber-bright))" }}
               animate={{ opacity: [0.7, 1, 0.7] }}
@@ -1003,20 +1203,26 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
 
           <motion.div custom={3} variants={fadeUp} className="flex flex-wrap justify-center gap-5 mt-14">
             {[
-              { stat: "107+", desc: "professionals surveyed" },
-              { stat: "87%", desc: "say application is missing", accent: true },
-              { stat: "5", desc: "ways to prove mastery" },
-              { stat: "4 min", desc: "per session" },
-            ].map((c) => (
-              <motion.div key={c.stat}
-                className="rounded-[16px] p-6 text-left w-[200px]"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-                whileHover={{ y: -4, borderColor: "rgba(255,255,255,0.15)" }}
-                transition={{ duration: 0.3 }}>
-                <span className="font-serif text-[32px] leading-none" style={{ color: "hsl(var(--background))" }}>
-                  {c.accent ? <>87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span></> : c.stat}
-                </span>
-                <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "rgba(255,255,255,0.35)" }}>{c.desc}</p>
+              { stat: "107+", desc: "professionals surveyed", tag: "RESEARCH" },
+              { stat: "87%", desc: "say application is missing", accent: true, tag: "INSIGHT" },
+              { stat: "5", desc: "ways to prove mastery", tag: "MODES" },
+              { stat: "4 min", desc: "per session", tag: "EFFICIENCY" },
+            ].map((c, i) => (
+              <motion.div key={c.stat} whileHover={{ y: -4 }} transition={{ duration: 0.3 }}>
+                <HudCard delay={i * 0.12} style={{ width: 200, textAlign: "left" }}>
+                  <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded mb-2 inline-block"
+                    style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>{c.tag}</span>
+                  <span className="font-serif text-[32px] leading-none block" style={{ color: "#F8F6F2" }}>
+                    {c.accent ? <>87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span></> : c.stat}
+                  </span>
+                  <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "rgba(255,255,255,0.35)" }}>{c.desc}</p>
+                  <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    <motion.div className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                      animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
+                    <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Verified</span>
+                  </div>
+                </HudCard>
               </motion.div>
             ))}
           </motion.div>
@@ -1031,7 +1237,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
               }}>
               Watch again ↑
             </button>
-            <p className="font-sans text-[12px] mt-8" style={{ color: "rgba(255,255,255,0.2)" }}>
+            <p className="font-sans text-[12px] mt-8" style={{ color: "rgba(255,255,255,0.15)" }}>
               Oxford EMBA Entrepreneurship Project · 2025
             </p>
           </motion.div>
