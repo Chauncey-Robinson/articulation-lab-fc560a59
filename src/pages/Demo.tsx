@@ -98,7 +98,7 @@ function FloatingParticles() {
 function ProgressBar({ active }: { active: number }) {
   const pct = ((active + 1) / PANEL_COUNT) * 100;
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-[3px] z-50" style={{ background: "rgba(0,0,0,0.05)" }}>
+    <div className="fixed bottom-0 left-0 right-0 h-[3px] z-50" style={{ background: "hsl(var(--muted))" }}>
       <motion.div
         className="h-full"
         style={{ background: "hsl(var(--amber-bright))" }}
@@ -145,7 +145,7 @@ function FluencyBar({ label, pct, color, animate }: { label: string; pct: number
   return (
     <div className="flex items-center gap-3">
       <span className="font-sans text-[11px] w-[110px] text-right" style={{ color: "hsl(var(--ink-3))" }}>{label}</span>
-      <div className="flex-1 h-[4px] rounded-[2px]" style={{ background: "rgba(0,0,0,0.08)" }}>
+      <div className="flex-1 h-[4px] rounded-[2px]" style={{ background: "hsl(var(--surface-2))" }}>
         <motion.div
           className="h-full rounded-[2px]"
           initial={{ width: 0 }}
@@ -355,7 +355,7 @@ function Panel1() {
                       style={{ background: "hsl(var(--destructive) / 0.12)", color: "hsl(var(--destructive))" }}>{c.tag}</span>
                     <span className="font-serif text-[36px] block" style={{ color: "hsl(var(--foreground))" }}>{c.stat}</span>
                     <p className="font-sans text-[11px] mt-1 leading-[1.45]" style={{ color: "hsl(var(--muted-foreground))" }}>{c.desc}</p>
-                    <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                    <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
                       <motion.div className="w-1.5 h-1.5 rounded-full"
                         style={{ background: "hsl(var(--destructive))", boxShadow: "0 0 4px hsl(var(--destructive))" }}
                         animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
@@ -385,7 +385,7 @@ function Panel2() {
         {/* Dark analytics card */}
         <CinematicSection>
           <motion.div ref={ref} custom={0} variants={fadeScale}
-            className="rounded-[24px] p-8" style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
+            className="rounded-[24px] p-8" style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
             <span className="font-serif text-[80px] italic leading-none text-accent-bright">14</span>
             <p className="font-sans text-[11px] uppercase tracking-[0.14em] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Day streak</p>
 
@@ -436,7 +436,7 @@ function Panel2() {
             ].map((c, i) => (
               <motion.div key={c.num} custom={i + 3} variants={slideRight}
                 className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
-                style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
+                style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
                 <div className="flex items-start gap-4">
                   <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
                   <div>
@@ -507,7 +507,7 @@ function Panel3() {
                 <HudCard delay={i * 0.12}>
                   <div className="flex items-start gap-4">
                     <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
-                      style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
+                      style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
                       <span className="text-[16px]">{s.icon}</span>
                     </div>
                     <div className="flex-1">
@@ -534,7 +534,7 @@ function Panel3() {
             <HudCard delay={0.1}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "rgba(0,0,0,0.06)", color: "hsl(var(--ink-3))" }}>Input</span>
+                  style={{ background: "hsl(var(--muted))", color: "hsl(var(--ink-3))" }}>Input</span>
                 <HudCallout label="Raw text" side="right" delay={0.3} />
               </div>
               <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "hsl(var(--ink-2))" }}>
@@ -586,7 +586,7 @@ function Panel3() {
                   </motion.div>
                 ))}
               </div>
-              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
                 <motion.div className="w-1.5 h-1.5 rounded-full"
                   style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                   animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
@@ -625,8 +625,8 @@ function HudCard({ children, className = "", delay = 0, style: extraStyle }: { c
       transition={{ duration: 0.7, delay, ease }}
       className={`relative ${className}`}
       style={{
-        background: "rgba(0,0,0,0.04)",
-        border: "1px solid rgba(0,0,0,0.08)",
+        background: "hsl(var(--muted))",
+        border: "1px solid hsl(var(--border))",
         borderRadius: 16,
         padding: 24,
         ...extraStyle,
@@ -727,7 +727,7 @@ function Panel4() {
                 <HudCard delay={i * 0.1}>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
-                      style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
+                      style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
                       <span className="text-[18px]">{f.icon}</span>
                     </div>
                     <div className="flex-1">
@@ -854,9 +854,9 @@ function Panel5() {
           animate={{ rotate: 360 }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
           <svg width="600" height="600" viewBox="0 0 600 600">
-            <circle cx="300" cy="300" r="280" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
-            <circle cx="300" cy="300" r="200" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
-            <circle cx="300" cy="300" r="120" fill="none" stroke="rgba(0,0,0,0.05)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="280" fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
+            <circle cx="300" cy="300" r="200" fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
+            <circle cx="300" cy="300" r="120" fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
             <circle cx="300" cy="300" r="280" fill="none" stroke="hsla(32,82%,51%,0.12)" strokeWidth="1" strokeDasharray="8 20" />
           </svg>
         </motion.div>
@@ -938,7 +938,7 @@ function Panel5() {
                     {f.desc}
                   </p>
                   {/* Mini data readout */}
-                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
                     <motion.div className="w-1.5 h-1.5 rounded-full"
                       style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                       animate={{ opacity: [1, 0.3, 1] }}
@@ -979,7 +979,7 @@ function Panel5() {
                     <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>
                       {f.desc}
                     </p>
-                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
                       <motion.div className="w-1.5 h-1.5 rounded-full"
                         style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                         animate={{ opacity: [1, 0.3, 1] }}
@@ -1081,7 +1081,7 @@ function Panel6() {
           <HudCard className="!p-0 overflow-hidden">
             <table className="w-full text-left">
               <thead>
-                <tr style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                <tr style={{ borderBottom: "1px solid hsl(var(--border))" }}>
                   <th className="font-sans text-[11px] font-medium p-4" style={{ color: "hsl(var(--muted-foreground))" }}>Feature</th>
                   <th className="font-sans text-[11px] font-bold p-4 text-center" style={{ color: "hsl(var(--amber-bright))" }}>This App</th>
                   <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "hsl(var(--muted-foreground))" }}>Readwise</th>
@@ -1091,7 +1091,7 @@ function Panel6() {
               <tbody>
                 {rows.map(([feat, us, rw, nb], rowIdx) => (
                   <motion.tr key={feat as string}
-                    style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}
+                    style={{ borderBottom: "1px solid hsl(var(--border))" }}
                     initial={{ opacity: 0, x: -20 }}
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.4, delay: rowIdx * 0.08, ease }}>
@@ -1114,7 +1114,7 @@ function Panel6() {
                 ))}
               </tbody>
             </table>
-            <div className="flex items-center gap-2 p-4" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+            <div className="flex items-center gap-2 p-4" style={{ borderTop: "1px solid hsl(var(--border))" }}>
               <motion.div className="w-1.5 h-1.5 rounded-full"
                 style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                 animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
@@ -1162,9 +1162,9 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
           <svg width="700" height="700" viewBox="0 0 700 700">
-            <circle cx="350" cy="350" r="320" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
+            <circle cx="350" cy="350" r="320" fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
             <circle cx="350" cy="350" r="320" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" strokeDasharray="8 24" />
-            <circle cx="350" cy="350" r="240" fill="none" stroke="rgba(0,0,0,0.03)" strokeWidth="1" />
+            <circle cx="350" cy="350" r="240" fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
           </svg>
         </motion.div>
       </div>
@@ -1216,7 +1216,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
                     {c.accent ? <>87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span></> : c.stat}
                   </span>
                   <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "hsl(var(--ink-3))" }}>{c.desc}</p>
-                  <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                  <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
                     <motion.div className="w-1.5 h-1.5 rounded-full"
                       style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                       animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
