@@ -44,6 +44,7 @@ export default function Apply() {
     try {
       const result = await evaluateApplication(scenario, lesson.key_idea, response);
       setEvaluation(result);
+      speak(`Score: ${result.score} out of 10. ${result.feedback}`);
     } catch (e: any) {
       setError(e.message || "Something went wrong.");
     } finally {
