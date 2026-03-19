@@ -52,6 +52,14 @@ export default function Flashcards() {
 
   const currentCard = cards[currentIdx];
 
+  // Speak card front when it changes
+  useEffect(() => {
+    if (currentCard && !flipped) {
+      speak(currentCard.front);
+    }
+    return () => stop();
+  }, [currentIdx]);
+
   const handleResult = (result: "knew" | "didnt") => {
     setResults(prev => { const n = [...prev]; n[currentIdx] = result; return n; });
     setFlipped(false);
