@@ -333,8 +333,10 @@ function Panel1() {
           <motion.div style={{ y: parallaxY }}>
             <motion.div custom={0} variants={slideRight} className="relative">
               <HudCard delay={0.1}>
-                <div className="absolute -right-[100px] top-[30%] hidden lg:block">
-                  <HudCallout label="Survey data" side="right" delay={0.4} />
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                    style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Survey data</span>
+                  <HudCallout label="Verified" side="right" delay={0.4} />
                 </div>
                 <span className="font-serif leading-none" style={{ fontSize: "clamp(72px,8vw,100px)", color: "hsl(var(--foreground))" }}>
                   87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span>
