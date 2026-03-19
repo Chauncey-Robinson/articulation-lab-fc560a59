@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson } from "@/lib/TutorContext";
+import { useTTS } from "@/hooks/useSpeech";
 
 export default function LessonStudy() {
   const { id } = useParams<{ id: string }>();

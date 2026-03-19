@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getTeachBackFeedback } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
+import { useTTS } from "@/hooks/useSpeech";
 
 export default function TeachBack() {
   const { lessonId } = useParams<{ lessonId: string }>();

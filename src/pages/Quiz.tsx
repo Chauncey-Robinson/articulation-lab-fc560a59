@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { generateQuiz, evaluateAnswer, type GeneratedQuestion } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
+import { useTTS } from "@/hooks/useSpeech";
 
 interface QuizQuestion extends GeneratedQuestion {
   id?: string;
