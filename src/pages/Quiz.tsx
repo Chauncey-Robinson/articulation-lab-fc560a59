@@ -73,6 +73,8 @@ export default function Quiz() {
     try {
       const result = await evaluateAnswer(currentQ.question, currentQ.correct_answer, userAnswer, currentQ.question_type);
       setFeedback(result);
+      // Speak feedback
+      speak(`${result.is_correct ? "Correct!" : "Not quite."} ${result.feedback}`);
       setScore(prev => ({
         correct: prev.correct + (result.is_correct ? 1 : 0),
         total: prev.total + 1,
