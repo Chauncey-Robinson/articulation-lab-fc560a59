@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { Lesson } from "@/lib/TutorContext";
+import { useTTS } from "@/hooks/useSpeech";
 
 interface Flashcard {
   front: string;
@@ -13,6 +14,7 @@ export default function Flashcards() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { speak, stop } = useTTS();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cards, setCards] = useState<Flashcard[]>([]);
@@ -49,6 +51,14 @@ export default function Flashcards() {
   }, [user, moduleId]);
 
   const currentCard = cards[currentIdx];
+
+  // Speak card front when it changes
+  useEffect(() => {
+    if (currentCard && !flipped) {
+      speak(currentCard.front);
+    }
+    return () => stop();
+  }, [currentIdx]);
 
   const handleResult = (result: "knew" | "didnt") => {
     setResults(prev => { const n = [...prev]; n[currentIdx] = result; return n; });
@@ -130,7 +140,7 @@ export default function Flashcards() {
         <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-4 animate-fade-up">FLASHCARD</p>
 
         {/* Card */}
-        <button onClick={() => setFlipped(!flipped)}
+        <button onClick={() => { setFlipped(!flipped); if (!flipped && currentCard) speak(currentCard.back); }}
           className="w-full bg-card rounded-[20px] border-[1.5px] border-border p-8 min-h-[240px] flex flex-col items-center justify-center text-center transition-all duration-300 hover:shadow-card-hover mb-6 animate-fade-up stagger-2">
           {!flipped ? (
             <>

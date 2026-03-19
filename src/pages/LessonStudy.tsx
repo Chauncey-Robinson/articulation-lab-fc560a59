@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson } from "@/lib/TutorContext";
+import { useTTS } from "@/hooks/useSpeech";
 
 export default function LessonStudy() {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,15 @@ export default function LessonStudy() {
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [marking, setMarking] = useState(false);
+  const { speak, stop, muted, toggleMute } = useTTS();
+
+  // Auto-read lesson content aloud
+  useEffect(() => {
+    if (lesson && !muted) {
+      speak(`${lesson.title}. ${lesson.key_idea}. ${lesson.content}`);
+    }
+    return () => stop();
+  }, [lesson?.id]);
 
   useEffect(() => {
     if (!id) return;
@@ -51,8 +61,11 @@ export default function LessonStudy() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
+    <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10 relative">
       <button onClick={() => navigate(`/module/${lesson.module_id}`)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
+      <button onClick={toggleMute} className="absolute top-4 right-6 text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">
+        {muted ? "🔇 Unmute" : "🔊 Mute"}
+      </button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
         {/* Lesson header */}

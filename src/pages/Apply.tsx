@@ -4,10 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { getApplyScenario, evaluateApplication, type ApplicationEvaluation } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
+import { useTTS } from "@/hooks/useSpeech";
 
 export default function Apply() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
+  const { speak, stop } = useTTS();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [scenario, setScenario] = useState("");
@@ -26,6 +28,7 @@ export default function Apply() {
         setLesson(l);
         const sc = await getApplyScenario(l.title, l.key_idea);
         setScenario(sc);
+        speak(sc);
       } catch (e: any) {
         setError(e.message || "Failed to load.");
       } finally {
@@ -41,6 +44,7 @@ export default function Apply() {
     try {
       const result = await evaluateApplication(scenario, lesson.key_idea, response);
       setEvaluation(result);
+      speak(`Score: ${result.score} out of 10. ${result.feedback}`);
     } catch (e: any) {
       setError(e.message || "Something went wrong.");
     } finally {

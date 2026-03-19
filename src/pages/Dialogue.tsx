@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
+import { useTTS } from "@/hooks/useSpeech";
 
 interface Message {
   role: "user" | "assistant";
@@ -14,6 +15,7 @@ export default function Dialogue() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { speak, stop } = useTTS();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -28,10 +30,9 @@ export default function Dialogue() {
       if (data) {
         const l = data as unknown as Lesson;
         setLesson(l);
-        setMessages([{
-          role: "assistant",
-          content: `Let's discuss "${l.title}". Ask me anything about this topic — I'll explain, challenge your thinking, or help you connect ideas.`
-        }]);
+        const greeting = `Let's discuss "${l.title}". Ask me anything about this topic — I'll explain, challenge your thinking, or help you connect ideas.`;
+        setMessages([{ role: "assistant", content: greeting }]);
+        speak(greeting);
       }
       setLoading(false);
     })();
@@ -61,7 +62,9 @@ export default function Dialogue() {
       });
       if (error) throw new Error(error.message);
       if (data?.error) throw new Error(data.error);
-      setMessages(prev => [...prev, { role: "assistant", content: data.content }]);
+      const aiContent = data.content;
+      setMessages(prev => [...prev, { role: "assistant", content: aiContent }]);
+      speak(aiContent);
     } catch (e: any) {
       setMessages(prev => [...prev, { role: "assistant", content: "Sorry, something went wrong. Try again." }]);
     } finally {

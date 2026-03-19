@@ -4,10 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { getTeachBackFeedback } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
+import { useTTS } from "@/hooks/useSpeech";
 
 export default function TeachBack() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
+  const { speak, stop } = useTTS();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [explanation, setExplanation] = useState("");
@@ -32,6 +34,7 @@ export default function TeachBack() {
     try {
       const fb = await getTeachBackFeedback(lesson.key_idea, explanation);
       setFeedback(fb);
+      speak(fb);
     } catch (e: any) {
       setError(e.message || "Something went wrong.");
     } finally {

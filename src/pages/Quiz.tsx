@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { generateQuiz, evaluateAnswer, type GeneratedQuestion } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
+import { useTTS } from "@/hooks/useSpeech";
 
 interface QuizQuestion extends GeneratedQuestion {
   id?: string;
@@ -15,6 +16,7 @@ export default function Quiz() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { speak, stop } = useTTS();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -54,6 +56,14 @@ export default function Quiz() {
 
   const currentQ = questions[currentIdx];
 
+  // Speak each question aloud
+  useEffect(() => {
+    if (currentQ) {
+      speak(currentQ.question);
+    }
+    return () => stop();
+  }, [currentIdx, currentQ?.question]);
+
   const handleSubmit = async () => {
     if (!currentQ || !user) return;
     setSubmitting(true);
@@ -63,6 +73,8 @@ export default function Quiz() {
     try {
       const result = await evaluateAnswer(currentQ.question, currentQ.correct_answer, userAnswer, currentQ.question_type);
       setFeedback(result);
+      // Speak feedback
+      speak(`${result.is_correct ? "Correct!" : "Not quite."} ${result.feedback}`);
       setScore(prev => ({
         correct: prev.correct + (result.is_correct ? 1 : 0),
         total: prev.total + 1,
