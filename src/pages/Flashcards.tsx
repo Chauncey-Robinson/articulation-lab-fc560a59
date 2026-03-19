@@ -140,7 +140,7 @@ export default function Flashcards() {
         <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-4 animate-fade-up">FLASHCARD</p>
 
         {/* Card */}
-        <button onClick={() => setFlipped(!flipped)}
+        <button onClick={() => { setFlipped(!flipped); if (!flipped && currentCard) speak(currentCard.back); }}
           className="w-full bg-card rounded-[20px] border-[1.5px] border-border p-8 min-h-[240px] flex flex-col items-center justify-center text-center transition-all duration-300 hover:shadow-card-hover mb-6 animate-fade-up stagger-2">
           {!flipped ? (
             <>
