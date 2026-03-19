@@ -1048,11 +1048,52 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
 export default function Demo() {
   const [active, setActive] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef(true);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const scrollTo = useCallback((n: number) => {
     const el = document.getElementById(`panel-${n}`);
     el?.scrollIntoView({ behavior: "smooth" });
   }, []);
+
+  // Auto-scroll through panels
+  useEffect(() => {
+    const AUTO_TIMES = [5000, 4000, 4500, 4000, 5000, 4500, 4000, 6000];
+    if (!autoPlayRef.current) return;
+
+    const t = setTimeout(() => {
+      if (!autoPlayRef.current) return;
+      const next = (active + 1) % PANEL_COUNT;
+      setActive(next);
+      scrollTo(next);
+    }, AUTO_TIMES[active]);
+
+    return () => clearTimeout(t);
+  }, [active, scrollTo]);
+
+  // Pause auto-scroll on user interaction, resume after 8s
+  const pauseAutoPlay = useCallback(() => {
+    autoPlayRef.current = false;
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      autoPlayRef.current = true;
+      // Trigger re-render to restart auto-scroll
+      setActive((a) => a);
+    }, 8000);
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const onWheel = () => pauseAutoPlay();
+    const onTouch = () => pauseAutoPlay();
+    container.addEventListener("wheel", onWheel, { passive: true });
+    container.addEventListener("touchstart", onTouch, { passive: true });
+    return () => {
+      container.removeEventListener("wheel", onWheel);
+      container.removeEventListener("touchstart", onTouch);
+    };
+  }, [pauseAutoPlay]);
 
   useEffect(() => {
     const panels = Array.from({ length: PANEL_COUNT }, (_, i) =>
@@ -1076,6 +1117,7 @@ export default function Demo() {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      pauseAutoPlay();
       if (e.key === "ArrowDown" || e.key === " ") {
         e.preventDefault();
         setActive((a) => {
@@ -1094,7 +1136,7 @@ export default function Demo() {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [scrollTo]);
+  }, [scrollTo, pauseAutoPlay]);
 
   return (
     <div ref={containerRef} className="h-screen overflow-y-auto" style={{ scrollSnapType: "y mandatory" }}>
