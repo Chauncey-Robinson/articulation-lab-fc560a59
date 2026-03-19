@@ -280,7 +280,7 @@ function Panel1() {
   const parallaxY = useTransform(scrollYProgress, [0, 1], [60, -60]);
 
   return (
-    <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
+    <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
@@ -294,9 +294,9 @@ function Panel1() {
         transition={{ duration: 1, delay: 0.5 }}>
         <div className="flex items-center gap-2 mb-1">
           <motion.div className="w-1.5 h-1.5 rounded-full"
-            style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 8px hsla(8,50%,52%,0.6)" }}
+            style={{ background: "hsl(var(--destructive))", boxShadow: "0 0 8px hsla(var(--destructive) / 0.6)" }}
             animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
-          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(8,50%,52%,0.7)" }}>Warning · Knowledge decay detected</span>
+          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--destructive) / 0.7)" }}>Warning · Knowledge decay detected</span>
         </div>
         <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.15)" }}>DIAG-001 · RETENTION FAILURE</span>
       </motion.div>
@@ -305,15 +305,15 @@ function Panel1() {
         <CinematicSection>
           <motion.div custom={0} variants={fadeUp} className="flex items-center gap-3 mb-6">
             <motion.div className="w-2 h-2 rounded-full"
-              style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 12px hsla(8,50%,52%,0.6)" }}
+              style={{ background: "hsl(var(--destructive))", boxShadow: "0 0 12px hsla(var(--destructive) / 0.6)" }}
               animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
-            <div className="w-10 h-[1px]" style={{ background: "hsl(8,50%,52%)" }} />
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "hsl(8,50%,52%)" }}>System · Alert</span>
+            <div className="w-10 h-[1px]" style={{ background: "hsl(var(--destructive))" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "hsl(var(--destructive))" }}>System · Alert</span>
           </motion.div>
 
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1]" style={{ letterSpacing: "-1.5px", color: "hsl(var(--foreground))" }}>
             You finished it.<br />
-            <span className="italic" style={{ color: "hsl(8,50%,52%)" }}>Then nothing.</span>
+            <span className="italic" style={{ color: "hsl(var(--destructive))" }}>Then nothing.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8" style={{ color: "rgba(0,0,0,0.45)" }}>
             107 professionals told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
@@ -352,12 +352,12 @@ function Panel1() {
                 <motion.div key={c.stat} custom={i + 1} variants={slideRight}>
                   <HudCard delay={(i + 2) * 0.15}>
                     <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded mb-2 inline-block"
-                      style={{ background: "hsla(8,50%,52%,0.12)", color: "hsl(8,50%,52%)" }}>{c.tag}</span>
+                      style={{ background: "hsl(var(--destructive) / 0.12)", color: "hsl(var(--destructive))" }}>{c.tag}</span>
                     <span className="font-serif text-[36px] block" style={{ color: "hsl(var(--foreground))" }}>{c.stat}</span>
                     <p className="font-sans text-[11px] mt-1 leading-[1.45]" style={{ color: "rgba(0,0,0,0.3)" }}>{c.desc}</p>
                     <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                       <motion.div className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 4px hsl(8,50%,52%)" }}
+                        style={{ background: "hsl(var(--destructive))", boxShadow: "0 0 4px hsl(var(--destructive))" }}
                         animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
                       <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.2)" }}>Critical</span>
                     </div>
@@ -379,7 +379,7 @@ function Panel2() {
 
   return (
     <section id="panel-2" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#F8F6F2" }}>
+      style={{ background: "hsl(var(--background))" }}>
       <FloatingParticles />
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         {/* Dark analytics card */}
@@ -456,7 +456,7 @@ function Panel2() {
 /* PANEL 3 — UPLOAD & EXTRACT (HUD style) */
 function Panel3() {
   return (
-    <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
+    <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
@@ -680,7 +680,7 @@ function ScanLine() {
 function Panel4() {
   return (
     <section id="panel-4" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#F8F6F2" }}>
+      style={{ background: "hsl(var(--background))" }}>
       {/* Grid overlay */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
@@ -840,7 +840,7 @@ function Panel5() {
 
   return (
     <section id="panel-5" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#F8F6F2" }}>
+      style={{ background: "hsl(var(--background))" }}>
       {/* Grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
@@ -1034,7 +1034,7 @@ function Panel6() {
   ] as const;
 
   return (
-    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
+    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
@@ -1141,7 +1141,7 @@ function Panel6() {
 function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
   return (
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#F8F6F2" }}>
+      style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
