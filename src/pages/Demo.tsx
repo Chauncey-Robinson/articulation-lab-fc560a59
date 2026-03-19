@@ -333,8 +333,10 @@ function Panel1() {
           <motion.div style={{ y: parallaxY }}>
             <motion.div custom={0} variants={slideRight} className="relative">
               <HudCard delay={0.1}>
-                <div className="absolute -right-[100px] top-[30%] hidden lg:block">
-                  <HudCallout label="Survey data" side="right" delay={0.4} />
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                    style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Survey data</span>
+                  <HudCallout label="Verified" side="right" delay={0.4} />
                 </div>
                 <span className="font-serif leading-none" style={{ fontSize: "clamp(72px,8vw,100px)", color: "hsl(var(--foreground))" }}>
                   87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span>
@@ -556,10 +558,8 @@ function Panel3() {
           {/* Output card */}
           <motion.div custom={2} variants={slideRight} className="relative">
             <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
-              <div className="absolute -left-[120px] top-[20%] hidden lg:block">
-                <HudCallout label="AI generated" side="left" delay={0.6} />
-              </div>
-              <div className="absolute -right-[120px] top-[60%] hidden lg:block">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <HudCallout label="AI generated" side="right" delay={0.6} />
                 <HudCallout label="5 lessons" side="right" delay={0.8} />
               </div>
               <div className="flex items-center gap-2 mb-3">
