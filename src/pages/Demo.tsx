@@ -453,59 +453,146 @@ function Panel2() {
   );
 }
 
-/* PANEL 3 — UPLOAD & EXTRACT */
+/* PANEL 3 — UPLOAD & EXTRACT (HUD style) */
 function Panel3() {
   return (
-    <section id="panel-3" className="min-h-screen snap-start flex items-center relative" style={{ background: "#F8F6F2" }}>
+    <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
+      <FloatingParticles />
+
+      {/* Top-right system label */}
+      <motion.div className="absolute top-8 right-8 pointer-events-none text-right"
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.3 }}>
+        <div className="flex items-center gap-2 justify-end mb-1">
+          <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(32,82%,51%,0.5)" }}>Ingestion pipeline · Active</span>
+          <motion.div className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "hsl(var(--sage))", boxShadow: "0 0 8px hsl(var(--sage))" }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+        </div>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.12)" }}>MOD-GEN v2.1 · GEMINI-2.5-FLASH</span>
+      </motion.div>
+
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <CinematicSection>
-          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-2 mb-6">
-            <div className="w-8 h-[1px] bg-accent-bright" />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-accent-bright">Step 1 · Upload</span>
+          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-3 mb-6">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Content Ingestion
+            </span>
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05] text-foreground">
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05]" style={{ color: "#F8F6F2" }}>
             Paste anything.{" "}
-            <span className="italic text-accent-bright">The AI does the rest.</span>
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>The AI does the rest.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] text-ink-2 mt-6">
-            Drop in your study notes, textbook passages, or certification material. The AI extracts the key ideas and builds a structured module with lessons.
+          <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "rgba(255,255,255,0.45)" }}>
+            Drop in your study notes, textbook passages, or certification material. The AI extracts key ideas and builds structured modules.
           </motion.p>
+
+          {/* Pipeline steps */}
+          <div className="mt-8 space-y-3">
+            {[
+              { step: "01", title: "Text extraction", desc: "Raw content parsed and cleaned", icon: "📄" },
+              { step: "02", title: "Key idea isolation", desc: "AI identifies core concepts per section", icon: "🧠" },
+              { step: "03", title: "Module generation", desc: "Structured lessons with quiz questions", icon: "📦" },
+            ].map((s, i) => (
+              <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
+                <HudCard delay={i * 0.12}>
+                  <div className="flex items-start gap-4">
+                    <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <span className="text-[16px]">{s.icon}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
+                      </div>
+                      <p className="font-sans text-[13px] font-semibold" style={{ color: "#F8F6F2" }}>{s.title}</p>
+                      <p className="font-sans text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{s.desc}</p>
+                    </div>
+                    <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
+                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                      animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
+                  </div>
+                </HudCard>
+              </motion.div>
+            ))}
+          </div>
         </CinematicSection>
 
         <CinematicSection className="flex flex-col gap-4">
-          <motion.div custom={0} variants={slideRight}
-            className="rounded-[16px] border-[1.5px] border-border bg-card p-5">
-            <span className="font-sans text-[9px] uppercase tracking-[0.14em] text-ink-3">You paste this →</span>
-            <p className="font-serif text-[11px] font-light leading-[1.6] text-ink-2 mt-2">
-              "GRI 3 requires organisations to determine which topics are material to their business… double materiality considers both financial materiality and impact materiality…"
-            </p>
+          {/* Input card */}
+          <motion.div custom={0} variants={slideRight}>
+            <HudCard delay={0.1}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                  style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.4)" }}>Input</span>
+                <HudCallout label="Raw text" side="right" delay={0.3} />
+              </div>
+              <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                "GRI 3 requires organisations to determine which topics are material… double materiality considers both financial and impact materiality…"
+              </p>
+            </HudCard>
           </motion.div>
 
-          <motion.div custom={1} variants={slideRight} className="flex flex-col items-center gap-1 py-1">
-            <motion.span className="text-accent-bright text-[24px]"
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-              ↓
-            </motion.span>
-            <span className="font-sans text-[10px] uppercase tracking-[0.14em] text-ink-3">AI generates a module</span>
+          {/* Arrow */}
+          <motion.div custom={1} variants={fadeUp} className="flex flex-col items-center gap-1 py-1">
+            <motion.div className="flex flex-col items-center"
+              animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+              <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, hsla(32,82%,51%,0.6), hsla(32,82%,51%,0.1))" }} />
+              <div className="w-0 h-0" style={{ borderLeft: "4px solid transparent", borderRight: "4px solid transparent", borderTop: "5px solid hsla(32,82%,51%,0.5)" }} />
+            </motion.div>
+            <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.2)" }}>Processing</span>
           </motion.div>
 
-          <motion.div custom={2} variants={slideRight}
-            className="rounded-[16px] border-[1.5px] border-accent-bright bg-card p-5">
-            <span className="font-sans text-[9px] uppercase tracking-[0.12em] font-semibold text-accent-bright">✦ Module generated</span>
-            <p className="font-serif text-[18px] text-foreground mt-2">GRI Standards</p>
-            <p className="font-sans text-[12px] text-ink-3 mt-1">5 lessons · 12 quiz questions</p>
-            <div className="mt-3 space-y-1.5">
-              {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
-                <div key={l} className="flex items-center gap-2 font-sans text-[11px] text-ink-2">
-                  <span className="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-bold"
-                    style={{ background: "hsl(var(--amber-pale))", color: "hsl(var(--amber-bright))" }}>
-                    {i + 1}
-                  </span>
-                  {l}
-                </div>
-              ))}
-            </div>
+          {/* Output card */}
+          <motion.div custom={2} variants={slideRight} className="relative">
+            <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
+              <div className="absolute -left-[120px] top-[20%] hidden lg:block">
+                <HudCallout label="AI generated" side="left" delay={0.6} />
+              </div>
+              <div className="absolute -right-[120px] top-[60%] hidden lg:block">
+                <HudCallout label="5 lessons" side="right" delay={0.8} />
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Module generated</span>
+              </div>
+              <p className="font-serif text-[18px]" style={{ color: "#F8F6F2" }}>GRI Standards</p>
+              <p className="font-sans text-[11px] mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>5 lessons · 12 quiz questions</p>
+              <div className="mt-3 space-y-1.5">
+                {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
+                  <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                    initial={{ opacity: 0, x: 10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}>
+                    <motion.span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold shrink-0"
+                      style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))" }}
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}>
+                      {i + 1}
+                    </motion.span>
+                    {l}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <motion.div className="w-1.5 h-1.5 rounded-full"
+                  style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                  animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Ready · Module compiled</span>
+              </div>
+            </HudCard>
           </motion.div>
         </CinematicSection>
       </div>
