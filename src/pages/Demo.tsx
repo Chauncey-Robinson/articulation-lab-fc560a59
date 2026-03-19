@@ -419,7 +419,7 @@ function Panel2() {
             </span>
           </motion.div>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1]"
-            style={{ letterSpacing: "-1.5px", color: "hsl(var(--background))" }}>
+            style={{ letterSpacing: "-1.5px", color: "hsl(var(--foreground))" }}>
             A gym for{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>professional knowledge.</span>
           </motion.h2>
