@@ -229,7 +229,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
             </motion.h1>
 
             <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
-              style={{ color: "rgba(0,0,0,0.5)" }}>
+              style={{ color: "rgba(255,255,255,0.5)" }}>
               Upload what you're studying. The AI breaks it down. A British voice teaches it back to you.
               Then you prove you own it.
             </motion.p>
