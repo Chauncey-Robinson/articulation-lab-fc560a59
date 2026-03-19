@@ -63,6 +63,9 @@ export default function LessonStudy() {
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <button onClick={() => navigate(`/module/${lesson.module_id}`)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
+      <button onClick={toggleMute} className="absolute top-4 right-6 text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">
+        {muted ? "🔇 Unmute" : "🔊 Mute"}
+      </button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
         {/* Lesson header */}
