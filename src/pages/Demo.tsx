@@ -440,7 +440,7 @@ function Panel2() {
                 <div className="flex items-start gap-4">
                   <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
                   <div>
-                    <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--background))" }}>{c.title}</p>
+                    <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{c.title}</p>
                     <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "rgba(0,0,0,0.45)" }}>{c.desc}</p>
                   </div>
                 </div>
