@@ -56,6 +56,14 @@ export default function Quiz() {
 
   const currentQ = questions[currentIdx];
 
+  // Speak each question aloud
+  useEffect(() => {
+    if (currentQ) {
+      speak(currentQ.question);
+    }
+    return () => stop();
+  }, [currentIdx, currentQ?.question]);
+
   const handleSubmit = async () => {
     if (!currentQ || !user) return;
     setSubmitting(true);
