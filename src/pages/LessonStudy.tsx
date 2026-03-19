@@ -13,6 +13,15 @@ export default function LessonStudy() {
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [marking, setMarking] = useState(false);
+  const { speak, stop, muted, toggleMute } = useTTS();
+
+  // Auto-read lesson content aloud
+  useEffect(() => {
+    if (lesson && !muted) {
+      speak(`${lesson.title}. ${lesson.key_idea}. ${lesson.content}`);
+    }
+    return () => stop();
+  }, [lesson?.id]);
 
   useEffect(() => {
     if (!id) return;
