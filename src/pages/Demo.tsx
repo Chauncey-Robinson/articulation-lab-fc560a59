@@ -245,7 +245,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
               </button>
               <button onClick={() => scrollTo(7)}
                 className="font-sans text-[13px] transition-colors duration-300"
-                style={{ color: "rgba(0,0,0,0.35)" }}>
+                style={{ color: "rgba(255,255,255,0.35)" }}>
                 Skip to end ↓
               </button>
             </motion.div>
