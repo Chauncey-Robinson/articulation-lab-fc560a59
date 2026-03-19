@@ -9,6 +9,7 @@ import { useTTS } from "@/hooks/useSpeech";
 export default function TeachBack() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
+  const { speak, stop } = useTTS();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [explanation, setExplanation] = useState("");
