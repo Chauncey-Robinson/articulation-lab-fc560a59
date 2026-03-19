@@ -28,6 +28,7 @@ export default function Apply() {
         setLesson(l);
         const sc = await getApplyScenario(l.title, l.key_idea);
         setScenario(sc);
+        speak(sc);
       } catch (e: any) {
         setError(e.message || "Failed to load.");
       } finally {
