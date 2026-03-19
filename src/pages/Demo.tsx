@@ -175,7 +175,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
       ref={ref}
       id="panel-0"
       className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#F8F6F2" }}
+      style={{ background: "hsl(var(--foreground))" }}
     >
       {/* Dramatic gradient orbs */}
       <div className="absolute inset-0 pointer-events-none">
