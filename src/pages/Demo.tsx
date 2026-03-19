@@ -266,8 +266,8 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <span className="font-sans text-[9px] uppercase tracking-[0.2em]" style={{ color: "rgba(0,0,0,0.2)" }}>Scroll</span>
-        <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.2), transparent)" }} />
+        <span className="font-sans text-[9px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.2)" }}>Scroll</span>
+        <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.2), transparent)" }} />
       </motion.div>
     </section>
   );
