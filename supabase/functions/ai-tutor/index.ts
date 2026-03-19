@@ -210,49 +210,45 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY is not configured");
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const config = buildRequest(body);
-    if (!config) {
-      return new Response(JSON.stringify({ error: "Invalid type" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Build Claude messages API request
+    // Build OpenAI-compatible request for Lovable AI Gateway (Gemini)
     const requestBody: Record<string, unknown> = {
-      model: "claude-sonnet-4-20250514",
+      model: "google/gemini-2.5-flash",
       max_tokens: config.maxTokens,
-      system: config.systemPrompt,
     };
 
     if (config.type === "dialogue") {
-      // For dialogue, pass full conversation history
       const dialogueConfig = config as { type: string; systemPrompt: string; messages: Array<{ role: string; content: string }>; maxTokens: number };
-      requestBody.messages = dialogueConfig.messages.length > 0
-        ? dialogueConfig.messages
-        : [{ role: "user", content: "Tell me about this topic." }];
+      requestBody.messages = [
+        { role: "system", content: dialogueConfig.systemPrompt },
+        ...(dialogueConfig.messages.length > 0 ? dialogueConfig.messages : [{ role: "user", content: "Tell me about this topic." }]),
+      ];
     } else {
       const stdConfig = config as { type: string; systemPrompt: string; userMessage: string; maxTokens: number; tool: ToolDef | null };
-      requestBody.messages = [{ role: "user", content: stdConfig.userMessage }];
+      requestBody.messages = [
+        { role: "system", content: stdConfig.systemPrompt },
+        { role: "user", content: stdConfig.userMessage },
+      ];
 
       if (stdConfig.tool) {
         requestBody.tools = [{
-          name: stdConfig.tool.name,
-          description: stdConfig.tool.description,
-          input_schema: stdConfig.tool.input_schema,
+          type: "function",
+          function: {
+            name: stdConfig.tool.name,
+            description: stdConfig.tool.description,
+            parameters: stdConfig.tool.input_schema,
+          },
         }];
-        requestBody.tool_choice = { type: "tool", name: stdConfig.tool.name };
+        requestBody.tool_choice = { type: "function", function: { name: stdConfig.tool.name } };
       }
     }
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
@@ -261,23 +257,23 @@ serve(async (req) => {
     if (!response.ok) {
       const status = response.status;
       if (status === 429) return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (status === 402) return new Response(JSON.stringify({ error: "API usage limit reached." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (status === 402) return new Response(JSON.stringify({ error: "AI usage limit reached." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const t = await response.text();
-      console.error("Claude API error:", status, t);
-      return new Response(JSON.stringify({ error: `Claude API error: ${status}` }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      console.error("AI gateway error:", status, t);
+      return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const data = await response.json();
 
-    // Extract tool use results
-    const toolUseBlock = data.content?.find((b: any) => b.type === "tool_use");
-    if (toolUseBlock) {
-      return new Response(JSON.stringify(toolUseBlock.input), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    // Extract tool call results
+    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+    if (toolCall) {
+      const parsed = JSON.parse(toolCall.function.arguments);
+      return new Response(JSON.stringify(parsed), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     // Extract text content
-    const textBlock = data.content?.find((b: any) => b.type === "text");
-    const content = textBlock?.text || "";
+    const content = data.choices?.[0]?.message?.content || "";
     return new Response(JSON.stringify({ content }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
   } catch (e) {
