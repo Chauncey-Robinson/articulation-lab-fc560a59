@@ -1137,31 +1137,57 @@ function Panel6() {
   );
 }
 
-/* PANEL 7 — CINEMATIC CLOSE */
+/* PANEL 7 — CINEMATIC CLOSE (HUD style) */
 function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
   return (
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "hsl(var(--foreground))" }}>
+      style={{ background: "#0a0a08" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
       <FloatingParticles />
+
+      {/* Central radial glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute" style={{
           top: "20%", left: "50%", transform: "translateX(-50%)", width: 1000, height: 1000, borderRadius: "50%",
           background: "radial-gradient(circle, hsla(32,82%,51%,0.08) 0%, transparent 50%)",
+          animation: "breathe 8s ease-in-out infinite",
         }} />
+      </div>
+
+      {/* Rotating rings */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
+          <svg width="700" height="700" viewBox="0 0 700 700">
+            <circle cx="350" cy="350" r="320" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx="350" cy="350" r="320" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" strokeDasharray="8 24" />
+            <circle cx="350" cy="350" r="240" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+          </svg>
+        </motion.div>
       </div>
 
       <div className="mx-auto w-full max-w-[1100px] px-8 text-center relative z-10">
         <CinematicSection>
           <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-8">
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em]"
-              style={{ color: "rgba(255,255,255,0.35)" }}>
-              The opportunity
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Mission Brief
             </span>
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
           </motion.div>
 
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif font-normal leading-[1.05] mx-auto max-w-[800px]"
-            style={{ fontSize: "clamp(40px,5vw,64px)", letterSpacing: "-2px", color: "hsl(var(--background))" }}>
+            style={{ fontSize: "clamp(40px,5vw,64px)", letterSpacing: "-2px", color: "#F8F6F2" }}>
             Train your knowledge.{" "}
             <motion.span className="italic" style={{ color: "hsl(var(--amber-bright))" }}
               animate={{ opacity: [0.7, 1, 0.7] }}
@@ -1177,20 +1203,26 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
 
           <motion.div custom={3} variants={fadeUp} className="flex flex-wrap justify-center gap-5 mt-14">
             {[
-              { stat: "107+", desc: "professionals surveyed" },
-              { stat: "87%", desc: "say application is missing", accent: true },
-              { stat: "5", desc: "ways to prove mastery" },
-              { stat: "4 min", desc: "per session" },
-            ].map((c) => (
-              <motion.div key={c.stat}
-                className="rounded-[16px] p-6 text-left w-[200px]"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-                whileHover={{ y: -4, borderColor: "rgba(255,255,255,0.15)" }}
-                transition={{ duration: 0.3 }}>
-                <span className="font-serif text-[32px] leading-none" style={{ color: "hsl(var(--background))" }}>
-                  {c.accent ? <>87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span></> : c.stat}
-                </span>
-                <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "rgba(255,255,255,0.35)" }}>{c.desc}</p>
+              { stat: "107+", desc: "professionals surveyed", tag: "RESEARCH" },
+              { stat: "87%", desc: "say application is missing", accent: true, tag: "INSIGHT" },
+              { stat: "5", desc: "ways to prove mastery", tag: "MODES" },
+              { stat: "4 min", desc: "per session", tag: "EFFICIENCY" },
+            ].map((c, i) => (
+              <motion.div key={c.stat} whileHover={{ y: -4 }} transition={{ duration: 0.3 }}>
+                <HudCard delay={i * 0.12} style={{ width: 200, textAlign: "left" }}>
+                  <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded mb-2 inline-block"
+                    style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>{c.tag}</span>
+                  <span className="font-serif text-[32px] leading-none block" style={{ color: "#F8F6F2" }}>
+                    {c.accent ? <>87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span></> : c.stat}
+                  </span>
+                  <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "rgba(255,255,255,0.35)" }}>{c.desc}</p>
+                  <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    <motion.div className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                      animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
+                    <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Verified</span>
+                  </div>
+                </HudCard>
               </motion.div>
             ))}
           </motion.div>
@@ -1205,7 +1237,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
               }}>
               Watch again ↑
             </button>
-            <p className="font-sans text-[12px] mt-8" style={{ color: "rgba(255,255,255,0.2)" }}>
+            <p className="font-sans text-[12px] mt-8" style={{ color: "rgba(255,255,255,0.15)" }}>
               Oxford EMBA Entrepreneurship Project · 2025
             </p>
           </motion.div>
