@@ -491,7 +491,7 @@ function HudCorner({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
   );
 }
 
-function HudCard({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+function HudCard({ children, className = "", delay = 0, style: extraStyle }: { children: React.ReactNode; className?: string; delay?: number; style?: React.CSSProperties }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -504,6 +504,7 @@ function HudCard({ children, className = "", delay = 0 }: { children: React.Reac
         border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: 16,
         padding: 24,
+        ...extraStyle,
       }}
     >
       <HudCorner position="tl" /><HudCorner position="tr" />
