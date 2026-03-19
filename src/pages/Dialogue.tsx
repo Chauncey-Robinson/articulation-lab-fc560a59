@@ -62,7 +62,9 @@ export default function Dialogue() {
       });
       if (error) throw new Error(error.message);
       if (data?.error) throw new Error(data.error);
-      setMessages(prev => [...prev, { role: "assistant", content: data.content }]);
+      const aiContent = data.content;
+      setMessages(prev => [...prev, { role: "assistant", content: aiContent }]);
+      speak(aiContent);
     } catch (e: any) {
       setMessages(prev => [...prev, { role: "assistant", content: "Sorry, something went wrong. Try again." }]);
     } finally {
