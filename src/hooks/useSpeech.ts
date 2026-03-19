@@ -1,59 +1,104 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 
-// ── Text-to-Speech ──
-
-function getPreferredVoice(): SpeechSynthesisVoice | null {
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(
-    (v) =>
-      v.lang.startsWith("en") &&
-      (/Google/i.test(v.name) || /Daniel/i.test(v.name) || /Samantha/i.test(v.name))
-  );
-  return preferred || voices.find((v) => v.lang.startsWith("en")) || null;
-}
+// ── ElevenLabs Text-to-Speech ──
 
 export function useTTS() {
   const [muted, setMuted] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   const speak = useCallback(
-    (text: string) => {
-      if (muted || typeof window === "undefined" || !window.speechSynthesis) return;
-      window.speechSynthesis.cancel();
-      const utt = new SpeechSynthesisUtterance(text);
-      utt.rate = 0.92;
-      utt.pitch = 1.0;
-      const voice = getPreferredVoice();
-      if (voice) utt.voice = voice;
-      window.speechSynthesis.speak(utt);
+    async (text: string) => {
+      if (muted || !text) return;
+
+      // Stop any current playback
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      abortRef.current?.abort();
+
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      try {
+        setSpeaking(true);
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+              Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            },
+            body: JSON.stringify({ text }),
+            signal: controller.signal,
+          }
+        );
+
+        if (!response.ok) {
+          console.error("TTS request failed:", response.status);
+          setSpeaking(false);
+          return;
+        }
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audioRef.current = audio;
+
+        audio.onended = () => {
+          setSpeaking(false);
+          URL.revokeObjectURL(audioUrl);
+          audioRef.current = null;
+        };
+        audio.onerror = () => {
+          setSpeaking(false);
+          URL.revokeObjectURL(audioUrl);
+          audioRef.current = null;
+        };
+
+        await audio.play();
+      } catch (e) {
+        if ((e as Error).name !== "AbortError") {
+          console.error("TTS error:", e);
+        }
+        setSpeaking(false);
+      }
     },
     [muted]
   );
 
   const stop = useCallback(() => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
+    abortRef.current?.abort();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
+    setSpeaking(false);
   }, []);
 
   const toggleMute = useCallback(() => {
     setMuted((m) => {
-      if (!m) window.speechSynthesis?.cancel();
+      if (!m) {
+        // Muting — stop current playback
+        abortRef.current?.abort();
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current = null;
+        }
+        setSpeaking(false);
+      }
       return !m;
     });
   }, []);
 
-  // Preload voices
-  useEffect(() => {
-    window.speechSynthesis?.getVoices();
-    const handler = () => window.speechSynthesis?.getVoices();
-    window.speechSynthesis?.addEventListener?.("voiceschanged", handler);
-    return () => window.speechSynthesis?.removeEventListener?.("voiceschanged", handler);
-  }, []);
-
-  return { speak, stop, muted, toggleMute };
+  return { speak, stop, muted, toggleMute, speaking };
 }
 
-// ── Speech-to-Text ──
+// ── Speech-to-Text (browser API, unchanged) ──
 
 const SpeechRecognitionAPI =
   typeof window !== "undefined"
