@@ -144,8 +144,8 @@ function SideNav({ active }: { active: number }) {
 function FluencyBar({ label, pct, color, animate }: { label: string; pct: number; color: string; animate: boolean }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="font-sans text-[11px] w-[110px] text-right" style={{ color: "rgba(255,255,255,0.4)" }}>{label}</span>
-      <div className="flex-1 h-[4px] rounded-[2px]" style={{ background: "rgba(255,255,255,0.08)" }}>
+      <span className="font-sans text-[11px] w-[110px] text-right" style={{ color: "rgba(0,0,0,0.4)" }}>{label}</span>
+      <div className="flex-1 h-[4px] rounded-[2px]" style={{ background: "rgba(0,0,0,0.08)" }}>
         <motion.div
           className="h-full rounded-[2px]"
           initial={{ width: 0 }}
@@ -154,7 +154,7 @@ function FluencyBar({ label, pct, color, animate }: { label: string; pct: number
           style={{ background: color }}
         />
       </div>
-      <span className="font-sans text-[10px] w-8" style={{ color: "rgba(255,255,255,0.25)" }}>{pct}%</span>
+      <span className="font-sans text-[10px] w-8" style={{ color: "rgba(0,0,0,0.25)" }}>{pct}%</span>
     </div>
   );
 }
@@ -280,9 +280,9 @@ function Panel1() {
   const parallaxY = useTransform(scrollYProgress, [0, 1], [60, -60]);
 
   return (
-    <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+    <section ref={ref} id="panel-1" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -298,7 +298,7 @@ function Panel1() {
             animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
           <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsla(8,50%,52%,0.7)" }}>Warning · Knowledge decay detected</span>
         </div>
-        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.15)" }}>DIAG-001 · RETENTION FAILURE</span>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.15)" }}>DIAG-001 · RETENTION FAILURE</span>
       </motion.div>
 
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -311,20 +311,20 @@ function Panel1() {
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: "hsl(8,50%,52%)" }}>System · Alert</span>
           </motion.div>
 
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1]" style={{ letterSpacing: "-1.5px", color: "#F8F6F2" }}>
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1]" style={{ letterSpacing: "-1.5px", color: "hsl(var(--foreground))" }}>
             You finished it.<br />
             <span className="italic" style={{ color: "hsl(8,50%,52%)" }}>Then nothing.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8" style={{ color: "rgba(255,255,255,0.45)" }}>
+          <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8" style={{ color: "rgba(0,0,0,0.45)" }}>
             107 professionals told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp}>
             <HudCard delay={0.3} style={{ borderLeft: "2px solid hsl(8,50%,52%)" }}>
-              <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "rgba(255,255,255,0.6)" }}>
+              <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "rgba(0,0,0,0.6)" }}>
                 "I started forgetting the details in the weeks after. When it came to applying it — I couldn't structure my thoughts."
               </p>
-              <p className="font-sans text-[10px] mt-3" style={{ color: "rgba(255,255,255,0.25)" }}>— ESG Professional, GRI Certification, 2025</p>
+              <p className="font-sans text-[10px] mt-3" style={{ color: "rgba(0,0,0,0.25)" }}>— ESG Professional, GRI Certification, 2025</p>
             </HudCard>
           </motion.div>
         </CinematicSection>
@@ -336,10 +336,10 @@ function Panel1() {
                 <div className="absolute -right-[100px] top-[30%] hidden lg:block">
                   <HudCallout label="Survey data" side="right" delay={0.4} />
                 </div>
-                <span className="font-serif leading-none" style={{ fontSize: "clamp(72px,8vw,100px)", color: "#F8F6F2" }}>
+                <span className="font-serif leading-none" style={{ fontSize: "clamp(72px,8vw,100px)", color: "hsl(var(--foreground))" }}>
                   87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span>
                 </span>
-                <p className="font-sans text-[14px] mt-3 max-w-[340px]" style={{ color: "rgba(255,255,255,0.35)" }}>
+                <p className="font-sans text-[14px] mt-3 max-w-[340px]" style={{ color: "rgba(0,0,0,0.35)" }}>
                   of professionals say real-life application is the most important feature they're missing.
                 </p>
               </HudCard>
@@ -353,13 +353,13 @@ function Panel1() {
                   <HudCard delay={(i + 2) * 0.15}>
                     <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded mb-2 inline-block"
                       style={{ background: "hsla(8,50%,52%,0.12)", color: "hsl(8,50%,52%)" }}>{c.tag}</span>
-                    <span className="font-serif text-[36px] block" style={{ color: "#F8F6F2" }}>{c.stat}</span>
-                    <p className="font-sans text-[11px] mt-1 leading-[1.45]" style={{ color: "rgba(255,255,255,0.3)" }}>{c.desc}</p>
-                    <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    <span className="font-serif text-[36px] block" style={{ color: "hsl(var(--foreground))" }}>{c.stat}</span>
+                    <p className="font-sans text-[11px] mt-1 leading-[1.45]" style={{ color: "rgba(0,0,0,0.3)" }}>{c.desc}</p>
+                    <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                       <motion.div className="w-1.5 h-1.5 rounded-full"
                         style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 4px hsl(8,50%,52%)" }}
                         animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                      <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Critical</span>
+                      <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.2)" }}>Critical</span>
                     </div>
                   </HudCard>
                 </motion.div>
@@ -379,15 +379,15 @@ function Panel2() {
 
   return (
     <section id="panel-2" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "hsl(var(--foreground))" }}>
+      style={{ background: "#F8F6F2" }}>
       <FloatingParticles />
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         {/* Dark analytics card */}
         <CinematicSection>
           <motion.div ref={ref} custom={0} variants={fadeScale}
-            className="rounded-[24px] p-8" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            className="rounded-[24px] p-8" style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
             <span className="font-serif text-[80px] italic leading-none text-accent-bright">14</span>
-            <p className="font-sans text-[11px] uppercase tracking-[0.14em] mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>Day streak</p>
+            <p className="font-sans text-[11px] uppercase tracking-[0.14em] mt-1" style={{ color: "rgba(0,0,0,0.3)" }}>Day streak</p>
 
             <div className="flex gap-2 mt-5">
               {[1, 1, 1, 1, 1, 0.4, 0].map((op, i) => (
@@ -395,12 +395,12 @@ function Panel2() {
                   initial={{ scaleX: 0 }}
                   animate={inView ? { scaleX: 1 } : {}}
                   transition={{ duration: 0.5, delay: i * 0.08, ease }}
-                  style={{ background: op > 0 ? `hsla(32,82%,51%,${op})` : "rgba(255,255,255,0.1)", transformOrigin: "left" }}
+                  style={{ background: op > 0 ? `hsla(32,82%,51%,${op})` : "rgba(0,0,0,0.1)", transformOrigin: "left" }}
                 />
               ))}
             </div>
 
-            <p className="font-sans text-[10px] uppercase tracking-[0.14em] mt-8 mb-3" style={{ color: "rgba(255,255,255,0.25)" }}>
+            <p className="font-sans text-[10px] uppercase tracking-[0.14em] mt-8 mb-3" style={{ color: "rgba(0,0,0,0.25)" }}>
               Explanation fluency
             </p>
             <div className="space-y-3">
@@ -419,12 +419,12 @@ function Panel2() {
             </span>
           </motion.div>
           <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal leading-[1]"
-            style={{ letterSpacing: "-1.5px", color: "hsl(var(--background))" }}>
+            style={{ letterSpacing: "-1.5px", color: "hsl(var(--foreground))" }}>
             A gym for{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>professional knowledge.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8"
-            style={{ color: "rgba(255,255,255,0.5)" }}>
+            style={{ color: "rgba(0,0,0,0.5)" }}>
             Upload → Learn → Prove. The AI does the heavy lifting. You just show up and speak.
           </motion.p>
 
@@ -436,12 +436,12 @@ function Panel2() {
             ].map((c, i) => (
               <motion.div key={c.num} custom={i + 3} variants={slideRight}
                 className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
                 <div className="flex items-start gap-4">
                   <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
                   <div>
-                    <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--background))" }}>{c.title}</p>
-                    <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "rgba(255,255,255,0.45)" }}>{c.desc}</p>
+                    <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{c.title}</p>
+                    <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "rgba(0,0,0,0.45)" }}>{c.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -456,9 +456,9 @@ function Panel2() {
 /* PANEL 3 — UPLOAD & EXTRACT (HUD style) */
 function Panel3() {
   return (
-    <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+    <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -474,7 +474,7 @@ function Panel3() {
             style={{ background: "hsl(var(--sage))", boxShadow: "0 0 8px hsl(var(--sage))" }}
             animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
         </div>
-        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.12)" }}>MOD-GEN v2.1 · GEMINI-2.5-FLASH</span>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.12)" }}>MOD-GEN v2.1 · GEMINI-2.5-FLASH</span>
       </motion.div>
 
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -488,11 +488,11 @@ function Panel3() {
               System · Content Ingestion
             </span>
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05]" style={{ color: "#F8F6F2" }}>
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal leading-[1.05]" style={{ color: "hsl(var(--foreground))" }}>
             Paste anything.{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>The AI does the rest.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "rgba(255,255,255,0.45)" }}>
+          <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "rgba(0,0,0,0.45)" }}>
             Drop in your study notes, textbook passages, or certification material. The AI extracts key ideas and builds structured modules.
           </motion.p>
 
@@ -507,7 +507,7 @@ function Panel3() {
                 <HudCard delay={i * 0.12}>
                   <div className="flex items-start gap-4">
                     <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
-                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
                       <span className="text-[16px]">{s.icon}</span>
                     </div>
                     <div className="flex-1">
@@ -515,8 +515,8 @@ function Panel3() {
                         <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
                           style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
                       </div>
-                      <p className="font-sans text-[13px] font-semibold" style={{ color: "#F8F6F2" }}>{s.title}</p>
-                      <p className="font-sans text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{s.desc}</p>
+                      <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{s.title}</p>
+                      <p className="font-sans text-[10px] mt-0.5" style={{ color: "rgba(0,0,0,0.3)" }}>{s.desc}</p>
                     </div>
                     <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
                       style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
@@ -534,10 +534,10 @@ function Panel3() {
             <HudCard delay={0.1}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.4)" }}>Input</span>
+                  style={{ background: "rgba(0,0,0,0.06)", color: "rgba(0,0,0,0.4)" }}>Input</span>
                 <HudCallout label="Raw text" side="right" delay={0.3} />
               </div>
-              <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "rgba(255,255,255,0.5)" }}>
+              <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "rgba(0,0,0,0.5)" }}>
                 "GRI 3 requires organisations to determine which topics are material… double materiality considers both financial and impact materiality…"
               </p>
             </HudCard>
@@ -550,7 +550,7 @@ function Panel3() {
               <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, hsla(32,82%,51%,0.6), hsla(32,82%,51%,0.1))" }} />
               <div className="w-0 h-0" style={{ borderLeft: "4px solid transparent", borderRight: "4px solid transparent", borderTop: "5px solid hsla(32,82%,51%,0.5)" }} />
             </motion.div>
-            <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.2)" }}>Processing</span>
+            <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(0,0,0,0.2)" }}>Processing</span>
           </motion.div>
 
           {/* Output card */}
@@ -566,12 +566,12 @@ function Panel3() {
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
                   style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Module generated</span>
               </div>
-              <p className="font-serif text-[18px]" style={{ color: "#F8F6F2" }}>GRI Standards</p>
-              <p className="font-sans text-[11px] mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>5 lessons · 12 quiz questions</p>
+              <p className="font-serif text-[18px]" style={{ color: "hsl(var(--foreground))" }}>GRI Standards</p>
+              <p className="font-sans text-[11px] mt-1" style={{ color: "rgba(0,0,0,0.3)" }}>5 lessons · 12 quiz questions</p>
               <div className="mt-3 space-y-1.5">
                 {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
                   <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
+                    style={{ color: "rgba(0,0,0,0.5)" }}
                     initial={{ opacity: 0, x: 10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -586,11 +586,11 @@ function Panel3() {
                   </motion.div>
                 ))}
               </div>
-              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                 <motion.div className="w-1.5 h-1.5 rounded-full"
                   style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                   animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Ready · Module compiled</span>
+                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.2)" }}>Ready · Module compiled</span>
               </div>
             </HudCard>
           </motion.div>
@@ -625,8 +625,8 @@ function HudCard({ children, className = "", delay = 0, style: extraStyle }: { c
       transition={{ duration: 0.7, delay, ease }}
       className={`relative ${className}`}
       style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgba(0,0,0,0.04)",
+        border: "1px solid rgba(0,0,0,0.08)",
         borderRadius: 16,
         padding: 24,
         ...extraStyle,
@@ -680,10 +680,10 @@ function ScanLine() {
 function Panel4() {
   return (
     <section id="panel-4" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#0a0a08" }}>
+      style={{ background: "#F8F6F2" }}>
       {/* Grid overlay */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -705,14 +705,14 @@ function Panel4() {
 
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif text-[clamp(36px,4.5vw,54px)] font-normal leading-[1.05]"
-            style={{ letterSpacing: "-1px", color: "#F8F6F2" }}>
+            style={{ letterSpacing: "-1px", color: "hsl(var(--foreground))" }}>
             A voice that{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>teaches.</span>
           </motion.h2>
 
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-6"
-            style={{ color: "rgba(255,255,255,0.45)" }}>
+            style={{ color: "rgba(0,0,0,0.45)" }}>
             Each lesson is read aloud by Lily — a natural British AI voice. Then discuss with the tutor. Then speak it back.
           </motion.p>
 
@@ -727,7 +727,7 @@ function Panel4() {
                 <HudCard delay={i * 0.1}>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
-                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.08)" }}>
                       <span className="text-[18px]">{f.icon}</span>
                     </div>
                     <div className="flex-1">
@@ -737,8 +737,8 @@ function Panel4() {
                           {f.tag}
                         </span>
                       </div>
-                      <p className="font-sans text-[13px] font-semibold" style={{ color: "#F8F6F2" }}>{f.title}</p>
-                      <p className="font-sans text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>{f.desc}</p>
+                      <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                      <p className="font-sans text-[11px] mt-0.5" style={{ color: "rgba(0,0,0,0.35)" }}>{f.desc}</p>
                     </div>
                   </div>
                 </HudCard>
@@ -796,9 +796,9 @@ function Panel4() {
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
                 <span className="text-white text-[30px]">🔊</span>
               </motion.div>
-              <p className="font-serif text-[20px] italic" style={{ color: "#F8F6F2" }}>Lily</p>
+              <p className="font-serif text-[20px] italic" style={{ color: "hsl(var(--foreground))" }}>Lily</p>
               <p className="font-sans text-[10px] mt-1 uppercase tracking-[0.15em]"
-                style={{ color: "rgba(255,255,255,0.3)" }}>Neural voice engine</p>
+                style={{ color: "rgba(0,0,0,0.3)" }}>Neural voice engine</p>
 
               {/* Waveform */}
               <div className="flex items-end justify-center gap-[2px] mt-6 h-10">
@@ -840,10 +840,10 @@ function Panel5() {
 
   return (
     <section id="panel-5" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#0a0a08" }}>
+      style={{ background: "#F8F6F2" }}>
       {/* Grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -854,9 +854,9 @@ function Panel5() {
           animate={{ rotate: 360 }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
           <svg width="600" height="600" viewBox="0 0 600 600">
-            <circle cx="300" cy="300" r="280" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-            <circle cx="300" cy="300" r="200" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-            <circle cx="300" cy="300" r="120" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="280" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="200" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="120" fill="none" stroke="rgba(0,0,0,0.05)" strokeWidth="1" />
             <circle cx="300" cy="300" r="280" fill="none" stroke="hsla(32,82%,51%,0.12)" strokeWidth="1" strokeDasharray="8 20" />
           </svg>
         </motion.div>
@@ -884,13 +884,13 @@ function Panel5() {
 
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif text-[clamp(40px,5vw,62px)] font-normal"
-            style={{ letterSpacing: "-2px", color: "#F8F6F2" }}>
+            style={{ letterSpacing: "-2px", color: "hsl(var(--foreground))" }}>
             Five ways to{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>prove it.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-4 max-w-[550px] mx-auto"
-            style={{ color: "rgba(255,255,255,0.4)" }}>
+            style={{ color: "rgba(0,0,0,0.4)" }}>
             Not just recall. We test whether you can explain, apply, and defend.
           </motion.p>
         </CinematicSection>
@@ -931,19 +931,19 @@ function Panel5() {
                       {f.icon}
                     </motion.span>
                     <div>
-                      <p className="font-sans text-[15px] font-bold" style={{ color: "#F8F6F2" }}>{f.title}</p>
+                      <p className="font-sans text-[15px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
                     </div>
                   </div>
-                  <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                  <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "rgba(0,0,0,0.4)" }}>
                     {f.desc}
                   </p>
                   {/* Mini data readout */}
-                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                     <motion.div className="w-1.5 h-1.5 rounded-full"
                       style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 2, repeat: Infinity }} />
-                    <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.25)" }}>
+                    <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.25)" }}>
                       Active · AI powered
                     </span>
                   </div>
@@ -973,18 +973,18 @@ function Panel5() {
                         {f.icon}
                       </motion.span>
                       <div>
-                        <p className="font-sans text-[15px] font-bold" style={{ color: "#F8F6F2" }}>{f.title}</p>
+                        <p className="font-sans text-[15px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
                       </div>
                     </div>
-                    <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                    <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "rgba(0,0,0,0.4)" }}>
                       {f.desc}
                     </p>
-                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                       <motion.div className="w-1.5 h-1.5 rounded-full"
                         style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                         animate={{ opacity: [1, 0.3, 1] }}
                         transition={{ duration: 2, repeat: Infinity }} />
-                      <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.25)" }}>
+                      <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.25)" }}>
                         Active · AI powered
                       </span>
                     </div>
@@ -1003,7 +1003,7 @@ function Panel5() {
                         style={{ transformOrigin: "center" }} />
                       <circle cx="30" cy="30" r="4" fill="hsla(32,82%,51%,0.3)" />
                     </svg>
-                    <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.15)" }}>
+                    <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(0,0,0,0.15)" }}>
                       Neural core
                     </span>
                   </motion.div>
@@ -1034,9 +1034,9 @@ function Panel6() {
   ] as const;
 
   return (
-    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#0a0a08" }}>
+    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "#F8F6F2" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -1068,7 +1068,7 @@ function Panel6() {
               style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
               animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal" style={{ color: "#F8F6F2" }}>
+          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4vw,50px)] font-normal" style={{ color: "hsl(var(--foreground))" }}>
             Nobody else does{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>this.</span>
           </motion.h2>
@@ -1081,21 +1081,21 @@ function Panel6() {
           <HudCard className="!p-0 overflow-hidden">
             <table className="w-full text-left">
               <thead>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-                  <th className="font-sans text-[11px] font-medium p-4" style={{ color: "rgba(255,255,255,0.3)" }}>Feature</th>
+                <tr style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                  <th className="font-sans text-[11px] font-medium p-4" style={{ color: "rgba(0,0,0,0.3)" }}>Feature</th>
                   <th className="font-sans text-[11px] font-bold p-4 text-center" style={{ color: "hsl(var(--amber-bright))" }}>This App</th>
-                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(255,255,255,0.3)" }}>Readwise</th>
-                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(255,255,255,0.3)" }}>NotebookLM</th>
+                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(0,0,0,0.3)" }}>Readwise</th>
+                  <th className="font-sans text-[11px] font-medium p-4 text-center" style={{ color: "rgba(0,0,0,0.3)" }}>NotebookLM</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map(([feat, us, rw, nb], rowIdx) => (
                   <motion.tr key={feat as string}
-                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+                    style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}
                     initial={{ opacity: 0, x: -20 }}
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.4, delay: rowIdx * 0.08, ease }}>
-                    <td className="font-sans text-[12px] p-4" style={{ color: "rgba(255,255,255,0.5)" }}>{feat as string}</td>
+                    <td className="font-sans text-[12px] p-4" style={{ color: "rgba(0,0,0,0.5)" }}>{feat as string}</td>
                     <td className="text-center p-4">
                       <motion.span className="font-semibold text-[16px]" style={{ color: "hsl(var(--amber-bright))" }}
                         animate={{ textShadow: ["0 0 0px transparent", "0 0 8px hsla(32,82%,51%,0.4)", "0 0 0px transparent"] }}
@@ -1104,21 +1104,21 @@ function Panel6() {
                     <td className="text-center p-4">
                       {rw === "partial" ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓*</span>
                         : rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
-                        : <span style={{ color: "rgba(255,255,255,0.15)" }}>✗</span>}
+                        : <span style={{ color: "rgba(0,0,0,0.15)" }}>✗</span>}
                     </td>
                     <td className="text-center p-4">
                       {nb ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
-                        : <span style={{ color: "rgba(255,255,255,0.15)" }}>✗</span>}
+                        : <span style={{ color: "rgba(0,0,0,0.15)" }}>✗</span>}
                     </td>
                   </motion.tr>
                 ))}
               </tbody>
             </table>
-            <div className="flex items-center gap-2 p-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+            <div className="flex items-center gap-2 p-4" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
               <motion.div className="w-1.5 h-1.5 rounded-full"
                 style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                 animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-              <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+              <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.2)" }}>
                 *Readwise surfaces highlights; does not test explanation ability
               </span>
             </div>
@@ -1141,9 +1141,9 @@ function Panel6() {
 function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
   return (
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "#0a0a08" }}>
+      style={{ background: "#F8F6F2" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
       }} />
       <ScanLine />
@@ -1162,9 +1162,9 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
           <svg width="700" height="700" viewBox="0 0 700 700">
-            <circle cx="350" cy="350" r="320" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx="350" cy="350" r="320" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
             <circle cx="350" cy="350" r="320" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" strokeDasharray="8 24" />
-            <circle cx="350" cy="350" r="240" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+            <circle cx="350" cy="350" r="240" fill="none" stroke="rgba(0,0,0,0.03)" strokeWidth="1" />
           </svg>
         </motion.div>
       </div>
@@ -1187,7 +1187,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
 
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif font-normal leading-[1.05] mx-auto max-w-[800px]"
-            style={{ fontSize: "clamp(40px,5vw,64px)", letterSpacing: "-2px", color: "#F8F6F2" }}>
+            style={{ fontSize: "clamp(40px,5vw,64px)", letterSpacing: "-2px", color: "hsl(var(--foreground))" }}>
             Train your knowledge.{" "}
             <motion.span className="italic" style={{ color: "hsl(var(--amber-bright))" }}
               animate={{ opacity: [0.7, 1, 0.7] }}
@@ -1197,7 +1197,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
           </motion.h2>
 
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8 max-w-[560px] mx-auto"
-            style={{ color: "rgba(255,255,255,0.45)" }}>
+            style={{ color: "rgba(0,0,0,0.45)" }}>
             Upload → Learn with voice → Prove it five ways. That's it.
           </motion.p>
 
@@ -1212,15 +1212,15 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
                 <HudCard delay={i * 0.12} style={{ width: 200, textAlign: "left" }}>
                   <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded mb-2 inline-block"
                     style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>{c.tag}</span>
-                  <span className="font-serif text-[32px] leading-none block" style={{ color: "#F8F6F2" }}>
+                  <span className="font-serif text-[32px] leading-none block" style={{ color: "hsl(var(--foreground))" }}>
                     {c.accent ? <>87<span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>%</span></> : c.stat}
                   </span>
-                  <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "rgba(255,255,255,0.35)" }}>{c.desc}</p>
-                  <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                  <p className="font-sans text-[11px] mt-2 leading-[1.45]" style={{ color: "rgba(0,0,0,0.35)" }}>{c.desc}</p>
+                  <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                     <motion.div className="w-1.5 h-1.5 rounded-full"
                       style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                       animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
-                    <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>Verified</span>
+                    <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "rgba(0,0,0,0.2)" }}>Verified</span>
                   </div>
                 </HudCard>
               </motion.div>
@@ -1237,7 +1237,7 @@ function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
               }}>
               Watch again ↑
             </button>
-            <p className="font-sans text-[12px] mt-8" style={{ color: "rgba(255,255,255,0.15)" }}>
+            <p className="font-sans text-[12px] mt-8" style={{ color: "rgba(0,0,0,0.15)" }}>
               Oxford EMBA Entrepreneurship Project · 2025
             </p>
           </motion.div>
