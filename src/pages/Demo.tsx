@@ -475,82 +475,226 @@ function Panel3() {
   );
 }
 
-/* PANEL 4 — LEARN WITH VOICE */
+/* ─── HUD Components ─── */
+function HudCorner({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
+  const isTop = position.startsWith("t");
+  const isLeft = position.endsWith("l");
+  return (
+    <div className="absolute" style={{
+      [isTop ? "top" : "bottom"]: 0,
+      [isLeft ? "left" : "right"]: 0,
+      width: 16, height: 16,
+      borderColor: "hsla(32,82%,51%,0.4)",
+      [isTop ? "borderTop" : "borderBottom"]: "1.5px solid",
+      [isLeft ? "borderLeft" : "borderRight"]: "1.5px solid",
+    }} />
+  );
+}
+
+function HudCard({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.7, delay, ease }}
+      className={`relative ${className}`}
+      style={{
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 16,
+        padding: 24,
+      }}
+    >
+      <HudCorner position="tl" /><HudCorner position="tr" />
+      <HudCorner position="bl" /><HudCorner position="br" />
+      {children}
+    </motion.div>
+  );
+}
+
+function HudCallout({ label, side, delay = 0 }: { label: string; side: "left" | "right"; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: side === "left" ? -20 : 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay, ease }}
+      className="flex items-center gap-2"
+      style={{ flexDirection: side === "left" ? "row" : "row-reverse" }}
+    >
+      <div className="flex items-center gap-1.5" style={{ flexDirection: side === "left" ? "row" : "row-reverse" }}>
+        <motion.div className="w-2 h-2 rounded-full"
+          style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 8px hsla(32,82%,51%,0.5)" }}
+          animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div style={{ width: 40, height: 1, background: "linear-gradient(to right, hsla(32,82%,51%,0.6), hsla(32,82%,51%,0.1))" }} />
+      </div>
+      <span className="font-sans text-[9px] font-bold uppercase tracking-[0.2em]"
+        style={{ color: "hsl(var(--amber-bright))" }}>
+        {label}
+      </span>
+    </motion.div>
+  );
+}
+
+function ScanLine() {
+  return (
+    <motion.div
+      className="absolute left-0 right-0 h-[1px] pointer-events-none"
+      style={{ background: "linear-gradient(to right, transparent, hsla(32,82%,51%,0.15), transparent)" }}
+      animate={{ top: ["0%", "100%"] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+    />
+  );
+}
+
+/* PANEL 4 — LEARN WITH VOICE (HUD style) */
 function Panel4() {
   return (
     <section id="panel-4" className="min-h-screen snap-start flex items-center relative overflow-hidden"
-      style={{ background: "hsl(var(--foreground))" }}>
+      style={{ background: "#0a0a08" }}>
+      {/* Grid overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
       <FloatingParticles />
-      <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+
+      <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <CinematicSection>
-          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-2 mb-6">
-            <div className="w-8 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: "hsl(var(--amber-bright))" }}>
-              Step 2 · Learn
+          <motion.div custom={0} variants={fadeUp} className="flex items-center gap-3 mb-6">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]"
+              style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Voice Engine
             </span>
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(36px,4.5vw,54px)] font-normal leading-[1.05]"
-            style={{ letterSpacing: "-1px", color: "hsl(var(--background))" }}>
+
+          <motion.h2 custom={1} variants={fadeUp}
+            className="font-serif text-[clamp(36px,4.5vw,54px)] font-normal leading-[1.05]"
+            style={{ letterSpacing: "-1px", color: "#F8F6F2" }}>
             A voice that{" "}
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>teaches.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8"
-            style={{ color: "rgba(255,255,255,0.5)" }}>
-            Each lesson is read aloud by Lily — a natural British AI voice powered by ElevenLabs. Study the material, then tap "Discuss" to have a live conversation with the AI tutor about what you just learned.
+
+          <motion.p custom={2} variants={fadeUp}
+            className="font-serif text-[18px] font-light leading-[1.6] mt-6"
+            style={{ color: "rgba(255,255,255,0.45)" }}>
+            Each lesson is read aloud by Lily — a natural British AI voice. Then discuss with the tutor. Then speak it back.
           </motion.p>
 
-          <motion.div custom={3} variants={fadeUp} className="mt-10 space-y-4">
+          {/* HUD feature callouts */}
+          <div className="mt-10 space-y-3">
             {[
-              { icon: "🔊", title: "Voice-first learning", desc: "Every lesson is spoken aloud. Mute/unmute anytime." },
-              { icon: "💬", title: "AI dialogue", desc: "Ask questions, challenge ideas, go deeper. The tutor adapts." },
-              { icon: "🎤", title: "Speak back", desc: "Use your voice to explain. The AI listens and responds." },
+              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Mute anytime." },
+              { tag: "AI TUTOR", icon: "🤖", title: "Live dialogue", desc: "Ask questions. Challenge ideas. The tutor adapts in real time." },
+              { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
             ].map((f, i) => (
-              <motion.div key={f.title} custom={i + 4} variants={slideLeft}
-                className="flex items-start gap-4 rounded-[14px] p-4"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <span className="text-[20px]">{f.icon}</span>
-                <div>
-                  <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--background))" }}>{f.title}</p>
-                  <p className="font-sans text-[12px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{f.desc}</p>
-                </div>
+              <motion.div key={f.tag} custom={i + 3} variants={slideLeft}>
+                <HudCard delay={i * 0.1}>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <span className="text-[18px]">{f.icon}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
+                          {f.tag}
+                        </span>
+                      </div>
+                      <p className="font-sans text-[13px] font-semibold" style={{ color: "#F8F6F2" }}>{f.title}</p>
+                      <p className="font-sans text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>{f.desc}</p>
+                    </div>
+                  </div>
+                </HudCard>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </CinematicSection>
 
-        {/* Waveform visual */}
+        {/* Right: HUD voice visualiser */}
         <CinematicSection className="flex flex-col items-center justify-center">
           <motion.div custom={0} variants={fadeScale} className="relative">
-            {/* Glow ring */}
-            <motion.div
-              className="absolute rounded-full"
-              style={{ inset: -40, background: "radial-gradient(circle, hsla(32,82%,51%,0.1), transparent 70%)" }}
-              animate={{ scale: [1, 1.15, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <div className="relative rounded-[28px] p-8 text-center"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", width: 320 }}>
-              <motion.div
-                className="w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-6"
-                style={{ background: "linear-gradient(135deg, hsl(var(--amber-bright)), hsla(32,82%,51%,0.6))" }}
-                animate={{ scale: [1, 1.06, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-                <span className="text-white text-[32px]">🔊</span>
-              </motion.div>
-              <p className="font-serif text-[18px] italic" style={{ color: "hsl(var(--background))" }}>Lily</p>
-              <p className="font-sans text-[11px] mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>British voice · ElevenLabs</p>
+            {/* Rotating ring */}
+            <motion.div className="absolute" style={{ inset: -30 }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
+              <svg viewBox="0 0 400 400" className="w-full h-full">
+                <circle cx="200" cy="200" r="180" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" />
+                <circle cx="200" cy="200" r="180" fill="none" stroke="hsla(32,82%,51%,0.4)" strokeWidth="1.5"
+                  strokeDasharray="20 40 10 30" strokeLinecap="round" />
+              </svg>
+            </motion.div>
 
-              {/* Audio bars */}
-              <div className="flex items-end justify-center gap-[3px] mt-6 h-8">
-                {Array.from({ length: 20 }).map((_, i) => (
-                  <motion.div key={i} className="w-[3px] rounded-full"
-                    style={{ background: "hsl(var(--amber-bright))" }}
-                    animate={{ height: [4, 8 + Math.random() * 20, 4] }}
-                    transition={{ duration: 0.5 + Math.random() * 0.5, repeat: Infinity, delay: i * 0.05, ease: "easeInOut" }}
+            {/* Inner rotating ring */}
+            <motion.div className="absolute" style={{ inset: -15 }}
+              animate={{ rotate: -360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
+              <svg viewBox="0 0 400 400" className="w-full h-full">
+                <circle cx="200" cy="200" r="185" fill="none" stroke="hsla(32,82%,51%,0.06)" strokeWidth="0.5"
+                  strokeDasharray="5 15" />
+              </svg>
+            </motion.div>
+
+            <HudCard className="!rounded-[28px] !p-8 text-center" style={{ width: 300 }}>
+              {/* Callout labels around the card */}
+              <div className="absolute -left-[140px] top-[30%]">
+                <HudCallout label="ElevenLabs API" side="left" delay={0.3} />
+              </div>
+              <div className="absolute -right-[120px] top-[25%]">
+                <HudCallout label="British accent" side="right" delay={0.5} />
+              </div>
+              <div className="absolute -left-[130px] top-[65%]">
+                <HudCallout label="Real-time stream" side="left" delay={0.7} />
+              </div>
+              <div className="absolute -right-[110px] top-[70%]">
+                <HudCallout label="Voice ID: Lily" side="right" delay={0.9} />
+              </div>
+
+              <motion.div
+                className="w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-5"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--amber-bright)), hsla(32,82%,51%,0.4))",
+                  boxShadow: "0 0 40px hsla(32,82%,51%,0.3)",
+                }}
+                animate={{ scale: [1, 1.08, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
+                <span className="text-white text-[30px]">🔊</span>
+              </motion.div>
+              <p className="font-serif text-[20px] italic" style={{ color: "#F8F6F2" }}>Lily</p>
+              <p className="font-sans text-[10px] mt-1 uppercase tracking-[0.15em]"
+                style={{ color: "rgba(255,255,255,0.3)" }}>Neural voice engine</p>
+
+              {/* Waveform */}
+              <div className="flex items-end justify-center gap-[2px] mt-6 h-10">
+                {Array.from({ length: 28 }).map((_, i) => (
+                  <motion.div key={i} className="w-[2.5px] rounded-full"
+                    style={{ background: `hsla(32,82%,51%,${0.4 + Math.random() * 0.5})` }}
+                    animate={{ height: [3, 6 + Math.random() * 28, 3] }}
+                    transition={{ duration: 0.4 + Math.random() * 0.6, repeat: Infinity, delay: i * 0.04, ease: "easeInOut" }}
                   />
                 ))}
               </div>
-            </div>
+
+              {/* Status line */}
+              <motion.div className="flex items-center justify-center gap-2 mt-4"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity }}>
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--sage))", boxShadow: "0 0 6px hsl(var(--sage))" }} />
+                <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--sage))" }}>
+                  Streaming
+                </span>
+              </motion.div>
+            </HudCard>
           </motion.div>
         </CinematicSection>
       </div>
@@ -558,47 +702,190 @@ function Panel4() {
   );
 }
 
-/* PANEL 5 — TEST & PROVE */
+/* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
 function Panel5() {
+  const features = [
+    { icon: "📝", title: "Quiz", tag: "AI GENERATED", desc: "MCQ & open questions per lesson. Voice reads each question aloud.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
+    { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
+    { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
+    { icon: "💬", title: "Dialogue", tag: "AI TUTOR", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
+    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front & back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
+  ];
+
   return (
-    <section id="panel-5" className="min-h-screen snap-start flex items-center relative" style={{ background: "#F8F6F2" }}>
-      <div className="mx-auto w-full max-w-[1200px] px-8">
+    <section id="panel-5" className="min-h-screen snap-start flex items-center relative overflow-hidden"
+      style={{ background: "#0a0a08" }}>
+      {/* Grid */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      <ScanLine />
+
+      {/* Radial target */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}>
+          <svg width="600" height="600" viewBox="0 0 600 600">
+            <circle cx="300" cy="300" r="280" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="200" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="120" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+            <circle cx="300" cy="300" r="280" fill="none" stroke="hsla(32,82%,51%,0.12)" strokeWidth="1" strokeDasharray="8 20" />
+          </svg>
+        </motion.div>
+      </div>
+
+      <div className="mx-auto w-full max-w-[1200px] px-8 relative z-10">
+        {/* Header */}
         <CinematicSection className="text-center mb-16">
-          <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-8 h-[1px] bg-accent-bright" />
-            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-accent-bright">Step 3 · Prove it</span>
-            <div className="w-8 h-[1px] bg-accent-bright" />
+          <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-5">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }} />
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]"
+              style={{ color: "hsl(var(--amber-bright))" }}>
+              System · Assessment Modes
+            </span>
+            <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
           </motion.div>
-          <motion.h2 custom={1} variants={fadeUp} className="font-serif text-[clamp(40px,4.5vw,58px)] font-normal text-foreground" style={{ letterSpacing: "-1.5px" }}>
+
+          <motion.h2 custom={1} variants={fadeUp}
+            className="font-serif text-[clamp(40px,5vw,62px)] font-normal"
+            style={{ letterSpacing: "-2px", color: "#F8F6F2" }}>
             Five ways to{" "}
-            <span className="italic text-accent-bright">own it.</span>
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>prove it.</span>
           </motion.h2>
-          <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] text-ink-2 mt-4 max-w-[640px] mx-auto">
-            Not just recall. We test whether you can explain, apply, and defend what you've learned.
+          <motion.p custom={2} variants={fadeUp}
+            className="font-serif text-[18px] font-light leading-[1.6] mt-4 max-w-[550px] mx-auto"
+            style={{ color: "rgba(255,255,255,0.4)" }}>
+            Not just recall. We test whether you can explain, apply, and defend.
           </motion.p>
         </CinematicSection>
 
-        <CinematicSection className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-w-[1100px] mx-auto">
-          {[
-            { icon: "📝", title: "Quiz", desc: "AI-generated MCQ and open questions on each lesson", color: "hsl(var(--amber-bright))" },
-            { icon: "🎤", title: "Teach Back", desc: "Explain the concept in your own words. AI evaluates.", color: "hsl(var(--sage))" },
-            { icon: "🌍", title: "Real-World", desc: "A scenario. A time limit. Prove you can apply it.", color: "hsl(var(--amber-bright))" },
-            { icon: "💬", title: "Dialogue", desc: "Have a live conversation with the AI about the topic.", color: "hsl(var(--sage))" },
-            { icon: "🃏", title: "Flashcards", desc: "Spaced repetition with voice. Front and back read aloud.", color: "hsl(var(--amber-bright))" },
-          ].map((c, i) => (
-            <motion.div key={c.title} custom={i} variants={fadeUp}
-              className="rounded-[20px] border-[1.5px] border-border bg-card p-6 text-center hover:border-accent-bright hover:-translate-y-2 transition-all duration-400 group">
-              <motion.span className="text-[32px] block mb-3"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}>
-                {c.icon}
-              </motion.span>
-              <p className="font-sans text-[14px] font-semibold text-foreground">{c.title}</p>
-              <p className="font-sans text-[11px] text-ink-3 mt-1.5 leading-[1.45]">{c.desc}</p>
-              <div className="w-6 h-[2px] mx-auto mt-3 rounded-full group-hover:w-12 transition-all duration-400" style={{ background: c.color }} />
-            </motion.div>
-          ))}
-        </CinematicSection>
+        {/* HUD Feature Cards — positioned like a technical diagram */}
+        <div className="relative mx-auto" style={{ maxWidth: 1000, minHeight: 420 }}>
+          {/* Connecting lines from center */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            <motion.div
+              className="w-3 h-3 rounded-full"
+              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 20px hsla(32,82%,51%,0.5)" }}
+              animate={{ scale: [1, 1.5, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+
+          {/* Grid layout for the 5 cards */}
+          <div className="grid grid-cols-3 gap-4" style={{ gridTemplateRows: "auto auto" }}>
+            {/* Top row: Quiz — center title — Teach Back */}
+            {[features[0], features[4], features[1]].map((f, idx) => (
+              <motion.div key={f.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: idx * 0.15, ease }}>
+                <HudCard delay={idx * 0.1}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
+                      style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
+                      {f.tag}
+                    </span>
+                    <HudCallout label="" side="right" delay={0} />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <motion.span className="text-[28px]"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 3, repeat: Infinity, delay: idx * 0.3 }}>
+                      {f.icon}
+                    </motion.span>
+                    <div>
+                      <p className="font-sans text-[15px] font-bold" style={{ color: "#F8F6F2" }}>{f.title}</p>
+                    </div>
+                  </div>
+                  <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                    {f.desc}
+                  </p>
+                  {/* Mini data readout */}
+                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    <motion.div className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                      animate={{ opacity: [1, 0.3, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }} />
+                    <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.25)" }}>
+                      Active · AI powered
+                    </span>
+                  </div>
+                </HudCard>
+              </motion.div>
+            ))}
+
+            {/* Bottom row: Real-World — spacer — Dialogue */}
+            {[features[2], null, features[3]].map((f, idx) => (
+              f ? (
+                <motion.div key={f.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: (idx + 3) * 0.15, ease }}>
+                  <HudCard delay={(idx + 3) * 0.1}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
+                        style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
+                        {f.tag}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <motion.span className="text-[28px]"
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 3, repeat: Infinity, delay: idx * 0.4 }}>
+                        {f.icon}
+                      </motion.span>
+                      <div>
+                        <p className="font-sans text-[15px] font-bold" style={{ color: "#F8F6F2" }}>{f.title}</p>
+                      </div>
+                    </div>
+                    <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                      {f.desc}
+                    </p>
+                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                      <motion.div className="w-1.5 h-1.5 rounded-full"
+                        style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                        animate={{ opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }} />
+                      <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.25)" }}>
+                        Active · AI powered
+                      </span>
+                    </div>
+                  </HudCard>
+                </motion.div>
+              ) : (
+                <div key="spacer" className="flex items-center justify-center">
+                  <motion.div className="flex flex-col items-center gap-2"
+                    animate={{ opacity: [0.3, 0.7, 0.3] }}
+                    transition={{ duration: 3, repeat: Infinity }}>
+                    <svg width="60" height="60" viewBox="0 0 60 60">
+                      <motion.circle cx="30" cy="30" r="25" fill="none" stroke="hsla(32,82%,51%,0.2)" strokeWidth="1"
+                        strokeDasharray="4 4"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                        style={{ transformOrigin: "center" }} />
+                      <circle cx="30" cy="30" r="4" fill="hsla(32,82%,51%,0.3)" />
+                    </svg>
+                    <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.15)" }}>
+                      Neural core
+                    </span>
+                  </motion.div>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
