@@ -15,7 +15,7 @@ export default function Dialogue() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { speak, stop } = useTTS();
+  const { speak, stop, muted, toggleMute } = useTTS();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
