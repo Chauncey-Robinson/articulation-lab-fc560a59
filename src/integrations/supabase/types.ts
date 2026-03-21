@@ -138,6 +138,7 @@ export type Database = {
           age_range: string | null
           created_at: string | null
           degree: string | null
+          display_name: string | null
           gender: string | null
           interests: string[] | null
           onboarded: boolean | null
@@ -148,6 +149,7 @@ export type Database = {
           age_range?: string | null
           created_at?: string | null
           degree?: string | null
+          display_name?: string | null
           gender?: string | null
           interests?: string[] | null
           onboarded?: boolean | null
@@ -158,6 +160,7 @@ export type Database = {
           age_range?: string | null
           created_at?: string | null
           degree?: string | null
+          display_name?: string | null
           gender?: string | null
           interests?: string[] | null
           onboarded?: boolean | null
