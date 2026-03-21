@@ -190,7 +190,7 @@ function ProgressBar({ active }: { active: number }) {
 
 /* ─── Side nav ─── */
 function SideNav({ active }: { active: number }) {
-  const labels = ["Intro", "Problem", "Solution", "Upload", "Learn", "Test", "Compare", "Close"];
+  const labels = ["Intro", "Problem", "Solution", "Upload", "Learn", "Test", "Compare", "Meeting", "Close"];
   return (
     <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2.5 items-end">
       {labels.map((l, i) => (
