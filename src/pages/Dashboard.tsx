@@ -129,8 +129,8 @@ export default function Dashboard() {
               <p className="text-[11px] font-sans text-ink-3 mt-1">streak</p>
             </div>
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
-              <p className="font-serif text-[2rem] leading-none text-foreground">{overallPct}%</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">progress</p>
+              <p className="font-serif text-[2rem] leading-none text-foreground">{quizAccuracy !== null ? `${quizAccuracy}%` : "—"}</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">accuracy</p>
             </div>
           </div>
         )}
