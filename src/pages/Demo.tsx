@@ -324,7 +324,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
                 }}>
                 See how it works →
               </button>
-              <button onClick={() => scrollTo(7)}
+              <button onClick={() => scrollTo(8)}
                 className="font-sans text-[13px] transition-colors duration-300"
                 style={{ color: "rgba(255,255,255,0.35)" }}>
                 Skip to end ↓
