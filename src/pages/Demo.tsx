@@ -444,9 +444,10 @@ function Panel2() {
 
           <div className="mt-10 space-y-4">
             {[
-              { num: "01", title: "Upload anything", desc: "Paste text, PDFs, notes. AI breaks it into bite-sized modules with a clear key idea per lesson." },
-              { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily, a natural British AI voice. Study, then discuss with the AI tutor." },
-              { num: "03", title: "Prove you own it", desc: "Quiz, teach-back, real-world scenarios, flashcards. Multiple ways to test until it's yours." },
+              { num: "00", title: "Discover your learning style", desc: "A quick assessment finds whether you're visual, auditory, reading, or hands-on — then personalises everything." },
+              { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized modules with a clear key idea per lesson." },
+              { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily. Toggle voice on or off. Then discuss with the AI tutor." },
+              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus teach-back, real-world scenarios, and flashcards." },
             ].map((c, i) => (
               <motion.div key={c.num} custom={i + 3} variants={slideRight}
                 className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
