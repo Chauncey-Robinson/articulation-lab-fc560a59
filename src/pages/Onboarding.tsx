@@ -15,7 +15,11 @@ const presentationOptions = [
 export default function Onboarding() {
   const navigate = useNavigate();
   const { saveProfile } = useTutor();
+  const { user } = useAuth();
   const [step, setStep] = useState(0);
+  const [displayName, setDisplayName] = useState(() => {
+    return user?.user_metadata?.full_name || user?.user_metadata?.name || "";
+  });
   const [profession, setProfession] = useState("");
   const [degree, setDegree] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
