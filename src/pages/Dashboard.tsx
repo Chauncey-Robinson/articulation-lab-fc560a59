@@ -149,7 +149,7 @@ export default function Dashboard() {
                     {getStatusLabel(mod.status)}
                   </span>
                   {mod.lesson_count > 0 && (
-                    <span className="text-[11px] font-sans text-ink-3">{mod.completed_lessons}/{mod.lesson_count} lessons</span>
+                    <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)}/{mod.lesson_count} lessons</span>
                   )}
                 </div>
                 <h3 className="font-serif text-[18px] text-foreground leading-tight mb-1">{mod.title}</h3>
