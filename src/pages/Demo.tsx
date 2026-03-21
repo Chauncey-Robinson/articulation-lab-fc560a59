@@ -341,7 +341,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
 }
 
 /* PANEL 1 — THE PROBLEM (HUD style) */
-function Panel1() {
+function Panel1({ speaking }: { speaking: boolean }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const parallaxY = useTransform(scrollYProgress, [0, 1], [60, -60]);
