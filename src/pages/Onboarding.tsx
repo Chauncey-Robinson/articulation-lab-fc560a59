@@ -112,7 +112,7 @@ export default function Onboarding() {
           </div>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">What interests you?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">Pick as many as you like.</p>
