@@ -155,7 +155,7 @@ export default function Dashboard() {
                 <h3 className="font-serif text-[18px] text-foreground leading-tight mb-1">{mod.title}</h3>
                 {mod.lesson_count > 0 && (
                   <div className="w-full h-1 bg-border rounded-pill mt-3">
-                    <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${(mod.completed_lessons / mod.lesson_count) * 100}%` }} />
+                    <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${Math.min((mod.completed_lessons / mod.lesson_count) * 100, 100)}%` }} />
                   </div>
                 )}
               </button>
