@@ -1331,7 +1331,7 @@ export default function Demo() {
   const autoPlayRef = useRef(true);
   const pauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const lastSpokenPanel = useRef(-1);
-  const { speak, stop, muted, toggleMute } = useTTS();
+  const { speak, stop, muted, toggleMute, speaking } = useTTS();
 
   const scrollTo = useCallback((n: number) => {
     const el = document.getElementById(`panel-${n}`);
