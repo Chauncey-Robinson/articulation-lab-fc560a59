@@ -51,7 +51,7 @@ export default function Onboarding() {
     navigate("/dashboard");
   };
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-8 pb-10">
