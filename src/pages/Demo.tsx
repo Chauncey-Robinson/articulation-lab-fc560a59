@@ -1672,7 +1672,8 @@ export default function Demo() {
       <Panel4 speaking={speaking && active === 4} />
       <Panel5 speaking={speaking && active === 5} />
       <Panel6 speaking={speaking && active === 6} />
-      <Panel7 scrollTo={scrollTo} speaking={speaking && active === 7} />
+      <Panel7 speaking={speaking && active === 7} />
+      <Panel8 scrollTo={scrollTo} speaking={speaking && active === 8} />
     </div>
   );
 }
