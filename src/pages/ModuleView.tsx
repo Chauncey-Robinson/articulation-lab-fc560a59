@@ -62,9 +62,18 @@ export default function ModuleView() {
           </div>
         </div>
 
+        {/* Personalized recommendation */}
+        {rec && completedCount > 0 && !allCompleted && (
+          <div className="bg-accent-pale/10 rounded-[14px] border-[1.5px] border-accent/20 px-4 py-3 mb-4 animate-fade-up stagger-2">
+            <p className="text-[12px] font-sans text-ink-2">
+              <span className="text-accent font-semibold">Recommended for you:</span> {rec.icon} {rec.primary} — {rec.desc}
+            </p>
+          </div>
+        )}
+
         {/* Path selection — Learn or Test */}
         {!allCompleted && nextLesson && (
-          <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-2">
+          <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-3">
             <button onClick={() => navigate(`/study/${nextLesson.id}`)}
               className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-left hover:border-accent hover:translate-y-[-2px] transition-all duration-[180ms]">
               <p className="text-[20px] mb-2">📖</p>
