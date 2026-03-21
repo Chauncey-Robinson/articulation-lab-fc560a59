@@ -97,13 +97,13 @@ export default function Onboarding() {
           </div>
         )}
 
-        {step === 1 && (
+        {step === 2 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">Your education?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">So we pitch things at the right level.</p>
             <div className="grid grid-cols-2 gap-3">
               {degrees.map(d => (
-                <button key={d} onClick={() => { setDegree(d); setStep(2); }}
+                <button key={d} onClick={() => { setDegree(d); setStep(3); }}
                   className={`rounded-[14px] border-[1.5px] px-4 py-3 text-[14px] font-sans text-left transition-all duration-[180ms] ${degree === d ? "border-accent bg-accent-pale/30 text-foreground" : "border-border bg-card text-ink-2 hover:border-accent"}`}>
                   {d}
                 </button>
