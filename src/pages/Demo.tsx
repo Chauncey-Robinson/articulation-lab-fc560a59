@@ -506,17 +506,19 @@ function Panel2({ speaking }: { speaking: boolean }) {
               { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily. Toggle voice on or off. Then discuss with the AI tutor." },
               { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus teach-back, real-world scenarios, and flashcards." },
             ].map((c, i) => (
-              <motion.div key={c.num} custom={i + 3} variants={slideRight}
-                className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
-                style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
-                <div className="flex items-start gap-4">
-                  <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
-                  <div>
-                    <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{c.title}</p>
-                    <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>{c.desc}</p>
+              <SpeakingGlow speaking={speaking}>
+                <motion.div key={c.num} custom={i + 3} variants={slideRight}
+                  className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
+                  style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+                  <div className="flex items-start gap-4">
+                    <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
+                    <div>
+                      <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{c.title}</p>
+                      <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>{c.desc}</p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </SpeakingGlow>
             ))}
           </div>
         </CinematicSection>
