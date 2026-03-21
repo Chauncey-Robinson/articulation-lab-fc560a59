@@ -514,9 +514,9 @@ function Panel3() {
           {/* Pipeline steps */}
           <div className="mt-8 space-y-3">
             {[
-              { step: "01", title: "Text extraction", desc: "Raw content parsed and cleaned", icon: "📄" },
+              { step: "01", title: "Content ingestion", desc: "Paste text or upload PDF, DOCX, and more", icon: "📄" },
               { step: "02", title: "Key idea isolation", desc: "AI identifies core concepts per section", icon: "🧠" },
-              { step: "03", title: "Module generation", desc: "Structured lessons with quiz questions", icon: "📦" },
+              { step: "03", title: "Module generation", desc: "Structured lessons personalised to your learning style", icon: "📦" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
                 <HudCard delay={i * 0.12}>
