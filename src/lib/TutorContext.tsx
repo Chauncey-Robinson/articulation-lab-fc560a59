@@ -28,6 +28,7 @@ export interface Lesson {
 
 export interface Profile {
   user_id: string;
+  display_name: string | null;
   profession: string | null;
   degree: string | null;
   interests: string[];

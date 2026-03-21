@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
   const { concepts, progress, loadingData } = useApp();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const today = new Date().toISOString().split("T")[0];
@@ -46,8 +48,9 @@ export default function Home() {
   const practisedYesterday = progress.last_practice_date === yesterday;
 
   // Greeting
+  const firstName = user?.user_metadata?.full_name?.split(" ")[0] || user?.user_metadata?.name?.split(" ")[0] || "";
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning." : hour < 17 ? "Good afternoon." : "Good evening.";
+  const greeting = hour < 12 ? `Good morning${firstName ? `, ${firstName}` : ""}.` : hour < 17 ? `Good afternoon${firstName ? `, ${firstName}` : ""}.` : `Good evening${firstName ? `, ${firstName}` : ""}.`;
 
   return (
     <div className="flex-1 flex flex-col px-6">

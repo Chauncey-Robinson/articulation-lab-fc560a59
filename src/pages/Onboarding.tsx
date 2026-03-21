@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const professions = ["Student", "Engineer", "Manager", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Teacher", "Other"];
 const degrees = ["High School", "Bachelor's", "Master's", "PhD", "Self-taught", "Other"];
@@ -15,7 +16,11 @@ const presentationOptions = [
 export default function Onboarding() {
   const navigate = useNavigate();
   const { saveProfile } = useTutor();
+  const { user } = useAuth();
   const [step, setStep] = useState(0);
+  const [displayName, setDisplayName] = useState(() => {
+    return user?.user_metadata?.full_name || user?.user_metadata?.name || "";
+  });
   const [profession, setProfession] = useState("");
   const [degree, setDegree] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
@@ -33,7 +38,7 @@ export default function Onboarding() {
 
   const handleFinish = async () => {
     setSaving(true);
-    await saveProfile({ profession, degree, interests, age_range: ageRange, onboarded: true });
+    await saveProfile({ profession, degree, interests, age_range: ageRange, onboarded: true, display_name: displayName.trim() || null } as any);
     localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
     setSaving(false);
     navigate("/dashboard");
@@ -46,7 +51,7 @@ export default function Onboarding() {
     navigate("/dashboard");
   };
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-8 pb-10">
@@ -60,11 +65,30 @@ export default function Onboarding() {
 
         {step === 0 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
+            <h1 className="font-serif text-[2rem] text-foreground mb-2">What's your name?</h1>
+            <p className="text-[14px] font-sans text-ink-3 mb-6">So we know what to call you.</p>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your name"
+              className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-3 text-[15px] font-sans text-foreground placeholder:text-ink-3 focus:outline-none focus:border-accent-bright transition-colors mb-6"
+              autoFocus
+            />
+            <button onClick={() => setStep(1)} disabled={!displayName.trim()}
+              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
+              Continue
+            </button>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">What do you do?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">This helps us tailor scenarios to your world.</p>
             <div className="grid grid-cols-2 gap-3">
               {professions.map(p => (
-                <button key={p} onClick={() => { setProfession(p); setStep(1); }}
+                <button key={p} onClick={() => { setProfession(p); setStep(2); }}
                   className={`rounded-[14px] border-[1.5px] px-4 py-3 text-[14px] font-sans text-left transition-all duration-[180ms] ${profession === p ? "border-accent bg-accent-pale/30 text-foreground" : "border-border bg-card text-ink-2 hover:border-accent"}`}>
                   {p}
                 </button>
@@ -73,13 +97,13 @@ export default function Onboarding() {
           </div>
         )}
 
-        {step === 1 && (
+        {step === 2 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">Your education?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">So we pitch things at the right level.</p>
             <div className="grid grid-cols-2 gap-3">
               {degrees.map(d => (
-                <button key={d} onClick={() => { setDegree(d); setStep(2); }}
+                <button key={d} onClick={() => { setDegree(d); setStep(3); }}
                   className={`rounded-[14px] border-[1.5px] px-4 py-3 text-[14px] font-sans text-left transition-all duration-[180ms] ${degree === d ? "border-accent bg-accent-pale/30 text-foreground" : "border-border bg-card text-ink-2 hover:border-accent"}`}>
                   {d}
                 </button>
@@ -88,7 +112,7 @@ export default function Onboarding() {
           </div>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">What interests you?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">Pick as many as you like.</p>
@@ -100,14 +124,14 @@ export default function Onboarding() {
                 </button>
               ))}
             </div>
-            <button onClick={() => setStep(3)} disabled={interests.length === 0}
+            <button onClick={() => setStep(4)} disabled={interests.length === 0}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
               Continue
             </button>
           </div>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">How do you learn best?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">Pick your preferred format for digesting info.</p>
@@ -127,14 +151,14 @@ export default function Onboarding() {
                 </button>
               ))}
             </div>
-            <button onClick={() => setStep(4)} disabled={presentations.length === 0}
+            <button onClick={() => setStep(5)} disabled={presentations.length === 0}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
               Continue
             </button>
           </div>
         )}
 
-        {step === 4 && (
+        {step === 5 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">How old are you?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">Last one. Promise.</p>
