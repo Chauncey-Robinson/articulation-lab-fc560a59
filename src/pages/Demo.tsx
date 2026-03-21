@@ -93,19 +93,32 @@ function NarrationBadge({ speaking }: { speaking: boolean }) {
 }
 
 /* ─── Glow wrapper — adds pulsing amber glow when speaking ─── */
-function SpeakingGlow({ speaking, children, className = "" }: { speaking: boolean; children: React.ReactNode; className?: string }) {
+function SpeakingGlow({ speaking, children, className = "", delay = 0 }: { speaking: boolean; children: React.ReactNode; className?: string; delay?: number }) {
   return (
     <motion.div
-      className={className}
+      className={`relative ${className}`}
       animate={speaking ? {
         boxShadow: [
-          "0 0 0px hsla(32,82%,51%,0)",
-          "0 0 30px hsla(32,82%,51%,0.15)",
-          "0 0 0px hsla(32,82%,51%,0)",
+          "0 0 0px hsla(32,82%,51%,0), inset 0 0 0px hsla(32,82%,51%,0)",
+          "0 0 40px hsla(32,82%,51%,0.25), inset 0 0 20px hsla(32,82%,51%,0.05)",
+          "0 0 0px hsla(32,82%,51%,0), inset 0 0 0px hsla(32,82%,51%,0)",
         ],
-      } : { boxShadow: "0 0 0px hsla(32,82%,51%,0)" }}
-      transition={{ duration: 2, repeat: speaking ? Infinity : 0, ease: "easeInOut" }}
-      style={{ borderRadius: 16 }}
+        borderColor: [
+          "hsla(32,82%,51%,0)",
+          "hsla(32,82%,51%,0.4)",
+          "hsla(32,82%,51%,0)",
+        ],
+      } : {
+        boxShadow: "0 0 0px hsla(32,82%,51%,0)",
+        borderColor: "hsla(32,82%,51%,0)",
+      }}
+      transition={{
+        duration: 2.5,
+        repeat: speaking ? Infinity : 0,
+        ease: "easeInOut",
+        delay,
+      }}
+      style={{ borderRadius: 16, border: "1.5px solid transparent" }}
     >
       {children}
     </motion.div>
@@ -578,25 +591,27 @@ function Panel3({ speaking }: { speaking: boolean }) {
               { step: "03", title: "Module generation", desc: "Structured lessons personalised to your learning style", icon: "📦" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
-                <HudCard delay={i * 0.12}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
-                      style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
-                      <span className="text-[16px]">{s.icon}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
+                <SpeakingGlow speaking={speaking} delay={i * 0.4}>
+                  <HudCard delay={i * 0.12}>
+                    <div className="flex items-start gap-4">
+                      <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
+                        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+                        <span className="text-[16px]">{s.icon}</span>
                       </div>
-                      <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{s.title}</p>
-                      <p className="font-sans text-[10px] mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>{s.desc}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                            style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
+                        </div>
+                        <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{s.title}</p>
+                        <p className="font-sans text-[10px] mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>{s.desc}</p>
+                      </div>
+                      <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
+                        style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                        animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
                     </div>
-                    <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
-                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                      animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
-                  </div>
-                </HudCard>
+                  </HudCard>
+                </SpeakingGlow>
               </motion.div>
             ))}
           </div>
@@ -796,24 +811,26 @@ function Panel4({ speaking }: { speaking: boolean }) {
               { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
             ].map((f, i) => (
               <motion.div key={f.tag} custom={i + 3} variants={slideLeft}>
-                <HudCard delay={i * 0.1}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
-                      style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
-                      <span className="text-[18px]">{f.icon}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
-                          {f.tag}
-                        </span>
+                <SpeakingGlow speaking={speaking} delay={i * 0.5}>
+                  <HudCard delay={i * 0.1}>
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
+                        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+                        <span className="text-[18px]">{f.icon}</span>
                       </div>
-                      <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
-                      <p className="font-sans text-[11px] mt-0.5" style={{ color: "hsl(var(--ink-3))" }}>{f.desc}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                            style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
+                            {f.tag}
+                          </span>
+                        </div>
+                        <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                        <p className="font-sans text-[11px] mt-0.5" style={{ color: "hsl(var(--ink-3))" }}>{f.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                </HudCard>
+                  </HudCard>
+                </SpeakingGlow>
               </motion.div>
             ))}
           </div>
@@ -988,6 +1005,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: idx * 0.15, ease }}>
+                <SpeakingGlow speaking={speaking} delay={idx * 0.4}>
                 <HudCard delay={idx * 0.1}>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
@@ -1020,6 +1038,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                     </span>
                   </div>
                 </HudCard>
+                </SpeakingGlow>
               </motion.div>
             ))}
 
@@ -1031,6 +1050,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: (idx + 3) * 0.15, ease }}>
+                  <SpeakingGlow speaking={speaking} delay={(idx + 3) * 0.3}>
                   <HudCard delay={(idx + 3) * 0.1}>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
@@ -1061,6 +1081,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                       </span>
                     </div>
                   </HudCard>
+                  </SpeakingGlow>
                 </motion.div>
               ) : (
                 <div key="spacer" className="flex items-center justify-center">
@@ -1153,6 +1174,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease }}
           className="relative max-w-[900px] mx-auto">
+          <SpeakingGlow speaking={speaking}>
           <HudCard className="!p-0 overflow-hidden">
             <table className="w-full text-left">
               <thead>
@@ -1197,6 +1219,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
               </span>
             </div>
           </HudCard>
+          </SpeakingGlow>
 
           {/* Callouts on the side */}
           <div className="absolute -left-[130px] top-[20%] hidden lg:block">
@@ -1349,20 +1372,24 @@ export default function Demo() {
     }
   }, [active, speak, stop]);
 
-  // Auto-scroll through panels
+  // Auto-scroll through panels — WAIT for Lily to finish speaking
   useEffect(() => {
-    const AUTO_TIMES = [10000, 9000, 10000, 9000, 10000, 10000, 9000, 12000];
+    // Don't advance while Lily is still speaking
+    if (speaking) return;
     if (!autoPlayRef.current) return;
+
+    // After speech ends, wait a brief pause then advance
+    const AFTER_SPEECH_DELAY = 2000;
 
     const t = setTimeout(() => {
       if (!autoPlayRef.current) return;
       const next = (active + 1) % PANEL_COUNT;
       setActive(next);
       scrollTo(next);
-    }, AUTO_TIMES[active]);
+    }, AFTER_SPEECH_DELAY);
 
     return () => clearTimeout(t);
-  }, [active, scrollTo]);
+  }, [active, scrollTo, speaking]);
 
   // Pause auto-scroll on user interaction, resume after 8s
   const pauseAutoPlay = useCallback(() => {
