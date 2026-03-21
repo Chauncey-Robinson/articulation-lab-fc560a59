@@ -1379,7 +1379,7 @@ export default function Demo() {
     if (!autoPlayRef.current) return;
 
     // After speech ends, wait a brief pause then advance
-    const AFTER_SPEECH_DELAY = 2000;
+    const AFTER_SPEECH_DELAY = 1200;
 
     const t = setTimeout(() => {
       if (!autoPlayRef.current) return;
