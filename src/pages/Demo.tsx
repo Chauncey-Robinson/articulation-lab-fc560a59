@@ -229,7 +229,7 @@ function FluencyBar({ label, pct, color, animate }: { label: string; pct: number
    ═══════════════════════════════════════════ */
 
 /* PANEL 0 — CINEMATIC HERO */
-function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
+function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speaking: boolean }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
