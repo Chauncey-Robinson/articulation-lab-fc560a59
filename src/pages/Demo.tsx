@@ -444,7 +444,7 @@ function Panel1({ speaking }: { speaking: boolean }) {
 }
 
 /* PANEL 2 — THE SOLUTION (overview) */
-function Panel2() {
+function Panel2({ speaking }: { speaking: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
