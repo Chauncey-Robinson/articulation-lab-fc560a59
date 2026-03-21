@@ -1292,7 +1292,7 @@ export default function Demo() {
 
   // Auto-scroll through panels
   useEffect(() => {
-    const AUTO_TIMES = [5000, 4000, 4500, 4000, 5000, 4500, 4000, 6000];
+    const AUTO_TIMES = [10000, 9000, 10000, 9000, 10000, 10000, 9000, 12000];
     if (!autoPlayRef.current) return;
 
     const t = setTimeout(() => {
