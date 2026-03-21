@@ -86,7 +86,7 @@ function NarrationBadge({ speaking }: { speaking: boolean }) {
       </div>
       <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]"
         style={{ color: "hsl(var(--amber-bright))" }}>
-        Lily is narrating
+        Listening
       </span>
     </motion.div>
   );
