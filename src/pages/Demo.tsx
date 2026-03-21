@@ -1118,8 +1118,7 @@ function Panel6() {
                         transition={{ duration: 2, repeat: Infinity, delay: rowIdx * 0.15 }}>✓</motion.span>
                     </td>
                     <td className="text-center p-4">
-                      {rw === "partial" ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓*</span>
-                        : rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
+                      {rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
                         : <span style={{ color: "hsl(var(--border))" }}>✗</span>}
                     </td>
                     <td className="text-center p-4">
