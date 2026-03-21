@@ -181,10 +181,16 @@ export default function Dashboard() {
         )}
 
         {/* Upload CTA */}
-        <Link to="/upload"
-          className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block animate-fade-up stagger-6">
-          Upload new material
-        </Link>
+        <div className="flex gap-3 animate-fade-up stagger-6">
+          <Link to="/upload"
+            className="flex-1 rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
+            Upload material
+          </Link>
+          <Link to="/meeting/record"
+            className="flex-1 rounded-pill bg-destructive py-4 text-[13px] font-sans font-semibold text-white hover:opacity-90 transition-all duration-[180ms] text-center block flex items-center justify-center gap-1.5">
+            🎙 Meeting mode
+          </Link>
+        </div>
 
         {/* Bottom nav */}
         <div className="flex justify-center gap-6 mt-4">

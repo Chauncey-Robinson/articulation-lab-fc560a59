@@ -20,6 +20,8 @@ import LearnConfig from "@/pages/LearnConfig";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
+import MeetingRecord from "@/pages/MeetingRecord";
+import MeetingReview from "@/pages/MeetingReview";
 import { TutorProvider } from "@/lib/TutorContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import IPhoneFrame from "@/components/IPhoneFrame";
@@ -68,6 +70,8 @@ const App = () => (
                     <Route path="/flashcards/:moduleId" element={<RequireAuth><Flashcards /></RequireAuth>} />
                     <Route path="/test-config/:moduleId" element={<RequireAuth><TestConfig /></RequireAuth>} />
                     <Route path="/deadlines" element={<RequireAuth><Deadlines /></RequireAuth>} />
+                    <Route path="/meeting/record" element={<RequireAuth><MeetingRecord /></RequireAuth>} />
+                    <Route path="/meeting/:id" element={<RequireAuth><MeetingReview /></RequireAuth>} />
                     <Route path="/analytics" element={<RequireAuth><Analytics /></RequireAuth>} />
                     <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
 
