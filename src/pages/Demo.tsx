@@ -1466,14 +1466,15 @@ export default function Demo() {
           {muted ? "Unmute" : "Narrating"}
         </span>
       </button>
-      <Panel0 scrollTo={scrollTo} />
-      <Panel1 />
-      <Panel2 />
-      <Panel3 />
-      <Panel4 />
-      <Panel5 />
-      <Panel6 />
-      <Panel7 scrollTo={scrollTo} />
+      <NarrationBadge speaking={speaking} />
+      <Panel0 scrollTo={scrollTo} speaking={speaking && active === 0} />
+      <Panel1 speaking={speaking && active === 1} />
+      <Panel2 speaking={speaking && active === 2} />
+      <Panel3 speaking={speaking && active === 3} />
+      <Panel4 speaking={speaking && active === 4} />
+      <Panel5 speaking={speaking && active === 5} />
+      <Panel6 speaking={speaking && active === 6} />
+      <Panel7 scrollTo={scrollTo} speaking={speaking && active === 7} />
     </div>
   );
 }
