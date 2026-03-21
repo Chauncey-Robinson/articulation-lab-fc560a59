@@ -15,7 +15,7 @@ export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { refreshModules } = useTutor();
+  const { refreshModules, profile } = useTutor();
   const [module, setModule] = useState<Module | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
