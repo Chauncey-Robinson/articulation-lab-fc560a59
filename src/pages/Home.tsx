@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
   const { concepts, progress, loadingData } = useApp();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const today = new Date().toISOString().split("T")[0];
