@@ -1271,11 +1271,24 @@ export default function Demo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef(true);
   const pauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const lastSpokenPanel = useRef(-1);
+  const { speak, stop, muted, toggleMute } = useTTS();
 
   const scrollTo = useCallback((n: number) => {
     const el = document.getElementById(`panel-${n}`);
     el?.scrollIntoView({ behavior: "smooth" });
   }, []);
+
+  // Narrate when active panel changes
+  useEffect(() => {
+    if (active !== lastSpokenPanel.current && panelNarrations[active]) {
+      lastSpokenPanel.current = active;
+      stop();
+      // Small delay to let the panel animate in
+      const t = setTimeout(() => speak(panelNarrations[active]), 600);
+      return () => clearTimeout(t);
+    }
+  }, [active, speak, stop]);
 
   // Auto-scroll through panels
   useEffect(() => {
