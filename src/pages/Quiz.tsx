@@ -16,7 +16,7 @@ export default function Quiz() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { speak, stop } = useTTS();
+  const { speak, stop, muted, toggleMute } = useTTS();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
