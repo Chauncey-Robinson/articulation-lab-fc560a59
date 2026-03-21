@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const professions = ["Student", "Engineer", "Manager", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Teacher", "Other"];
 const degrees = ["High School", "Bachelor's", "Master's", "PhD", "Self-taught", "Other"];
