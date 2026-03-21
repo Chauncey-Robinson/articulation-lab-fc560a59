@@ -16,7 +16,7 @@ export default function Quiz() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { speak, stop } = useTTS();
+  const { speak, stop, muted, toggleMute } = useTTS();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -44,8 +44,12 @@ export default function Quiz() {
         const lesson = (lessons as unknown as Lesson[])[Math.floor(Math.random() * lessons.length)];
         const result = await generateQuiz(lesson.title, lesson.content, lesson.key_idea);
 
-        const qs: QuizQuestion[] = result.questions.map(q => ({ ...q, lesson_id: lesson.id }));
-        setQuestions(qs);
+        // Sort: multiple_choice first, then true_false, then open
+        const order: Record<string, number> = { multiple_choice: 0, true_false: 1, open: 2 };
+        const sorted = result.questions
+          .map(q => ({ ...q, lesson_id: lesson.id }))
+          .sort((a, b) => (order[a.question_type] ?? 9) - (order[b.question_type] ?? 9));
+        setQuestions(sorted);
       } catch (e: any) {
         setError(e.message || "Failed to generate quiz.");
       } finally {
@@ -157,6 +161,9 @@ export default function Quiz() {
       <div className="flex items-center justify-between mb-6">
         <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
         <span className="text-[13px] font-sans text-ink-3">{currentIdx + 1} / {questions.length}</span>
+        <button onClick={toggleMute} className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">
+          {muted ? "🔇" : "🔊"}
+        </button>
       </div>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">

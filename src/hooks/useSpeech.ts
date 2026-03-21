@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 // ── ElevenLabs Text-to-Speech ──
 
 export function useTTS() {
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(() => localStorage.getItem("tutor_muted") === "true");
   const [speaking, setSpeaking] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -82,7 +82,9 @@ export function useTTS() {
 
   const toggleMute = useCallback(() => {
     setMuted((m) => {
-      if (!m) {
+      const next = !m;
+      localStorage.setItem("tutor_muted", String(next));
+      if (next) {
         // Muting — stop current playback
         abortRef.current?.abort();
         if (audioRef.current) {
@@ -91,7 +93,7 @@ export function useTTS() {
         }
         setSpeaking(false);
       }
-      return !m;
+      return next;
     });
   }, []);
 
