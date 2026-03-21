@@ -901,7 +901,7 @@ function Panel4({ speaking }: { speaking: boolean }) {
 }
 
 /* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
-function Panel5() {
+function Panel5({ speaking }: { speaking: boolean }) {
   const features = [
     { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to your learning style.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
     { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
