@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 function getStatusColor(status: string) {
   switch (status) {
@@ -24,6 +26,22 @@ export default function Dashboard() {
   const { modules, loading, progress, profile } = useTutor();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Fetch quiz accuracy for "progress" stat
+  const [quizAccuracy, setQuizAccuracy] = useState<number | null>(null);
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase
+        .from("quiz_attempts")
+        .select("is_correct")
+        .eq("user_id", user.id);
+      if (data && data.length > 0) {
+        const correct = data.filter((a: any) => a.is_correct).length;
+        setQuizAccuracy(Math.round((correct / data.length) * 100));
+      }
+    })();
+  }, [user]);
 
   // Get display name from profile, OAuth metadata, or email
   const displayName = profile?.display_name
@@ -51,8 +69,9 @@ export default function Dashboard() {
   });
 
   // Compute overall completion %
+  // Cap completed_lessons to lesson_count to prevent >100%
   const totalLessons = modules.reduce((a, m) => a + m.lesson_count, 0);
-  const doneLessons = modules.reduce((a, m) => a + m.completed_lessons, 0);
+  const doneLessons = modules.reduce((a, m) => a + Math.min(m.completed_lessons, m.lesson_count), 0);
   const overallPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
 
   return (
@@ -74,7 +93,7 @@ export default function Dashboard() {
           {modules.length === 0 ? (
             <p className="text-[14px] font-sans text-ink-3">Upload something to start learning.</p>
           ) : (
-            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""} · {overallPct}% complete</p>
+            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""} · {overallPct}% lessons done</p>
           )}
         </div>
 
@@ -110,8 +129,8 @@ export default function Dashboard() {
               <p className="text-[11px] font-sans text-ink-3 mt-1">streak</p>
             </div>
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
-              <p className="font-serif text-[2rem] leading-none text-foreground">{overallPct}%</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">progress</p>
+              <p className="font-serif text-[2rem] leading-none text-foreground">{quizAccuracy !== null ? `${quizAccuracy}%` : "—"}</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">accuracy</p>
             </div>
           </div>
         )}
@@ -130,13 +149,13 @@ export default function Dashboard() {
                     {getStatusLabel(mod.status)}
                   </span>
                   {mod.lesson_count > 0 && (
-                    <span className="text-[11px] font-sans text-ink-3">{mod.completed_lessons}/{mod.lesson_count} lessons</span>
+                    <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)}/{mod.lesson_count} lessons</span>
                   )}
                 </div>
                 <h3 className="font-serif text-[18px] text-foreground leading-tight mb-1">{mod.title}</h3>
                 {mod.lesson_count > 0 && (
                   <div className="w-full h-1 bg-border rounded-pill mt-3">
-                    <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${(mod.completed_lessons / mod.lesson_count) * 100}%` }} />
+                    <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${Math.min((mod.completed_lessons / mod.lesson_count) * 100, 100)}%` }} />
                   </div>
                 )}
               </button>
