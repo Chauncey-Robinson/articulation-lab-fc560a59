@@ -93,19 +93,32 @@ function NarrationBadge({ speaking }: { speaking: boolean }) {
 }
 
 /* ─── Glow wrapper — adds pulsing amber glow when speaking ─── */
-function SpeakingGlow({ speaking, children, className = "" }: { speaking: boolean; children: React.ReactNode; className?: string }) {
+function SpeakingGlow({ speaking, children, className = "", delay = 0 }: { speaking: boolean; children: React.ReactNode; className?: string; delay?: number }) {
   return (
     <motion.div
-      className={className}
+      className={`relative ${className}`}
       animate={speaking ? {
         boxShadow: [
-          "0 0 0px hsla(32,82%,51%,0)",
-          "0 0 30px hsla(32,82%,51%,0.15)",
-          "0 0 0px hsla(32,82%,51%,0)",
+          "0 0 0px hsla(32,82%,51%,0), inset 0 0 0px hsla(32,82%,51%,0)",
+          "0 0 40px hsla(32,82%,51%,0.25), inset 0 0 20px hsla(32,82%,51%,0.05)",
+          "0 0 0px hsla(32,82%,51%,0), inset 0 0 0px hsla(32,82%,51%,0)",
         ],
-      } : { boxShadow: "0 0 0px hsla(32,82%,51%,0)" }}
-      transition={{ duration: 2, repeat: speaking ? Infinity : 0, ease: "easeInOut" }}
-      style={{ borderRadius: 16 }}
+        borderColor: [
+          "hsla(32,82%,51%,0)",
+          "hsla(32,82%,51%,0.4)",
+          "hsla(32,82%,51%,0)",
+        ],
+      } : {
+        boxShadow: "0 0 0px hsla(32,82%,51%,0)",
+        borderColor: "hsla(32,82%,51%,0)",
+      }}
+      transition={{
+        duration: 2.5,
+        repeat: speaking ? Infinity : 0,
+        ease: "easeInOut",
+        delay,
+      }}
+      style={{ borderRadius: 16, border: "1.5px solid transparent" }}
     >
       {children}
     </motion.div>
