@@ -1219,6 +1219,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
               </span>
             </div>
           </HudCard>
+          </SpeakingGlow>
 
           {/* Callouts on the side */}
           <div className="absolute -left-[130px] top-[20%] hidden lg:block">
