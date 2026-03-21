@@ -508,7 +508,7 @@ function Panel3() {
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>The AI does the rest.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "hsl(var(--ink-3))" }}>
-            Drop in your study notes, textbook passages, or certification material. The AI extracts key ideas and builds structured modules.
+            Drop in your study notes, textbook passages, PDFs, or certification material. The AI extracts key ideas and builds structured modules.
           </motion.p>
 
           {/* Pipeline steps */}
