@@ -1212,7 +1212,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
 }
 
 /* PANEL 7 — CINEMATIC CLOSE (HUD style) */
-function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
+function Panel7({ scrollTo, speaking }: { scrollTo: (n: number) => void; speaking: boolean }) {
   return (
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
       style={{ background: "hsl(var(--background))" }}>
