@@ -131,7 +131,7 @@ export default function Onboarding() {
           </div>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">How do you learn best?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">Pick your preferred format for digesting info.</p>
