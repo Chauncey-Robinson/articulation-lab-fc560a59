@@ -141,6 +141,7 @@ export type Database = {
           display_name: string | null
           gender: string | null
           interests: string[] | null
+          learning_style: string | null
           onboarded: boolean | null
           profession: string | null
           user_id: string
@@ -152,6 +153,7 @@ export type Database = {
           display_name?: string | null
           gender?: string | null
           interests?: string[] | null
+          learning_style?: string | null
           onboarded?: boolean | null
           profession?: string | null
           user_id: string
@@ -163,6 +165,7 @@ export type Database = {
           display_name?: string | null
           gender?: string | null
           interests?: string[] | null
+          learning_style?: string | null
           onboarded?: boolean | null
           profession?: string | null
           user_id?: string
