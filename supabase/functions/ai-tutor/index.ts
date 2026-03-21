@@ -56,15 +56,39 @@ Return the lessons using the provided tool.`;
     };
 
   } else if (type === "generate_quiz") {
-    systemPrompt = `You are a sharp knowledge tester. Given a lesson's content and key idea, generate 3 quiz questions.
-Mix question types:
+    const learningStyle = body.learningStyle as string || "";
+    let questionMix = `Mix question types:
 - 1 open-ended question (requires explanation)
 - 1 multiple choice (4 options, one correct)
+- 1 true/false`;
+
+    if (learningStyle === "kinesthetic") {
+      questionMix = `Generate 4 questions. Start with easier types and progress:
+- 2 multiple choice (4 options, one correct) — application-focused
 - 1 true/false
+- 1 open-ended question requiring the user to explain how they'd apply the concept`;
+    } else if (learningStyle === "visual") {
+      questionMix = `Generate 3 questions. Focus on recognition and pattern-matching:
+- 2 multiple choice (4 options, one correct) — include concrete examples
+- 1 true/false with a tricky distinction`;
+    } else if (learningStyle === "auditory") {
+      questionMix = `Generate 3 questions. Favor discussion-style questions:
+- 1 multiple choice (4 options, one correct)
+- 1 true/false
+- 1 open-ended question phrased as "How would you explain..."`;
+    } else if (learningStyle === "reading") {
+      questionMix = `Generate 4 questions. Include detail-oriented questions:
+- 1 multiple choice (4 options, one correct)
+- 1 true/false about a specific detail
+- 2 open-ended questions testing precise understanding`;
+    }
+
+    systemPrompt = `You are a sharp knowledge tester. Given a lesson's content and key idea, generate quiz questions.
+${questionMix}
 Questions should test understanding, not memorization.
 Return using the provided tool.`;
     userMessage = `Lesson: ${body.lessonTitle}\nContent: ${body.lessonContent}\nKey idea: ${body.keyIdea}`;
-    maxTokens = 1000;
+    maxTokens = 1200;
     tool = {
       name: "create_quiz",
       description: "Create quiz questions for a lesson",

@@ -119,6 +119,25 @@ export default function Settings() {
           </div>
         </Section>
 
+        {/* Learning Style */}
+        <Section title="LEARNING STYLE" delay={3}>
+          <div className="bg-card rounded-[14px] border-[1.5px] border-border px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[13px] font-sans font-medium text-foreground">
+                  {profile?.learning_style ? `${profile.learning_style.charAt(0).toUpperCase()}${profile.learning_style.slice(1)} learner` : "Not assessed yet"}
+                </p>
+                <p className="text-[11px] font-sans text-ink-3">
+                  {profile?.learning_style ? "Personalizes quizzes, content, and study recommendations" : "Complete onboarding to assess your style"}
+                </p>
+              </div>
+              <span className="text-[20px]">
+                {profile?.learning_style === "visual" ? "👁️" : profile?.learning_style === "auditory" ? "👂" : profile?.learning_style === "reading" ? "📚" : profile?.learning_style === "kinesthetic" ? "🤲" : "❓"}
+              </span>
+            </div>
+          </div>
+        </Section>
+
         {/* Voice & Sound */}
         <Section title="VOICE & SOUND" delay={3}>
           <div className="flex items-center justify-between bg-card rounded-[14px] border-[1.5px] border-border px-4 py-4">

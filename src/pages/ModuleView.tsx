@@ -4,11 +4,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
 
+const styleRecommendations: Record<string, { primary: string; desc: string; icon: string }> = {
+  visual: { primary: "Flashcards", desc: "Visual review cards match your learning style", icon: "🃏" },
+  auditory: { primary: "Dialogue", desc: "Discussion-based learning fits you best", icon: "💬" },
+  reading: { primary: "Learn", desc: "Deep reading and note-taking is your strength", icon: "📖" },
+  kinesthetic: { primary: "Apply & Teach-Back", desc: "Hands-on practice matches how you learn", icon: "🧪" },
+};
+
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { refreshModules } = useTutor();
+  const { refreshModules, profile } = useTutor();
   const [module, setModule] = useState<Module | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +44,7 @@ export default function ModuleView() {
   const completedCount = lessons.filter(l => l.completed).length;
   const allCompleted = completedCount === lessons.length && lessons.length > 0;
   const nextLesson = lessons.find(l => !l.completed);
+  const rec = profile?.learning_style ? styleRecommendations[profile.learning_style] : null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
@@ -54,9 +62,18 @@ export default function ModuleView() {
           </div>
         </div>
 
+        {/* Personalized recommendation */}
+        {rec && completedCount > 0 && !allCompleted && (
+          <div className="bg-accent-pale/10 rounded-[14px] border-[1.5px] border-accent/20 px-4 py-3 mb-4 animate-fade-up stagger-2">
+            <p className="text-[12px] font-sans text-ink-2">
+              <span className="text-accent font-semibold">Recommended for you:</span> {rec.icon} {rec.primary} — {rec.desc}
+            </p>
+          </div>
+        )}
+
         {/* Path selection — Learn or Test */}
         {!allCompleted && nextLesson && (
-          <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-2">
+          <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-3">
             <button onClick={() => navigate(`/study/${nextLesson.id}`)}
               className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-left hover:border-accent hover:translate-y-[-2px] transition-all duration-[180ms]">
               <p className="text-[20px] mb-2">📖</p>

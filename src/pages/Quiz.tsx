@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTutor } from "@/lib/TutorContext";
 import { generateQuiz, evaluateAnswer, type GeneratedQuestion } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
@@ -17,6 +18,7 @@ export default function Quiz() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { speak, stop, muted, toggleMute } = useTTS();
+  const { profile } = useTutor();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -42,7 +44,7 @@ export default function Quiz() {
 
         // Pick a random lesson to quiz on
         const lesson = (lessons as unknown as Lesson[])[Math.floor(Math.random() * lessons.length)];
-        const result = await generateQuiz(lesson.title, lesson.content, lesson.key_idea);
+        const result = await generateQuiz(lesson.title, lesson.content, lesson.key_idea, profile?.learning_style || undefined);
 
         // Sort: multiple_choice first, then true_false, then open
         const order: Record<string, number> = { multiple_choice: 0, true_false: 1, open: 2 };
