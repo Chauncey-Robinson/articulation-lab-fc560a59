@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 // ── ElevenLabs Text-to-Speech ──
 
 export function useTTS() {
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(() => localStorage.getItem("tutor_muted") === "true");
   const [speaking, setSpeaking] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
