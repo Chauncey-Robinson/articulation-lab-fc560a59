@@ -1090,7 +1090,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
 }
 
 /* PANEL 6 — COMPARISON (HUD style) */
-function Panel6() {
+function Panel6({ speaking }: { speaking: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
