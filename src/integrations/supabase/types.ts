@@ -97,6 +97,65 @@ export type Database = {
           },
         ]
       }
+      meetings: {
+        Row: {
+          action_items: Json | null
+          created_at: string | null
+          duration_seconds: number | null
+          ended_at: string | null
+          id: string
+          key_learnings: Json | null
+          meeting_type: string
+          module_id: string | null
+          speaker_labels: Json | null
+          status: string
+          summary: string | null
+          title: string
+          transcript: string | null
+          user_id: string
+        }
+        Insert: {
+          action_items?: Json | null
+          created_at?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          key_learnings?: Json | null
+          meeting_type?: string
+          module_id?: string | null
+          speaker_labels?: Json | null
+          status?: string
+          summary?: string | null
+          title?: string
+          transcript?: string | null
+          user_id: string
+        }
+        Update: {
+          action_items?: Json | null
+          created_at?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          key_learnings?: Json | null
+          meeting_type?: string
+          module_id?: string | null
+          speaker_labels?: Json | null
+          status?: string
+          summary?: string | null
+          title?: string
+          transcript?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meetings_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       modules: {
         Row: {
           completed_lessons: number | null
