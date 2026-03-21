@@ -89,6 +89,9 @@ export default function Dialogue() {
           <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent">DIALOGUE</p>
           <p className="text-[13px] font-sans text-foreground truncate">{lesson.title}</p>
         </div>
+        <button onClick={toggleMute} className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors shrink-0">
+          {muted ? "🔇" : "🔊"}
+        </button>
       </div>
 
       {/* Messages */}

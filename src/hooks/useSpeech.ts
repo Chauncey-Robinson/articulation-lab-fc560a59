@@ -82,7 +82,9 @@ export function useTTS() {
 
   const toggleMute = useCallback(() => {
     setMuted((m) => {
-      if (!m) {
+      const next = !m;
+      localStorage.setItem("tutor_muted", String(next));
+      if (next) {
         // Muting — stop current playback
         abortRef.current?.abort();
         if (audioRef.current) {
@@ -91,7 +93,7 @@ export function useTTS() {
         }
         setSpeaking(false);
       }
-      return !m;
+      return next;
     });
   }, []);
 
