@@ -1081,6 +1081,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                       </span>
                     </div>
                   </HudCard>
+                  </SpeakingGlow>
                 </motion.div>
               ) : (
                 <div key="spacer" className="flex items-center justify-center">
