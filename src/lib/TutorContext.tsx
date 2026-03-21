@@ -34,6 +34,7 @@ export interface Profile {
   interests: string[];
   gender: string | null;
   age_range: string | null;
+  learning_style: string | null;
   onboarded: boolean;
 }
 
