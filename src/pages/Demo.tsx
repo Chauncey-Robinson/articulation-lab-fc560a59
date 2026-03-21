@@ -1349,20 +1349,24 @@ export default function Demo() {
     }
   }, [active, speak, stop]);
 
-  // Auto-scroll through panels
+  // Auto-scroll through panels — WAIT for Lily to finish speaking
   useEffect(() => {
-    const AUTO_TIMES = [10000, 9000, 10000, 9000, 10000, 10000, 9000, 12000];
+    // Don't advance while Lily is still speaking
+    if (speaking) return;
     if (!autoPlayRef.current) return;
+
+    // After speech ends, wait a brief pause then advance
+    const AFTER_SPEECH_DELAY = 2000;
 
     const t = setTimeout(() => {
       if (!autoPlayRef.current) return;
       const next = (active + 1) % PANEL_COUNT;
       setActive(next);
       scrollTo(next);
-    }, AUTO_TIMES[active]);
+    }, AFTER_SPEECH_DELAY);
 
     return () => clearTimeout(t);
-  }, [active, scrollTo]);
+  }, [active, scrollTo, speaking]);
 
   // Pause auto-scroll on user interaction, resume after 8s
   const pauseAutoPlay = useCallback(() => {
