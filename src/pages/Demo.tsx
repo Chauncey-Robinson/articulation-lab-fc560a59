@@ -1145,7 +1145,7 @@ function Panel6() {
             <HudCallout label="Unique features" side="left" delay={0.5} />
           </div>
           <div className="absolute -right-[110px] top-[50%] hidden lg:block">
-            <HudCallout label="6 exclusives" side="right" delay={0.7} />
+            <HudCallout label={`${rows.length - 2} exclusives`} side="right" delay={0.7} />
           </div>
         </motion.div>
       </div>
