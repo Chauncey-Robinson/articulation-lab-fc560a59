@@ -749,7 +749,7 @@ function ScanLine() {
 }
 
 /* PANEL 4 — LEARN WITH VOICE (HUD style) */
-function Panel4() {
+function Panel4({ speaking }: { speaking: boolean }) {
   return (
     <section id="panel-4" className="min-h-screen snap-start flex items-center relative overflow-hidden"
       style={{ background: "hsl(var(--background))" }}>
