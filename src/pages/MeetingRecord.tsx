@@ -19,7 +19,7 @@ export default function MeetingRecord() {
 
   const scribe = useScribe({
     modelId: "scribe_v2_realtime",
-    commitStrategy: "vad",
+    commitStrategy: CommitStrategy.VAD,
     onPartialTranscript: (data) => {
       setPartialText(data.text);
     },
