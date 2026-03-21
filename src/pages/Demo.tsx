@@ -1174,6 +1174,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.9, ease }}
           className="relative max-w-[900px] mx-auto">
+          <SpeakingGlow speaking={speaking}>
           <HudCard className="!p-0 overflow-hidden">
             <table className="w-full text-left">
               <thead>
