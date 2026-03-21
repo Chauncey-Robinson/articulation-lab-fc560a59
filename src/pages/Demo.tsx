@@ -6,14 +6,14 @@ import { useTTS } from "@/hooks/useSpeech";
 const PANEL_COUNT = 8;
 
 const panelNarrations = [
-  "You know more than you can explain. Upload what you're studying. The AI breaks it down. A British voice teaches it back to you. Then you prove you own it.",
-  "87 percent of professionals say real-life application is the most important feature they're missing. They studied. They finished. Then someone asked — and nothing came out.",
-  "A gym for professional knowledge. Upload anything. The AI personalises to your learning style. Then prove you own it five ways.",
-  "Paste text, upload PDFs, or drop in your notes. The AI extracts key ideas and builds structured modules automatically.",
-  "Each lesson is read aloud by Lily — a natural British AI voice. Toggle voice on or off anytime. Then discuss with the AI tutor, or speak your answers back.",
-  "Five ways to prove mastery. Quizzes start with multiple choice, then true or false, then open-ended — adapting to your learning style. Plus teach-back, real-world scenarios, dialogue, and flashcards.",
-  "Nobody else combines voice-taught lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is unique.",
-  "Train your knowledge. Own the room. Upload, learn with voice, prove it five ways. That's it.",
+  "You know more than you can explain. Upload what you're studying, the AI breaks it down, and you prove you own it.",
+  "87 percent of professionals said the same thing — they studied, they finished, then someone asked and nothing came out.",
+  "Think of it as a gym for your knowledge. Upload anything, it personalises to how you learn, then you prove it five ways.",
+  "Paste text, upload a PDF, drop in your notes — the AI pulls out the key ideas and builds your modules.",
+  "Every lesson is read aloud. Toggle it on or off. Then discuss with the tutor or speak your answers back.",
+  "Quizzes start easy with multiple choice, then move to true or false, then open-ended — all adapting to your style. Plus teach-back, scenarios, dialogue, and flashcards.",
+  "Nobody else combines voice lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is genuinely unique.",
+  "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
