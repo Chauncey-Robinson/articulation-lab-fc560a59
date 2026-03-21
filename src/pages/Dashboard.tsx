@@ -93,7 +93,7 @@ export default function Dashboard() {
           {modules.length === 0 ? (
             <p className="text-[14px] font-sans text-ink-3">Upload something to start learning.</p>
           ) : (
-            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""} · {overallPct}% complete</p>
+            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""} · {overallPct}% lessons done</p>
           )}
         </div>
 
