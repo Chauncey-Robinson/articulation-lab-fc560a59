@@ -13,7 +13,7 @@ const panelNarrations = [
   "Every lesson is read aloud. Toggle it on or off. Then discuss with the tutor or speak your answers back.",
   "Quizzes start easy with multiple choice, then move to true or false, then open-ended — all adapting to your style. Plus teach-back, scenarios, dialogue, and flashcards.",
   "Nobody else combines voice lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is genuinely unique.",
-  "And here's something no one else does — meeting mode. Walk into any conference, lecture, or meeting, hit record, and the AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study module. Like having Otter AI built into your learning tool.",
+  "And here's something no one else does — meeting mode. Walk into any conference, lecture, or meeting, hit record, and the AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study module — all inside the same app you learn in.",
   "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
