@@ -20,6 +20,8 @@ import LearnConfig from "@/pages/LearnConfig";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
+import MeetingRecord from "@/pages/MeetingRecord";
+import MeetingReview from "@/pages/MeetingReview";
 import { TutorProvider } from "@/lib/TutorContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import IPhoneFrame from "@/components/IPhoneFrame";
