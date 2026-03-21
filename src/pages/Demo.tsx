@@ -528,7 +528,7 @@ function Panel2({ speaking }: { speaking: boolean }) {
 }
 
 /* PANEL 3 — UPLOAD & EXTRACT (HUD style) */
-function Panel3() {
+function Panel3({ speaking }: { speaking: boolean }) {
   return (
     <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
