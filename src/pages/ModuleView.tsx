@@ -4,6 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
 
+const styleRecommendations: Record<string, { primary: string; desc: string; icon: string }> = {
+  visual: { primary: "Flashcards", desc: "Visual review cards match your learning style", icon: "🃏" },
+  auditory: { primary: "Dialogue", desc: "Discussion-based learning fits you best", icon: "💬" },
+  reading: { primary: "Learn", desc: "Deep reading and note-taking is your strength", icon: "📖" },
+  kinesthetic: { primary: "Apply & Teach-Back", desc: "Hands-on practice matches how you learn", icon: "🧪" },
+};
+
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
