@@ -811,24 +811,26 @@ function Panel4({ speaking }: { speaking: boolean }) {
               { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
             ].map((f, i) => (
               <motion.div key={f.tag} custom={i + 3} variants={slideLeft}>
-                <HudCard delay={i * 0.1}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
-                      style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
-                      <span className="text-[18px]">{f.icon}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
-                          {f.tag}
-                        </span>
+                <SpeakingGlow speaking={speaking} delay={i * 0.5}>
+                  <HudCard delay={i * 0.1}>
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
+                        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+                        <span className="text-[18px]">{f.icon}</span>
                       </div>
-                      <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
-                      <p className="font-sans text-[11px] mt-0.5" style={{ color: "hsl(var(--ink-3))" }}>{f.desc}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                            style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
+                            {f.tag}
+                          </span>
+                        </div>
+                        <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                        <p className="font-sans text-[11px] mt-0.5" style={{ color: "hsl(var(--ink-3))" }}>{f.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                </HudCard>
+                  </HudCard>
+                </SpeakingGlow>
               </motion.div>
             ))}
           </div>
