@@ -69,8 +69,9 @@ export default function Dashboard() {
   });
 
   // Compute overall completion %
+  // Cap completed_lessons to lesson_count to prevent >100%
   const totalLessons = modules.reduce((a, m) => a + m.lesson_count, 0);
-  const doneLessons = modules.reduce((a, m) => a + m.completed_lessons, 0);
+  const doneLessons = modules.reduce((a, m) => a + Math.min(m.completed_lessons, m.lesson_count), 0);
   const overallPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
 
   return (
