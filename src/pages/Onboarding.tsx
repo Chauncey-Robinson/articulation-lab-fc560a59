@@ -65,11 +65,30 @@ export default function Onboarding() {
 
         {step === 0 && (
           <div className="flex-1 flex flex-col animate-fade-up stagger-1">
+            <h1 className="font-serif text-[2rem] text-foreground mb-2">What's your name?</h1>
+            <p className="text-[14px] font-sans text-ink-3 mb-6">So we know what to call you.</p>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your name"
+              className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-3 text-[15px] font-sans text-foreground placeholder:text-ink-3 focus:outline-none focus:border-accent-bright transition-colors mb-6"
+              autoFocus
+            />
+            <button onClick={() => setStep(1)} disabled={!displayName.trim()}
+              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
+              Continue
+            </button>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
             <h1 className="font-serif text-[2rem] text-foreground mb-2">What do you do?</h1>
             <p className="text-[14px] font-sans text-ink-3 mb-6">This helps us tailor scenarios to your world.</p>
             <div className="grid grid-cols-2 gap-3">
               {professions.map(p => (
-                <button key={p} onClick={() => { setProfession(p); setStep(1); }}
+                <button key={p} onClick={() => { setProfession(p); setStep(2); }}
                   className={`rounded-[14px] border-[1.5px] px-4 py-3 text-[14px] font-sans text-left transition-all duration-[180ms] ${profession === p ? "border-accent bg-accent-pale/30 text-foreground" : "border-border bg-card text-ink-2 hover:border-accent"}`}>
                   {p}
                 </button>
