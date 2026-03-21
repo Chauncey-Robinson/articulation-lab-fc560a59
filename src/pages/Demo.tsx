@@ -732,7 +732,7 @@ function Panel4() {
           {/* HUD feature callouts */}
           <div className="mt-10 space-y-3">
             {[
-              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Mute anytime." },
+              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Toggle on or off from any screen." },
               { tag: "AI TUTOR", icon: "🤖", title: "Live dialogue", desc: "Ask questions. Challenge ideas. The tutor adapts in real time." },
               { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
             ].map((f, i) => (
