@@ -726,7 +726,7 @@ function Panel4() {
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-6"
             style={{ color: "hsl(var(--ink-3))" }}>
-            Each lesson is read aloud by Lily — a natural British AI voice. Then discuss with the tutor. Then speak it back.
+            Each lesson is read aloud by Lily — a natural British AI voice. Toggle voice on or off anytime. Then discuss with the tutor and speak it back.
           </motion.p>
 
           {/* HUD feature callouts */}
