@@ -27,6 +27,22 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  // Fetch quiz accuracy for "progress" stat
+  const [quizAccuracy, setQuizAccuracy] = useState<number | null>(null);
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase
+        .from("quiz_attempts")
+        .select("is_correct")
+        .eq("user_id", user.id);
+      if (data && data.length > 0) {
+        const correct = data.filter((a: any) => a.is_correct).length;
+        setQuizAccuracy(Math.round((correct / data.length) * 100));
+      }
+    })();
+  }, [user]);
+
   // Get display name from profile, OAuth metadata, or email
   const displayName = profile?.display_name
     || user?.user_metadata?.full_name
