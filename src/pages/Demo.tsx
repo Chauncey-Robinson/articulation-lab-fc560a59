@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PhoneMockup from "@/components/demo/PhoneMockup";
 import { useTTS } from "@/hooks/useSpeech";
 
-const PANEL_COUNT = 8;
+const PANEL_COUNT = 9;
 
 const panelNarrations = [
   "You know more than you can explain. Upload what you're studying, the AI breaks it down, and you prove you own it.",
@@ -13,6 +13,7 @@ const panelNarrations = [
   "Every lesson is read aloud. Toggle it on or off. Then discuss with the tutor or speak your answers back.",
   "Quizzes start easy with multiple choice, then move to true or false, then open-ended — all adapting to your style. Plus teach-back, scenarios, dialogue, and flashcards.",
   "Nobody else combines voice lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is genuinely unique.",
+  "And here's something no one else does — meeting mode. Walk into any conference, lecture, or meeting, hit record, and the AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study module. Like having Otter AI built into your learning tool.",
   "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
