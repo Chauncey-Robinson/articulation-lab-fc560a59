@@ -1398,6 +1398,15 @@ export default function Demo() {
       `}</style>
       <SideNav active={active} />
       <ProgressBar active={active} />
+      {/* Voice toggle */}
+      <button onClick={toggleMute}
+        className="fixed top-6 left-6 z-50 flex items-center gap-2 rounded-pill px-3 py-1.5 transition-all duration-300 hover:scale-105"
+        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+        <span className="text-[14px]">{muted ? "🔇" : "🔊"}</span>
+        <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--ink-3))" }}>
+          {muted ? "Unmute" : "Narrating"}
+        </span>
+      </button>
       <Panel0 scrollTo={scrollTo} />
       <Panel1 />
       <Panel2 />
