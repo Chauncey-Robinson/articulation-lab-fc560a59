@@ -59,6 +59,59 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
+/* ─── Narration badge — shows when Lily is speaking ─── */
+function NarrationBadge({ speaking }: { speaking: boolean }) {
+  if (!speaking) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-pill px-4 py-2"
+      style={{
+        background: "hsla(32,82%,51%,0.12)",
+        border: "1px solid hsla(32,82%,51%,0.3)",
+        backdropFilter: "blur(12px)",
+        boxShadow: "0 0 30px hsla(32,82%,51%,0.15)",
+      }}
+    >
+      <div className="flex items-center gap-[2px] h-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <motion.div key={i} className="w-[2px] rounded-full"
+            style={{ background: "hsl(var(--amber-bright))" }}
+            animate={{ height: [3, 8 + Math.random() * 6, 3] }}
+            transition={{ duration: 0.4 + i * 0.1, repeat: Infinity, ease: "easeInOut" }}
+          />
+        ))}
+      </div>
+      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]"
+        style={{ color: "hsl(var(--amber-bright))" }}>
+        Lily is narrating
+      </span>
+    </motion.div>
+  );
+}
+
+/* ─── Glow wrapper — adds pulsing amber glow when speaking ─── */
+function SpeakingGlow({ speaking, children, className = "" }: { speaking: boolean; children: React.ReactNode; className?: string }) {
+  return (
+    <motion.div
+      className={className}
+      animate={speaking ? {
+        boxShadow: [
+          "0 0 0px hsla(32,82%,51%,0)",
+          "0 0 30px hsla(32,82%,51%,0.15)",
+          "0 0 0px hsla(32,82%,51%,0)",
+        ],
+      } : { boxShadow: "0 0 0px hsla(32,82%,51%,0)" }}
+      transition={{ duration: 2, repeat: speaking ? Infinity : 0, ease: "easeInOut" }}
+      style={{ borderRadius: 16 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 /* ─── reusable bits ─── */
 
 function CinematicSection({
