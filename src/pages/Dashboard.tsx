@@ -163,6 +163,7 @@ export default function Dashboard() {
         <div className="flex justify-center gap-6 mt-4">
           <Link to="/analytics" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
           <Link to="/deadlines" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
+          <Link to="/settings" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Settings</Link>
         </div>
       </div>
     </div>

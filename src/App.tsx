@@ -17,6 +17,7 @@ import Flashcards from "@/pages/Flashcards";
 import TestConfig from "@/pages/TestConfig";
 import Deadlines from "@/pages/Deadlines";
 import LearnConfig from "@/pages/LearnConfig";
+import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
 import { TutorProvider } from "@/lib/TutorContext";
@@ -68,6 +69,7 @@ const App = () => (
                     <Route path="/test-config/:moduleId" element={<RequireAuth><TestConfig /></RequireAuth>} />
                     <Route path="/deadlines" element={<RequireAuth><Deadlines /></RequireAuth>} />
                     <Route path="/analytics" element={<RequireAuth><Analytics /></RequireAuth>} />
+                    <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
