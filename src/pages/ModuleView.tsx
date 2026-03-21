@@ -44,6 +44,7 @@ export default function ModuleView() {
   const completedCount = lessons.filter(l => l.completed).length;
   const allCompleted = completedCount === lessons.length && lessons.length > 0;
   const nextLesson = lessons.find(l => !l.completed);
+  const rec = profile?.learning_style ? styleRecommendations[profile.learning_style] : null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
