@@ -1,8 +1,20 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PhoneMockup from "@/components/demo/PhoneMockup";
+import { useTTS } from "@/hooks/useSpeech";
 
 const PANEL_COUNT = 8;
+
+const panelNarrations = [
+  "You know more than you can explain. Upload what you're studying. The AI breaks it down. A British voice teaches it back to you. Then you prove you own it.",
+  "87 percent of professionals say real-life application is the most important feature they're missing. They studied. They finished. Then someone asked — and nothing came out.",
+  "A gym for professional knowledge. Upload anything. The AI personalises to your learning style. Then prove you own it five ways.",
+  "Paste text, upload PDFs, or drop in your notes. The AI extracts key ideas and builds structured modules automatically.",
+  "Each lesson is read aloud by Lily — a natural British AI voice. Toggle voice on or off anytime. Then discuss with the AI tutor, or speak your answers back.",
+  "Five ways to prove mastery. Quizzes start with multiple choice, then true or false, then open-ended — adapting to your learning style. Plus teach-back, real-world scenarios, dialogue, and flashcards.",
+  "Nobody else combines voice-taught lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is unique.",
+  "Train your knowledge. Own the room. Upload, learn with voice, prove it five ways. That's it.",
+];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /* ─── Cinematic animation variants ─── */
@@ -432,9 +444,10 @@ function Panel2() {
 
           <div className="mt-10 space-y-4">
             {[
-              { num: "01", title: "Upload anything", desc: "Paste text, PDFs, notes. AI breaks it into bite-sized modules with a clear key idea per lesson." },
-              { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily, a natural British AI voice. Study, then discuss with the AI tutor." },
-              { num: "03", title: "Prove you own it", desc: "Quiz, teach-back, real-world scenarios, flashcards. Multiple ways to test until it's yours." },
+              { num: "00", title: "Discover your learning style", desc: "A quick assessment finds whether you're visual, auditory, reading, or hands-on — then personalises everything." },
+              { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized modules with a clear key idea per lesson." },
+              { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily. Toggle voice on or off. Then discuss with the AI tutor." },
+              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus teach-back, real-world scenarios, and flashcards." },
             ].map((c, i) => (
               <motion.div key={c.num} custom={i + 3} variants={slideRight}
                 className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
@@ -495,15 +508,15 @@ function Panel3() {
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>The AI does the rest.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "hsl(var(--ink-3))" }}>
-            Drop in your study notes, textbook passages, or certification material. The AI extracts key ideas and builds structured modules.
+            Drop in your study notes, textbook passages, PDFs, or certification material. The AI extracts key ideas and builds structured modules.
           </motion.p>
 
           {/* Pipeline steps */}
           <div className="mt-8 space-y-3">
             {[
-              { step: "01", title: "Text extraction", desc: "Raw content parsed and cleaned", icon: "📄" },
+              { step: "01", title: "Content ingestion", desc: "Paste text or upload PDF, DOCX, and more", icon: "📄" },
               { step: "02", title: "Key idea isolation", desc: "AI identifies core concepts per section", icon: "🧠" },
-              { step: "03", title: "Module generation", desc: "Structured lessons with quiz questions", icon: "📦" },
+              { step: "03", title: "Module generation", desc: "Structured lessons personalised to your learning style", icon: "📦" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
                 <HudCard delay={i * 0.12}>
@@ -713,13 +726,13 @@ function Panel4() {
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-6"
             style={{ color: "hsl(var(--ink-3))" }}>
-            Each lesson is read aloud by Lily — a natural British AI voice. Then discuss with the tutor. Then speak it back.
+            Each lesson is read aloud by Lily — a natural British AI voice. Toggle voice on or off anytime. Then discuss with the tutor and speak it back.
           </motion.p>
 
           {/* HUD feature callouts */}
           <div className="mt-10 space-y-3">
             {[
-              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Mute anytime." },
+              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Toggle on or off from any screen." },
               { tag: "AI TUTOR", icon: "🤖", title: "Live dialogue", desc: "Ask questions. Challenge ideas. The tutor adapts in real time." },
               { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
             ].map((f, i) => (
@@ -831,7 +844,7 @@ function Panel4() {
 /* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
 function Panel5() {
   const features = [
-    { icon: "📝", title: "Quiz", tag: "AI GENERATED", desc: "MCQ & open questions per lesson. Voice reads each question aloud.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
+    { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to your learning style.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
     { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
     { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
     { icon: "💬", title: "Dialogue", tag: "AI TUTOR", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
@@ -1024,12 +1037,15 @@ function Panel6() {
 
   const rows = [
     ["AI breaks content into modules & lessons", true, false, true],
+    ["Learning style assessment & personalisation", true, false, false],
+    ["PDF & document upload", true, false, true],
     ["Voice reads lessons aloud (ElevenLabs)", true, false, false],
+    ["Voice toggle on every screen", true, false, false],
+    ["Progressive quiz difficulty (MC → T/F → open)", true, false, false],
     ["AI dialogue / conversation", true, false, true],
     ["Teach-back evaluation", true, false, false],
     ["Real-world scenario practice", true, false, false],
     ["Flashcards with voice", true, false, false],
-    ["Spaced repetition of explanations", true, "partial", false],
     ["Fluency score (not just recall)", true, false, false],
   ] as const;
 
@@ -1102,8 +1118,7 @@ function Panel6() {
                         transition={{ duration: 2, repeat: Infinity, delay: rowIdx * 0.15 }}>✓</motion.span>
                     </td>
                     <td className="text-center p-4">
-                      {rw === "partial" ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓*</span>
-                        : rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
+                      {rw ? <span className="font-semibold" style={{ color: "hsl(var(--sage))" }}>✓</span>
                         : <span style={{ color: "hsl(var(--border))" }}>✗</span>}
                     </td>
                     <td className="text-center p-4">
@@ -1129,7 +1144,7 @@ function Panel6() {
             <HudCallout label="Unique features" side="left" delay={0.5} />
           </div>
           <div className="absolute -right-[110px] top-[50%] hidden lg:block">
-            <HudCallout label="6 exclusives" side="right" delay={0.7} />
+            <HudCallout label={`${rows.length - 2} exclusives`} side="right" delay={0.7} />
           </div>
         </motion.div>
       </div>
@@ -1256,15 +1271,28 @@ export default function Demo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef(true);
   const pauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const lastSpokenPanel = useRef(-1);
+  const { speak, stop, muted, toggleMute } = useTTS();
 
   const scrollTo = useCallback((n: number) => {
     const el = document.getElementById(`panel-${n}`);
     el?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  // Narrate when active panel changes
+  useEffect(() => {
+    if (active !== lastSpokenPanel.current && panelNarrations[active]) {
+      lastSpokenPanel.current = active;
+      stop();
+      // Small delay to let the panel animate in
+      const t = setTimeout(() => speak(panelNarrations[active]), 600);
+      return () => clearTimeout(t);
+    }
+  }, [active, speak, stop]);
+
   // Auto-scroll through panels
   useEffect(() => {
-    const AUTO_TIMES = [5000, 4000, 4500, 4000, 5000, 4500, 4000, 6000];
+    const AUTO_TIMES = [10000, 9000, 10000, 9000, 10000, 10000, 9000, 12000];
     if (!autoPlayRef.current) return;
 
     const t = setTimeout(() => {
@@ -1370,6 +1398,15 @@ export default function Demo() {
       `}</style>
       <SideNav active={active} />
       <ProgressBar active={active} />
+      {/* Voice toggle */}
+      <button onClick={toggleMute}
+        className="fixed top-6 left-6 z-50 flex items-center gap-2 rounded-pill px-3 py-1.5 transition-all duration-300 hover:scale-105"
+        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+        <span className="text-[14px]">{muted ? "🔇" : "🔊"}</span>
+        <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--ink-3))" }}>
+          {muted ? "Unmute" : "Narrating"}
+        </span>
+      </button>
       <Panel0 scrollTo={scrollTo} />
       <Panel1 />
       <Panel2 />
