@@ -44,7 +44,7 @@ export default function Quiz() {
 
         // Pick a random lesson to quiz on
         const lesson = (lessons as unknown as Lesson[])[Math.floor(Math.random() * lessons.length)];
-        const result = await generateQuiz(lesson.title, lesson.content, lesson.key_idea);
+        const result = await generateQuiz(lesson.title, lesson.content, lesson.key_idea, profile?.learning_style || undefined);
 
         // Sort: multiple_choice first, then true_false, then open
         const order: Record<string, number> = { multiple_choice: 0, true_false: 1, open: 2 };

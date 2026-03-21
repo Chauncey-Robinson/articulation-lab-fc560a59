@@ -38,9 +38,9 @@ export async function generateLessons(content: string): Promise<GeneratedLessons
   return data;
 }
 
-export async function generateQuiz(lessonTitle: string, lessonContent: string, keyIdea: string): Promise<{ questions: GeneratedQuestion[] }> {
+export async function generateQuiz(lessonTitle: string, lessonContent: string, keyIdea: string, learningStyle?: string): Promise<{ questions: GeneratedQuestion[] }> {
   const { data, error } = await supabase.functions.invoke("ai-tutor", {
-    body: { type: "generate_quiz", lessonTitle, lessonContent, keyIdea },
+    body: { type: "generate_quiz", lessonTitle, lessonContent, keyIdea, learningStyle },
   });
   if (error) throw new Error(error.message || "AI request failed");
   if (data?.error) throw new Error(data.error);
