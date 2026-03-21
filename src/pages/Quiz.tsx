@@ -18,6 +18,7 @@ export default function Quiz() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { speak, stop, muted, toggleMute } = useTTS();
+  const { profile } = useTutor();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
