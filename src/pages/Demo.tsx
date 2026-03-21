@@ -844,7 +844,7 @@ function Panel4() {
 /* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
 function Panel5() {
   const features = [
-    { icon: "📝", title: "Quiz", tag: "AI GENERATED", desc: "MCQ & open questions per lesson. Voice reads each question aloud.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
+    { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to your learning style.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
     { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
     { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
     { icon: "💬", title: "Dialogue", tag: "AI TUTOR", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
