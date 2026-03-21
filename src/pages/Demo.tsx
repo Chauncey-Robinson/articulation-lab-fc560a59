@@ -1038,6 +1038,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                     </span>
                   </div>
                 </HudCard>
+                </SpeakingGlow>
               </motion.div>
             ))}
 
