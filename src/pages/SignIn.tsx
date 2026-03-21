@@ -33,12 +33,22 @@ export default function SignIn() {
     setError("");
     try {
       if (isSignUp) {
-        const { error: err } = await supabase.auth.signUp({
+        const { data: signUpData, error: err } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin },
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: { full_name: fullName },
+          },
         });
         if (err) throw err;
+        // Save display_name to profiles
+        if (signUpData?.user && fullName.trim()) {
+          await supabase.from("profiles").upsert({
+            user_id: signUpData.user.id,
+            display_name: fullName.trim(),
+          } as any);
+        }
       } else {
         const { error: err } = await supabase.auth.signInWithPassword({ email, password });
         if (err) throw err;
