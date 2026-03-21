@@ -59,6 +59,59 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
+/* ─── Narration badge — shows when Lily is speaking ─── */
+function NarrationBadge({ speaking }: { speaking: boolean }) {
+  if (!speaking) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-pill px-4 py-2"
+      style={{
+        background: "hsla(32,82%,51%,0.12)",
+        border: "1px solid hsla(32,82%,51%,0.3)",
+        backdropFilter: "blur(12px)",
+        boxShadow: "0 0 30px hsla(32,82%,51%,0.15)",
+      }}
+    >
+      <div className="flex items-center gap-[2px] h-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <motion.div key={i} className="w-[2px] rounded-full"
+            style={{ background: "hsl(var(--amber-bright))" }}
+            animate={{ height: [3, 8 + Math.random() * 6, 3] }}
+            transition={{ duration: 0.4 + i * 0.1, repeat: Infinity, ease: "easeInOut" }}
+          />
+        ))}
+      </div>
+      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]"
+        style={{ color: "hsl(var(--amber-bright))" }}>
+        Lily is narrating
+      </span>
+    </motion.div>
+  );
+}
+
+/* ─── Glow wrapper — adds pulsing amber glow when speaking ─── */
+function SpeakingGlow({ speaking, children, className = "" }: { speaking: boolean; children: React.ReactNode; className?: string }) {
+  return (
+    <motion.div
+      className={className}
+      animate={speaking ? {
+        boxShadow: [
+          "0 0 0px hsla(32,82%,51%,0)",
+          "0 0 30px hsla(32,82%,51%,0.15)",
+          "0 0 0px hsla(32,82%,51%,0)",
+        ],
+      } : { boxShadow: "0 0 0px hsla(32,82%,51%,0)" }}
+      transition={{ duration: 2, repeat: speaking ? Infinity : 0, ease: "easeInOut" }}
+      style={{ borderRadius: 16 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 /* ─── reusable bits ─── */
 
 function CinematicSection({
@@ -176,7 +229,7 @@ function FluencyBar({ label, pct, color, animate }: { label: string; pct: number
    ═══════════════════════════════════════════ */
 
 /* PANEL 0 — CINEMATIC HERO */
-function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
+function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speaking: boolean }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -240,11 +293,13 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
               </motion.span>
             </motion.h1>
 
-            <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
-              style={{ color: "rgba(255,255,255,0.5)" }}>
-              Upload what you're studying. The AI breaks it down. A British voice teaches it back to you.
-              Then you prove you own it.
-            </motion.p>
+            <SpeakingGlow speaking={speaking}>
+              <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
+                style={{ color: "rgba(255,255,255,0.5)" }}>
+                Upload what you're studying. The AI breaks it down. A British voice teaches it back to you.
+                Then you prove you own it.
+              </motion.p>
+            </SpeakingGlow>
 
             <motion.div custom={3} variants={fadeUp} className="flex items-center gap-5 mt-12">
               <button onClick={() => scrollTo(1)}
@@ -286,7 +341,7 @@ function Panel0({ scrollTo }: { scrollTo: (n: number) => void }) {
 }
 
 /* PANEL 1 — THE PROBLEM (HUD style) */
-function Panel1() {
+function Panel1({ speaking }: { speaking: boolean }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const parallaxY = useTransform(scrollYProgress, [0, 1], [60, -60]);
@@ -332,12 +387,14 @@ function Panel1() {
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp}>
-            <HudCard delay={0.3} style={{ borderLeft: "2px solid hsl(8,50%,52%)" }}>
-              <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "hsl(var(--ink-2))" }}>
-                "I started forgetting the details in the weeks after. When it came to applying it — I couldn't structure my thoughts."
-              </p>
-              <p className="font-sans text-[10px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>— ESG Professional, GRI Certification, 2025</p>
-            </HudCard>
+            <SpeakingGlow speaking={speaking}>
+              <HudCard delay={0.3} style={{ borderLeft: "2px solid hsl(8,50%,52%)" }}>
+                <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "hsl(var(--ink-2))" }}>
+                  "I started forgetting the details in the weeks after. When it came to applying it — I couldn't structure my thoughts."
+                </p>
+                <p className="font-sans text-[10px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>— ESG Professional, GRI Certification, 2025</p>
+              </HudCard>
+            </SpeakingGlow>
           </motion.div>
         </CinematicSection>
 
@@ -387,7 +444,7 @@ function Panel1() {
 }
 
 /* PANEL 2 — THE SOLUTION (overview) */
-function Panel2() {
+function Panel2({ speaking }: { speaking: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -449,17 +506,19 @@ function Panel2() {
               { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily. Toggle voice on or off. Then discuss with the AI tutor." },
               { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus teach-back, real-world scenarios, and flashcards." },
             ].map((c, i) => (
-              <motion.div key={c.num} custom={i + 3} variants={slideRight}
-                className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
-                style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
-                <div className="flex items-start gap-4">
-                  <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
-                  <div>
-                    <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{c.title}</p>
-                    <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>{c.desc}</p>
+              <SpeakingGlow speaking={speaking}>
+                <motion.div key={c.num} custom={i + 3} variants={slideRight}
+                  className="rounded-[16px] p-5 hover:-translate-y-1 transition-all duration-300"
+                  style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+                  <div className="flex items-start gap-4">
+                    <span className="font-serif text-[28px] italic" style={{ color: "hsl(var(--amber-bright))" }}>{c.num}</span>
+                    <div>
+                      <p className="font-sans text-[14px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{c.title}</p>
+                      <p className="font-sans text-[13px] mt-1 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>{c.desc}</p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </SpeakingGlow>
             ))}
           </div>
         </CinematicSection>
@@ -469,7 +528,7 @@ function Panel2() {
 }
 
 /* PANEL 3 — UPLOAD & EXTRACT (HUD style) */
-function Panel3() {
+function Panel3({ speaking }: { speaking: boolean }) {
   return (
     <section id="panel-3" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
@@ -690,7 +749,7 @@ function ScanLine() {
 }
 
 /* PANEL 4 — LEARN WITH VOICE (HUD style) */
-function Panel4() {
+function Panel4({ speaking }: { speaking: boolean }) {
   return (
     <section id="panel-4" className="min-h-screen snap-start flex items-center relative overflow-hidden"
       style={{ background: "hsl(var(--background))" }}>
@@ -842,7 +901,7 @@ function Panel4() {
 }
 
 /* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
-function Panel5() {
+function Panel5({ speaking }: { speaking: boolean }) {
   const features = [
     { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to your learning style.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
     { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
@@ -1031,7 +1090,7 @@ function Panel5() {
 }
 
 /* PANEL 6 — COMPARISON (HUD style) */
-function Panel6() {
+function Panel6({ speaking }: { speaking: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -1153,7 +1212,7 @@ function Panel6() {
 }
 
 /* PANEL 7 — CINEMATIC CLOSE (HUD style) */
-function Panel7({ scrollTo }: { scrollTo: (n: number) => void }) {
+function Panel7({ scrollTo, speaking }: { scrollTo: (n: number) => void; speaking: boolean }) {
   return (
     <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
       style={{ background: "hsl(var(--background))" }}>
@@ -1272,7 +1331,7 @@ export default function Demo() {
   const autoPlayRef = useRef(true);
   const pauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const lastSpokenPanel = useRef(-1);
-  const { speak, stop, muted, toggleMute } = useTTS();
+  const { speak, stop, muted, toggleMute, speaking } = useTTS();
 
   const scrollTo = useCallback((n: number) => {
     const el = document.getElementById(`panel-${n}`);
@@ -1407,14 +1466,15 @@ export default function Demo() {
           {muted ? "Unmute" : "Narrating"}
         </span>
       </button>
-      <Panel0 scrollTo={scrollTo} />
-      <Panel1 />
-      <Panel2 />
-      <Panel3 />
-      <Panel4 />
-      <Panel5 />
-      <Panel6 />
-      <Panel7 scrollTo={scrollTo} />
+      <NarrationBadge speaking={speaking} />
+      <Panel0 scrollTo={scrollTo} speaking={speaking && active === 0} />
+      <Panel1 speaking={speaking && active === 1} />
+      <Panel2 speaking={speaking && active === 2} />
+      <Panel3 speaking={speaking && active === 3} />
+      <Panel4 speaking={speaking && active === 4} />
+      <Panel5 speaking={speaking && active === 5} />
+      <Panel6 speaking={speaking && active === 6} />
+      <Panel7 scrollTo={scrollTo} speaking={speaking && active === 7} />
     </div>
   );
 }
