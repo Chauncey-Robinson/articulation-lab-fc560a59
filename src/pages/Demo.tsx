@@ -1037,12 +1037,15 @@ function Panel6() {
 
   const rows = [
     ["AI breaks content into modules & lessons", true, false, true],
+    ["Learning style assessment & personalisation", true, false, false],
+    ["PDF & document upload", true, false, true],
     ["Voice reads lessons aloud (ElevenLabs)", true, false, false],
+    ["Voice toggle on every screen", true, false, false],
+    ["Progressive quiz difficulty (MC → T/F → open)", true, false, false],
     ["AI dialogue / conversation", true, false, true],
     ["Teach-back evaluation", true, false, false],
     ["Real-world scenario practice", true, false, false],
     ["Flashcards with voice", true, false, false],
-    ["Spaced repetition of explanations", true, "partial", false],
     ["Fluency score (not just recall)", true, false, false],
   ] as const;
 
