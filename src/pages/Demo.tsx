@@ -1128,6 +1128,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
     ["Real-world scenario practice", true, false, false],
     ["Flashcards with voice", true, false, false],
     ["Fluency score (not just recall)", true, false, false],
+    ["Live meeting transcription & learning", true, false, false],
   ] as const;
 
   return (
