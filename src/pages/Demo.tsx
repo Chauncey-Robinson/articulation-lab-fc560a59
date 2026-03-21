@@ -1005,6 +1005,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: idx * 0.15, ease }}>
+                <SpeakingGlow speaking={speaking} delay={idx * 0.4}>
                 <HudCard delay={idx * 0.1}>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
