@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useTutor } from "@/lib/TutorContext";
 import { generateQuiz, evaluateAnswer, type GeneratedQuestion } from "@/lib/tutor-ai";
 import type { Lesson } from "@/lib/TutorContext";
 import MicButton from "@/components/MicButton";
