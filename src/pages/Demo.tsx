@@ -591,25 +591,27 @@ function Panel3({ speaking }: { speaking: boolean }) {
               { step: "03", title: "Module generation", desc: "Structured lessons personalised to your learning style", icon: "📦" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
-                <HudCard delay={i * 0.12}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
-                      style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
-                      <span className="text-[16px]">{s.icon}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                          style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
+                <SpeakingGlow speaking={speaking} delay={i * 0.4}>
+                  <HudCard delay={i * 0.12}>
+                    <div className="flex items-start gap-4">
+                      <div className="w-9 h-9 rounded-[8px] flex items-center justify-center shrink-0"
+                        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+                        <span className="text-[16px]">{s.icon}</span>
                       </div>
-                      <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{s.title}</p>
-                      <p className="font-sans text-[10px] mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>{s.desc}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
+                            style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Step {s.step}</span>
+                        </div>
+                        <p className="font-sans text-[13px] font-semibold" style={{ color: "hsl(var(--foreground))" }}>{s.title}</p>
+                        <p className="font-sans text-[10px] mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>{s.desc}</p>
+                      </div>
+                      <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
+                        style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
+                        animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
                     </div>
-                    <motion.div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
-                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                      animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
-                  </div>
-                </HudCard>
+                  </HudCard>
+                </SpeakingGlow>
               </motion.div>
             ))}
           </div>
