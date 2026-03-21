@@ -1,8 +1,20 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PhoneMockup from "@/components/demo/PhoneMockup";
+import { useTTS } from "@/hooks/useSpeech";
 
 const PANEL_COUNT = 8;
+
+const panelNarrations = [
+  "You know more than you can explain. Upload what you're studying. The AI breaks it down. A British voice teaches it back to you. Then you prove you own it.",
+  "87 percent of professionals say real-life application is the most important feature they're missing. They studied. They finished. Then someone asked — and nothing came out.",
+  "A gym for professional knowledge. Upload anything. The AI personalises to your learning style. Then prove you own it five ways.",
+  "Paste text, upload PDFs, or drop in your notes. The AI extracts key ideas and builds structured modules automatically.",
+  "Each lesson is read aloud by Lily — a natural British AI voice. Toggle voice on or off anytime. Then discuss with the AI tutor, or speak your answers back.",
+  "Five ways to prove mastery. Quizzes start with multiple choice, then true or false, then open-ended — adapting to your learning style. Plus teach-back, real-world scenarios, dialogue, and flashcards.",
+  "Nobody else combines voice-taught lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is unique.",
+  "Train your knowledge. Own the room. Upload, learn with voice, prove it five ways. That's it.",
+];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /* ─── Cinematic animation variants ─── */
