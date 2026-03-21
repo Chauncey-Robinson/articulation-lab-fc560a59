@@ -151,7 +151,7 @@ export default function Onboarding() {
                 </button>
               ))}
             </div>
-            <button onClick={() => setStep(4)} disabled={presentations.length === 0}
+            <button onClick={() => setStep(5)} disabled={presentations.length === 0}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
               Continue
             </button>
