@@ -38,7 +38,7 @@ export default function Onboarding() {
 
   const handleFinish = async () => {
     setSaving(true);
-    await saveProfile({ profession, degree, interests, age_range: ageRange, onboarded: true });
+    await saveProfile({ profession, degree, interests, age_range: ageRange, onboarded: true, display_name: displayName.trim() || null } as any);
     localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
     setSaving(false);
     navigate("/dashboard");

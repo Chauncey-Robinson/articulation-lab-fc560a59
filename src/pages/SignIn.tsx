@@ -95,6 +95,10 @@ export default function SignIn() {
           </div>
         ) : (
           <div className="flex flex-col gap-3">
+            {isSignUp && (
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Your name"
+                className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-3 text-[15px] font-sans text-foreground placeholder:text-ink-3 focus:outline-none focus:border-accent-bright transition-colors" />
+            )}
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email address"
               className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-3 text-[15px] font-sans text-foreground placeholder:text-ink-3 focus:outline-none focus:border-accent-bright transition-colors" />
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"

@@ -21,12 +21,20 @@ function getStatusLabel(status: string) {
 }
 
 export default function Dashboard() {
-  const { modules, loading, progress } = useTutor();
-  const { signOut } = useAuth();
+  const { modules, loading, progress, profile } = useTutor();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  // Get display name from profile, OAuth metadata, or email
+  const displayName = profile?.display_name
+    || user?.user_metadata?.full_name
+    || user?.user_metadata?.name
+    || user?.email?.split("@")[0]
+    || "";
+  const firstName = displayName.split(" ")[0];
+
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning." : hour < 17 ? "Good afternoon." : "Good evening.";
+  const greeting = hour < 12 ? `Good morning, ${firstName}.` : hour < 17 ? `Good afternoon, ${firstName}.` : `Good evening, ${firstName}.`;
 
   if (loading) {
     return <div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" /></div>;
