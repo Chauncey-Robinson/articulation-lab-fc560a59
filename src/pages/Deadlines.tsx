@@ -83,11 +83,10 @@ export default function Deadlines() {
         {/* Add new */}
         {activeModules.length > 0 && (
           <div className="animate-fade-up stagger-4">
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">SET A DEADLINE</p>
             <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5">
               <select value={selectedModule} onChange={(e) => setSelectedModule(e.target.value)}
                 className="w-full rounded-[12px] border-[1.5px] border-border bg-surface-2 px-4 py-3 text-[14px] font-sans text-foreground mb-3 focus:outline-none focus:border-accent-bright">
-                <option value="">Select module...</option>
+                <option value="">Choose a topic</option>
                 {activeModules.filter(m => !deadlines.some(d => d.moduleId === m.id)).map(m => (
                   <option key={m.id} value={m.id}>{m.title}</option>
                 ))}
