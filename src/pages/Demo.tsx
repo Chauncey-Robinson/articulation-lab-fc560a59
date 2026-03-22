@@ -399,7 +399,7 @@ function Panel1({ speaking }: { speaking: boolean }) {
             <span className="italic" style={{ color: "hsl(var(--destructive))" }}>Then nothing.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8" style={{ color: "hsl(var(--ink-3))" }}>
-            107 professionals told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
+            107 professionals told us the same thing. They studied. They finished. Then someone asked. Nothing came out.
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp}>
