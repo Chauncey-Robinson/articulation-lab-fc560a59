@@ -433,7 +433,7 @@ function Panel1({ speaking }: { speaking: boolean }) {
             </motion.div>
             <div className="grid grid-cols-2 gap-4 mt-4">
               {[
-                { stat: "4×", desc: "times revisited before it sticks", tag: "RETENTION" },
+                { stat: "4×", desc: "times revisited before it sticks", tag: "PRACTICE" },
                 { stat: "£0", desc: "value of knowledge that can't be explained", tag: "FLUENCY" },
               ].map((c, i) => (
                 <motion.div key={c.stat} custom={i + 1} variants={slideRight}>
