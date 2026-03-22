@@ -12,6 +12,8 @@ const panelNarrations = [
   "Paste text, upload a PDF, drop in your notes — the AI pulls out the key ideas and builds your modules.",
   "Every lesson is read aloud. Toggle it on or off. Then discuss with the tutor or speak your answers back.",
   "Quizzes start easy with multiple choice, then move to true or false, then open-ended — all adapting to your style. Plus teach-back, scenarios, dialogue, and flashcards.",
+  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with — so it brings those back at exactly the right time.",
+  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type — you always know exactly where you stand.",
   "Nobody else combines voice lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is genuinely unique.",
   "And here's something no one else does — meeting mode. Walk into any conference, lecture, or meeting, hit record, and the AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study module — all inside the same app you learn in.",
   "That's it. Upload, learn, prove it. Own the room.",
