@@ -227,7 +227,7 @@ export default function Quiz() {
 
         {/* Question type badge */}
         <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-3 animate-fade-up stagger-1">
-          {currentQ.question_type === "open" ? "EXPLAIN" : currentQ.question_type === "multiple_choice" ? "CHOOSE ONE" : "TRUE OR FALSE"}
+          {currentQ.question_type === "open" ? "EXPLAIN" : currentQ.question_type === "multiple_choice" ? "PICK ONE" : "TRUE OR FALSE"}
         </p>
 
         {/* Question */}
