@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -31,6 +31,11 @@ export default function Flashcards() {
   const [results, setResults] = useState<(CardResult | null)[]>([]);
   const [cardStartTime, setCardStartTime] = useState(Date.now());
 
+  // Image state: map card index → base64 image URL
+  const [cardImages, setCardImages] = useState<Record<number, string>>({});
+  const [imageLoading, setImageLoading] = useState<Record<number, boolean>>({});
+  const fetchedImages = useRef<Set<number>>(new Set());
+
   useEffect(() => {
     if (!user || !moduleId) return;
     (async () => {
@@ -58,6 +63,43 @@ export default function Flashcards() {
       }
     })();
   }, [user, moduleId]);
+
+  // Lazily generate image for the current card
+  useEffect(() => {
+    const card = cards[currentIdx];
+    if (!card || fetchedImages.current.has(currentIdx)) return;
+
+    fetchedImages.current.add(currentIdx);
+    setImageLoading(prev => ({ ...prev, [currentIdx]: true }));
+
+    supabase.functions.invoke("flashcard-image", {
+      body: { front: card.front, back: card.back },
+    }).then(({ data, error }) => {
+      if (!error && data?.image) {
+        setCardImages(prev => ({ ...prev, [currentIdx]: data.image }));
+      }
+      setImageLoading(prev => ({ ...prev, [currentIdx]: false }));
+    }).catch(() => {
+      setImageLoading(prev => ({ ...prev, [currentIdx]: false }));
+    });
+
+    // Also prefetch the next card's image
+    const nextCard = cards[currentIdx + 1];
+    if (nextCard && !fetchedImages.current.has(currentIdx + 1)) {
+      fetchedImages.current.add(currentIdx + 1);
+      setImageLoading(prev => ({ ...prev, [currentIdx + 1]: true }));
+      supabase.functions.invoke("flashcard-image", {
+        body: { front: nextCard.front, back: nextCard.back },
+      }).then(({ data, error }) => {
+        if (!error && data?.image) {
+          setCardImages(prev => ({ ...prev, [currentIdx + 1]: data.image }));
+        }
+        setImageLoading(prev => ({ ...prev, [currentIdx + 1]: false }));
+      }).catch(() => {
+        setImageLoading(prev => ({ ...prev, [currentIdx + 1]: false }));
+      });
+    }
+  }, [currentIdx, cards]);
 
   const currentCard = cards[currentIdx];
 
@@ -122,6 +164,9 @@ export default function Flashcards() {
       localStorage.setItem("flashcard_sessions", JSON.stringify(sessions.slice(-50)));
     }
   }, [isFinished]);
+
+  const currentImage = cardImages[currentIdx];
+  const isImageLoading = imageLoading[currentIdx];
 
   if (loading) {
     return (
@@ -241,7 +286,25 @@ export default function Flashcards() {
 
         {/* Card */}
         <button onClick={() => { setFlipped(!flipped); if (!flipped && currentCard) speak(currentCard.back); }}
-          className="w-full bg-card rounded-[20px] border-[1.5px] border-border p-8 min-h-[240px] flex flex-col items-center justify-center text-center transition-all duration-300 hover:shadow-card-hover mb-6 animate-fade-up stagger-2">
+          className="w-full bg-card rounded-[20px] border-[1.5px] border-border p-6 min-h-[280px] flex flex-col items-center justify-center text-center transition-all duration-300 hover:shadow-card-hover mb-6 animate-fade-up stagger-2 overflow-hidden">
+          
+          {/* AI-generated illustration */}
+          {currentImage && (
+            <div className="w-full max-w-[200px] h-[120px] mb-4 rounded-[12px] overflow-hidden">
+              <img
+                src={currentImage}
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ filter: flipped ? "none" : "saturate(0.7) brightness(1.05)" }}
+              />
+            </div>
+          )}
+          {isImageLoading && !currentImage && (
+            <div className="w-[200px] h-[120px] mb-4 rounded-[12px] bg-muted animate-pulse flex items-center justify-center">
+              <span className="text-[10px] font-sans text-ink-3">Generating illustration...</span>
+            </div>
+          )}
+
           {!flipped ? (
             <>
               <p className="font-serif text-[20px] font-light leading-[1.6] text-foreground">{currentCard.front}</p>
