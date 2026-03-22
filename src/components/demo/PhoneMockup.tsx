@@ -108,7 +108,7 @@ function StateDialogue() {
         </div>
         <div className="rounded-[10px] p-2.5" style={{ background: surface2 }}>
           <p className="font-sans text-[9px] leading-[1.5]" style={{ color: ink2 }}>
-            🎙️ "Good start. Now push deeper — what's the impact side?"
+            🎙️ "Good start. Now push deeper. What's the impact side?"
           </p>
         </div>
       </div>
