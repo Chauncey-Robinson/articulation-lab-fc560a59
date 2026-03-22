@@ -1673,9 +1673,11 @@ export default function Demo() {
       <Panel3 speaking={speaking && active === 3} />
       <Panel4 speaking={speaking && active === 4} />
       <Panel5 speaking={speaking && active === 5} />
-      <Panel6 speaking={speaking && active === 6} />
-      <Panel7 speaking={speaking && active === 7} />
-      <Panel8 scrollTo={scrollTo} speaking={speaking && active === 8} />
+      <PanelFlashcards speaking={speaking && active === 6} />
+      <PanelAnalytics speaking={speaking && active === 7} />
+      <Panel6 speaking={speaking && active === 8} />
+      <Panel7 speaking={speaking && active === 9} />
+      <Panel8 scrollTo={scrollTo} speaking={speaking && active === 10} />
     </div>
   );
 }
