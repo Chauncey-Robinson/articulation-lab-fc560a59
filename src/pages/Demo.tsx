@@ -591,7 +591,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
             {[
               { step: "01", title: "Content ingestion", desc: "Paste text or upload PDF, DOCX, and more", icon: "📄" },
               { step: "02", title: "Key idea isolation", desc: "AI identifies core concepts per section", icon: "🧠" },
-              { step: "03", title: "Module generation", desc: "Structured lessons personalised to your learning style", icon: "📦" },
+              { step: "03", title: "Topic generation", desc: "Structured sessions personalised to how you learn", icon: "📦" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.4}>
