@@ -4,13 +4,11 @@ import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 
 const professions = ["Student", "Engineer", "Manager", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Teacher", "Other"];
-const degrees = ["High School", "Bachelor's", "Master's", "PhD", "Self-taught", "Other"];
 const interestOptions = ["Business", "Technology", "Science", "Health", "Finance", "Leadership", "Psychology", "Law", "Design", "Marketing"];
-const ageRanges = ["18-24", "25-34", "35-44", "45-54", "55+"];
 const presentationOptions = [
-  { key: "text", emoji: "📝", label: "Text summaries" },
-  { key: "infographics", emoji: "📊", label: "Infographics" },
-  { key: "podcast", emoji: "🎧", label: "Podcast style" },
+  { key: "text", emoji: "📝", label: "Written" },
+  { key: "infographics", emoji: "📊", label: "Visual" },
+  { key: "podcast", emoji: "🎧", label: "Audio" },
 ];
 
 export default function Settings() {
@@ -19,9 +17,7 @@ export default function Settings() {
   const { user, signOut } = useAuth();
 
   const [profession, setProfession] = useState(profile?.profession || "");
-  const [degree, setDegree] = useState(profile?.degree || "");
   const [interests, setInterests] = useState<string[]>(profile?.interests || []);
-  const [ageRange, setAgeRange] = useState(profile?.age_range || "");
   const [presentations, setPresentations] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem("tutor_presentation_prefs") || '["text"]'); } catch { return ["text"]; }
   });
@@ -29,13 +25,10 @@ export default function Settings() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // Sync profile changes
   useEffect(() => {
     if (profile) {
       setProfession(profile.profession || "");
-      setDegree(profile.degree || "");
       setInterests(profile.interests || []);
-      setAgeRange(profile.age_range || "");
     }
   }, [profile]);
 
@@ -45,14 +38,14 @@ export default function Settings() {
 
   const togglePresentation = (key: string) => {
     setPresentations(prev => {
-      if (prev.includes(key) && prev.length === 1) return prev; // keep at least one
+      if (prev.includes(key) && prev.length === 1) return prev;
       return prev.includes(key) ? prev.filter(x => x !== key) : [...prev, key];
     });
   };
 
   const handleSave = async () => {
     setSaving(true);
-    await saveProfile({ profession, degree, interests, age_range: ageRange });
+    await saveProfile({ profession, interests });
     localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
     localStorage.setItem("tutor_muted", String(muted));
     setSaving(false);
@@ -81,20 +74,6 @@ export default function Settings() {
             ))}
           </div>
 
-          <p className="text-[12px] font-sans text-ink-3 mb-3">Education level</p>
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            {degrees.map(d => (
-              <Chip key={d} label={d} selected={degree === d} onClick={() => setDegree(d)} />
-            ))}
-          </div>
-
-          <p className="text-[12px] font-sans text-ink-3 mb-3">Age range</p>
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            {ageRanges.map(a => (
-              <Chip key={a} label={a} selected={ageRange === a} onClick={() => setAgeRange(a)} />
-            ))}
-          </div>
-
           <p className="text-[12px] font-sans text-ink-3 mb-3">Interests</p>
           <div className="flex flex-wrap gap-2">
             {interestOptions.map(i => (
@@ -104,8 +83,8 @@ export default function Settings() {
         </Section>
 
         {/* Presentation Preferences */}
-        <Section title="CONTENT FORMAT" delay={2}>
-          <p className="text-[12px] font-sans text-ink-3 mb-3">How do you prefer to digest information?</p>
+        <Section title="FORMAT" delay={2}>
+          <p className="text-[12px] font-sans text-ink-3 mb-3">How do you want things explained?</p>
           <div className="flex flex-col gap-2">
             {presentationOptions.map(opt => (
               <button key={opt.key} onClick={() => togglePresentation(opt.key)}
@@ -119,31 +98,12 @@ export default function Settings() {
           </div>
         </Section>
 
-        {/* Learning Style */}
-        <Section title="LEARNING STYLE" delay={3}>
-          <div className="bg-card rounded-[14px] border-[1.5px] border-border px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[13px] font-sans font-medium text-foreground">
-                  {profile?.learning_style ? `${profile.learning_style.charAt(0).toUpperCase()}${profile.learning_style.slice(1)} learner` : "Not assessed yet"}
-                </p>
-                <p className="text-[11px] font-sans text-ink-3">
-                  {profile?.learning_style ? "Personalizes quizzes, content, and study recommendations" : "Complete onboarding to assess your style"}
-                </p>
-              </div>
-              <span className="text-[20px]">
-                {profile?.learning_style === "visual" ? "👁️" : profile?.learning_style === "auditory" ? "👂" : profile?.learning_style === "reading" ? "📚" : profile?.learning_style === "kinesthetic" ? "🤲" : "❓"}
-              </span>
-            </div>
-          </div>
-        </Section>
-
         {/* Voice & Sound */}
-        <Section title="VOICE & SOUND" delay={3}>
+        <Section title="SOUND" delay={3}>
           <div className="flex items-center justify-between bg-card rounded-[14px] border-[1.5px] border-border px-4 py-4">
             <div>
               <p className="text-[13px] font-sans font-medium text-foreground">Sound effects & voice</p>
-              <p className="text-[11px] font-sans text-ink-3">AI voice reads lessons aloud</p>
+              <p className="text-[11px] font-sans text-ink-3">Reads sessions aloud</p>
             </div>
             <button onClick={() => setMuted(!muted)}
               className={`w-11 h-6 rounded-full transition-colors duration-[180ms] relative ${muted ? "bg-input" : "bg-accent"}`}>

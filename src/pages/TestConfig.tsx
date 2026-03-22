@@ -5,10 +5,10 @@ import { useAuth } from "@/hooks/useAuth";
 import type { Lesson } from "@/lib/TutorContext";
 
 const testModes = [
-  { key: "quiz", emoji: "🧪", label: "Quiz", desc: "Multiple choice, true/false & open questions" },
-  { key: "flashcards", emoji: "🃏", label: "Flashcards", desc: "Quick recall cards — flip & self-assess" },
-  { key: "teach-back", emoji: "🎙️", label: "Teach Back", desc: "Explain concepts in your own words" },
-  { key: "apply", emoji: "🌍", label: "Apply", desc: "Use knowledge in real-life scenarios" },
+  { key: "quiz", emoji: "🧪", label: "Quiz", desc: "Pick the right answer" },
+  { key: "flashcards", emoji: "🃏", label: "Flashcards", desc: "Flip and check yourself" },
+  { key: "teach-back", emoji: "🎙️", label: "Explain It", desc: "Say it in your own words" },
+  { key: "apply", emoji: "🌍", label: "Apply", desc: "Answer a real situation" },
 ];
 
 const durationOptions = [
@@ -48,7 +48,6 @@ export default function TestConfig() {
     const firstLesson = lessons.find(l => selectedTopics.includes(l.id));
     if (!firstLesson) return;
 
-    // Store test config
     localStorage.setItem(`test_config_${moduleId}`, JSON.stringify({ duration, selectedTopics }));
 
     switch (selectedMode) {
@@ -74,7 +73,7 @@ export default function TestConfig() {
   if (lessons.length === 0) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
-        <p className="text-[14px] font-sans text-ink-3 mb-4">Complete at least one lesson first.</p>
+        <p className="text-[14px] font-sans text-ink-3 mb-4">Complete at least one session first.</p>
         <button onClick={() => navigate(-1)} className="rounded-pill bg-primary px-8 py-3 text-[13px] font-sans font-semibold text-primary-foreground">Go back</button>
       </div>
     );
@@ -85,8 +84,8 @@ export default function TestConfig() {
       <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <h1 className="font-serif text-[1.8rem] text-foreground mb-2 animate-fade-up stagger-1">Test your knowledge.</h1>
-        <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">5-10 minutes is all you need.</p>
+        <h1 className="font-serif text-[1.8rem] text-foreground mb-2 animate-fade-up stagger-1">How do you want to be coached?</h1>
+        <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">5–10 minutes is all you need.</p>
 
         {/* Duration */}
         <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-2">DURATION</p>
@@ -102,8 +101,8 @@ export default function TestConfig() {
           ))}
         </div>
 
-        {/* Test mode */}
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">TEST MODE</p>
+        {/* Coach mode */}
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">COACH MODE</p>
         <div className="grid grid-cols-2 gap-3 mb-6">
           {testModes.map(mode => (
             <button key={mode.key} onClick={() => setSelectedMode(mode.key)}
@@ -138,12 +137,12 @@ export default function TestConfig() {
         </div>
 
         <p className="text-[12px] font-sans text-ink-3 mb-4 animate-fade-up stagger-5">
-          ⚡ Max 10 questions per session for best retention.
+          ⚡ Up to 10 questions per session.
         </p>
 
         <button onClick={handleStart} disabled={selectedTopics.length === 0}
           className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-40 mt-auto animate-fade-up stagger-6">
-          Start testing
+          Start session
         </button>
       </div>
     </div>

@@ -43,7 +43,6 @@ export default function SignIn() {
           },
         });
         if (err) throw err;
-        // Save display_name to profiles
         if (signUpData?.user && fullName.trim()) {
           await supabase.from("profiles").upsert({
             user_id: signUpData.user.id,
@@ -65,16 +64,11 @@ export default function SignIn() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-background">
       <div className="w-full max-w-[460px] text-center">
-        <span className="inline-flex items-center gap-2 text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-6">
-          <span className="w-2 h-2 rounded-full bg-accent-bright amber-pulse" />
-          AI TUTOR
-        </span>
-
         <h1 className="font-serif text-[2.2rem] leading-[1.1] tracking-[-1px] text-foreground mb-3">
-          Sign in to continue.
+          Welcome back.
         </h1>
         <p className="text-[14px] font-sans text-ink-3 mb-10">
-          Your modules and progress are waiting.
+          Pick up where you left off.
         </p>
 
         {!emailMode ? (
