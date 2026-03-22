@@ -1,6 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PhoneMockup from "@/components/demo/PhoneMockup";
+import DemoPhoneFrame from "@/components/demo/DemoPhoneFrame";
+import {
+  PhoneUploadScreen,
+  PhoneStudyScreen,
+  PhoneQuizScreen,
+  PhoneFlashcardScreen,
+  PhoneAnalyticsScreen,
+  PhoneMeetingScreen,
+  PhoneExplainScreen,
+  PhoneDialogueScreen,
+} from "@/components/demo/DemoPhoneScreens";
 import { useTTS } from "@/hooks/useSpeech";
 
 const PANEL_COUNT = 11;
@@ -620,70 +631,11 @@ function Panel3({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        <CinematicSection className="flex flex-col gap-4">
-          {/* Input card */}
-          <motion.div custom={0} variants={slideRight}>
-            <HudCard delay={0.1}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsl(var(--muted))", color: "hsl(var(--ink-3))" }}>Input</span>
-                <HudCallout label="Raw text" side="right" delay={0.3} />
-              </div>
-              <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "hsl(var(--ink-2))" }}>
-                "GRI 3 requires organisations to determine which topics are material… double materiality considers both financial and impact materiality…"
-              </p>
-            </HudCard>
-          </motion.div>
-
-          {/* Arrow */}
-          <motion.div custom={1} variants={fadeUp} className="flex flex-col items-center gap-1 py-1">
-            <motion.div className="flex flex-col items-center"
-              animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-              <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, hsla(32,82%,51%,0.6), hsla(32,82%,51%,0.1))" }} />
-              <div className="w-0 h-0" style={{ borderLeft: "4px solid transparent", borderRight: "4px solid transparent", borderTop: "5px solid hsla(32,82%,51%,0.5)" }} />
-            </motion.div>
-            <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--muted-foreground))" }}>Processing</span>
-          </motion.div>
-
-          {/* Output card */}
-          <motion.div custom={2} variants={slideRight} className="relative">
-            <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <HudCallout label="AI generated" side="right" delay={0.6} />
-                <HudCallout label="5 sessions" side="right" delay={0.8} />
-              </div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Topic generated</span>
-              </div>
-              <p className="font-serif text-[18px]" style={{ color: "hsl(var(--foreground))" }}>GRI Standards</p>
-              <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 sessions · 12 quiz questions</p>
-              <div className="mt-3 space-y-1.5">
-                {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
-                  <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
-                    style={{ color: "hsl(var(--ink-2))" }}
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}>
-                    <motion.span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold shrink-0"
-                      style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))" }}
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}>
-                      {i + 1}
-                    </motion.span>
-                    {l}
-                  </motion.div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                <motion.div className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                  animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>Ready · Topic compiled</span>
-              </div>
-            </HudCard>
-          </motion.div>
+        <CinematicSection className="flex flex-col items-center gap-6">
+          {/* iPhone showing upload screen */}
+          <DemoPhoneFrame>
+            <PhoneUploadScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
@@ -839,81 +791,11 @@ function Panel4({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right: HUD voice visualiser */}
+        {/* Right: Phone with study screen */}
         <CinematicSection className="flex flex-col items-center justify-center">
-          <motion.div custom={0} variants={fadeScale} className="relative">
-            {/* Rotating ring */}
-            <motion.div className="absolute" style={{ inset: -30 }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
-              <svg viewBox="0 0 400 400" className="w-full h-full">
-                <circle cx="200" cy="200" r="180" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" />
-                <circle cx="200" cy="200" r="180" fill="none" stroke="hsla(32,82%,51%,0.4)" strokeWidth="1.5"
-                  strokeDasharray="20 40 10 30" strokeLinecap="round" />
-              </svg>
-            </motion.div>
-
-            {/* Inner rotating ring */}
-            <motion.div className="absolute" style={{ inset: -15 }}
-              animate={{ rotate: -360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
-              <svg viewBox="0 0 400 400" className="w-full h-full">
-                <circle cx="200" cy="200" r="185" fill="none" stroke="hsla(32,82%,51%,0.06)" strokeWidth="0.5"
-                  strokeDasharray="5 15" />
-              </svg>
-            </motion.div>
-
-            <HudCard className="!rounded-[28px] !p-8 text-center" style={{ width: 300 }}>
-              {/* Callout labels around the card */}
-              <div className="absolute -left-[140px] top-[30%]">
-                <HudCallout label="ElevenLabs API" side="left" delay={0.3} />
-              </div>
-              <div className="absolute -right-[120px] top-[25%]">
-                <HudCallout label="British accent" side="right" delay={0.5} />
-              </div>
-              <div className="absolute -left-[130px] top-[65%]">
-                <HudCallout label="Real-time stream" side="left" delay={0.7} />
-              </div>
-              <div className="absolute -right-[110px] top-[70%]">
-                <HudCallout label="Voice ID: Lily" side="right" delay={0.9} />
-              </div>
-
-              <motion.div
-                className="w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-5"
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--amber-bright)), hsla(32,82%,51%,0.4))",
-                  boxShadow: "0 0 40px hsla(32,82%,51%,0.3)",
-                }}
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-                <span className="text-white text-[30px]">🔊</span>
-              </motion.div>
-              <p className="font-serif text-[20px] italic" style={{ color: "hsl(var(--foreground))" }}>Lily</p>
-              <p className="font-sans text-[10px] mt-1 uppercase tracking-[0.15em]"
-                style={{ color: "hsl(var(--muted-foreground))" }}>Neural voice engine</p>
-
-              {/* Waveform */}
-              <div className="flex items-end justify-center gap-[2px] mt-6 h-10">
-                {Array.from({ length: 28 }).map((_, i) => (
-                  <motion.div key={i} className="w-[2.5px] rounded-full"
-                    style={{ background: `hsla(32,82%,51%,${0.4 + Math.random() * 0.5})` }}
-                    animate={{ height: [3, 6 + Math.random() * 28, 3] }}
-                    transition={{ duration: 0.4 + Math.random() * 0.6, repeat: Infinity, delay: i * 0.04, ease: "easeInOut" }}
-                  />
-                ))}
-              </div>
-
-              {/* Status line */}
-              <motion.div className="flex items-center justify-center gap-2 mt-4"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}>
-                <div className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--sage))", boxShadow: "0 0 6px hsl(var(--sage))" }} />
-                <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--sage))" }}>
-                  Streaming
-                </span>
-              </motion.div>
-            </HudCard>
-          </motion.div>
+          <DemoPhoneFrame>
+            <PhoneStudyScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
@@ -956,7 +838,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
 
       <div className="mx-auto w-full max-w-[1200px] px-8 relative z-10">
         {/* Header */}
-        <CinematicSection className="text-center mb-16">
+        <CinematicSection className="text-center mb-12">
           <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-5">
             <motion.div className="w-2 h-2 rounded-full"
               style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
@@ -987,126 +869,46 @@ function Panel5({ speaking }: { speaking: boolean }) {
           </motion.p>
         </CinematicSection>
 
-        {/* HUD Feature Cards — positioned like a technical diagram */}
-        <div className="relative mx-auto" style={{ maxWidth: 1000, minHeight: 420 }}>
-          {/* Connecting lines from center */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <motion.div
-              className="w-3 h-3 rounded-full"
-              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 20px hsla(32,82%,51%,0.5)" }}
-              animate={{ scale: [1, 1.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </div>
-
-          {/* Grid layout for the 5 cards */}
-          <div className="grid grid-cols-3 gap-4" style={{ gridTemplateRows: "auto auto" }}>
-            {/* Top row: Quiz, center title, Explain It */}
-            {[features[0], features[4], features[1]].map((f, idx) => (
-              <motion.div key={f.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: idx * 0.15, ease }}>
-                <SpeakingGlow speaking={speaking} delay={idx * 0.4}>
-                <HudCard delay={idx * 0.1}>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
-                      style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
-                      {f.tag}
-                    </span>
-                    <HudCallout label="" side="right" delay={0} />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <motion.span className="text-[28px]"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: idx * 0.3 }}>
-                      {f.icon}
-                    </motion.span>
-                    <div>
-                      <p className="font-sans text-[15px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
-                    </div>
-                  </div>
-                  <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>
-                    {f.desc}
-                  </p>
-                  {/* Mini data readout */}
-                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                    <motion.div className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }} />
-                    <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>
-                      Active · AI powered
-                    </span>
-                  </div>
-                </HudCard>
-                </SpeakingGlow>
-              </motion.div>
-            ))}
-
-            {/* Bottom row: Real-World, spacer, Dialogue */}
-            {[features[2], null, features[3]].map((f, idx) => (
-              f ? (
-                <motion.div key={f.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, delay: (idx + 3) * 0.15, ease }}>
-                  <SpeakingGlow speaking={speaking} delay={(idx + 3) * 0.3}>
-                  <HudCard delay={(idx + 3) * 0.1}>
-                    <div className="flex items-center gap-2 mb-3">
+        {/* Feature cards + phones showing quiz, explain, dialogue */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start max-w-[1100px] mx-auto">
+          {/* Left: feature list */}
+          <CinematicSection className="space-y-3">
+            {features.map((f, i) => (
+              <motion.div key={f.title} custom={i} variants={slideLeft}>
+                <SpeakingGlow speaking={speaking} delay={i * 0.3}>
+                  <HudCard delay={i * 0.1}>
+                    <div className="flex items-center gap-2 mb-2">
                       <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
                         style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
                         {f.tag}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <motion.span className="text-[28px]"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 3, repeat: Infinity, delay: idx * 0.4 }}>
-                        {f.icon}
-                      </motion.span>
+                      <span className="text-[24px]">{f.icon}</span>
                       <div>
-                        <p className="font-sans text-[15px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                        <p className="font-sans text-[14px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                        <p className="font-sans text-[10px] mt-0.5 leading-[1.4]" style={{ color: "hsl(var(--ink-3))" }}>{f.desc}</p>
                       </div>
                     </div>
-                    <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>
-                      {f.desc}
-                    </p>
-                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                      <motion.div className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                        animate={{ opacity: [1, 0.3, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }} />
-                      <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>
-                        Active · AI powered
-                      </span>
-                    </div>
                   </HudCard>
-                  </SpeakingGlow>
-                </motion.div>
-              ) : (
-                <div key="spacer" className="flex items-center justify-center">
-                  <motion.div className="flex flex-col items-center gap-2"
-                    animate={{ opacity: [0.3, 0.7, 0.3] }}
-                    transition={{ duration: 3, repeat: Infinity }}>
-                    <svg width="60" height="60" viewBox="0 0 60 60">
-                      <motion.circle cx="30" cy="30" r="25" fill="none" stroke="hsla(32,82%,51%,0.2)" strokeWidth="1"
-                        strokeDasharray="4 4"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                        style={{ transformOrigin: "center" }} />
-                      <circle cx="30" cy="30" r="4" fill="hsla(32,82%,51%,0.3)" />
-                    </svg>
-                    <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--border))" }}>
-                      Neural core
-                    </span>
-                  </motion.div>
-                </div>
-              )
+                </SpeakingGlow>
+              </motion.div>
             ))}
-          </div>
+          </CinematicSection>
+
+          {/* Center: Phone showing quiz */}
+          <CinematicSection className="flex flex-col items-center justify-center">
+            <DemoPhoneFrame>
+              <PhoneQuizScreen />
+            </DemoPhoneFrame>
+          </CinematicSection>
+
+          {/* Right: Second phone showing Explain It */}
+          <CinematicSection className="hidden lg:flex flex-col items-center justify-center">
+            <DemoPhoneFrame>
+              <PhoneExplainScreen />
+            </DemoPhoneFrame>
+          </CinematicSection>
         </div>
       </div>
     </section>
@@ -1194,98 +996,11 @@ function PanelFlashcards({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right side: flashcard mockup */}
-        <CinematicSection className="flex flex-col gap-4">
-          {/* Active card */}
-          <motion.div custom={0} variants={slideRight}>
-            <HudCard delay={0.1}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Card 3 of 5</span>
-                <span className="font-sans text-[10px]" style={{ color: "hsl(var(--ink-3))" }}>3 remaining</span>
-              </div>
-              {/* Progress dots */}
-              <div className="flex gap-1.5 mb-4">
-                {mockCards.map((c, i) => (
-                  <motion.div key={i} className="h-1.5 flex-1 rounded-full"
-                    initial={{ scaleX: 0 }}
-                    animate={inView ? { scaleX: 1 } : {}}
-                    transition={{ duration: 0.4, delay: i * 0.1, ease }}
-                    style={{
-                      background: c.status === "knew" ? "hsl(var(--sage))" : c.status === "didnt" ? "hsl(var(--amber-bright))" : "hsl(var(--border))",
-                      transformOrigin: "left"
-                    }} />
-                ))}
-              </div>
-              <div ref={ref} className="text-center py-8">
-                <p className="font-serif text-[22px] font-light leading-[1.5]" style={{ color: "hsl(var(--foreground))" }}>
-                  What does GRI 3 require?
-                </p>
-                <p className="font-sans text-[11px] mt-3" style={{ color: "hsl(var(--ink-3))" }}>Tap to reveal</p>
-              </div>
-              {/* Difficulty buttons */}
-              <div className="flex gap-2 mt-2">
-                {["Didn't know", "Knew it"].map((label, i) => (
-                  <motion.div key={label} className="flex-1 text-center py-2.5 rounded-[10px] font-sans text-[11px] font-medium"
-                    style={{
-                      background: i === 0 ? "hsla(32,82%,51%,0.1)" : "hsla(140,22%,45%,0.1)",
-                      color: i === 0 ? "hsl(var(--amber-bright))" : "hsl(var(--sage))",
-                      border: `1px solid ${i === 0 ? "hsla(32,82%,51%,0.3)" : "hsla(140,22%,45%,0.3)"}`,
-                    }}
-                    animate={{ scale: [1, 1.02, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}>
-                    {label}
-                  </motion.div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Session results preview */}
-          <motion.div custom={1} variants={slideRight}>
-            <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.2)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Session results</span>
-              </div>
-              <div className="grid grid-cols-3 gap-3 mb-3">
-                <div className="text-center">
-                  <span className="font-serif text-[28px] leading-none" style={{ color: "hsl(var(--foreground))" }}>80%</span>
-                  <p className="font-sans text-[9px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Accuracy</p>
-                </div>
-                <div className="text-center">
-                  <span className="font-serif text-[28px] leading-none" style={{ color: "hsl(var(--sage))" }}>4</span>
-                  <p className="font-sans text-[9px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Knew it</p>
-                </div>
-                <div className="text-center">
-                  <span className="font-serif text-[28px] leading-none" style={{ color: "hsl(var(--amber-bright))" }}>1</span>
-                  <p className="font-sans text-[9px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Review</p>
-                </div>
-              </div>
-              {/* Difficulty breakdown bars */}
-              <p className="font-sans text-[8px] uppercase tracking-[0.15em] mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Difficulty breakdown</p>
-              <div className="flex gap-2">
-                {[
-                  { label: "Easy", pct: 60, color: "hsl(var(--sage))" },
-                  { label: "Medium", pct: 20, color: "hsl(var(--accent))" },
-                  { label: "Hard", pct: 20, color: "hsl(var(--amber-bright))" },
-                ].map(d => (
-                  <div key={d.label} className="flex-1">
-                    <div className="w-full h-2 rounded-full" style={{ background: "hsl(var(--border))" }}>
-                      <motion.div className="h-full rounded-full" style={{ background: d.color }}
-                        initial={{ width: 0 }}
-                        animate={inView ? { width: `${d.pct}%` } : {}}
-                        transition={{ duration: 1, ease }} />
-                    </div>
-                    <p className="font-sans text-[8px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>{d.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                <span className="font-sans text-[9px]" style={{ color: "hsl(var(--muted-foreground))" }}>Avg time per card: <strong style={{ color: "hsl(var(--foreground))" }}>6s</strong></span>
-              </div>
-            </HudCard>
-          </motion.div>
+        {/* Right side: phone with flashcard screen */}
+        <CinematicSection className="flex flex-col items-center justify-center">
+          <DemoPhoneFrame>
+            <PhoneFlashcardScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
@@ -1384,114 +1099,11 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right side: analytics mockups */}
-        <CinematicSection className="flex flex-col gap-4">
-          {/* Streak */}
-          <motion.div ref={ref} custom={0} variants={slideRight}>
-            <HudCard delay={0.1} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.4)" }}>Streak</span>
-                <span className="font-sans text-[12px] font-medium" style={{ color: "hsl(var(--background))" }}>🔥 5 days</span>
-              </div>
-              <div className="flex gap-2 justify-between">
-                {streakDays.map((d, i) => (
-                  <motion.div key={i} className="flex flex-col items-center gap-1.5"
-                    initial={{ scale: 0 }}
-                    animate={inView ? { scale: 1 } : {}}
-                    transition={{ duration: 0.3, delay: i * 0.08, ease }}>
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px]"
-                      style={{
-                        background: streakActive[i] ? "hsl(var(--amber-bright))" : "rgba(255,255,255,0.06)",
-                        color: streakActive[i] ? "white" : "rgba(255,255,255,0.3)",
-                      }}>
-                      {streakActive[i] ? "✓" : "·"}
-                    </div>
-                    <span className="font-sans text-[8px]" style={{ color: "rgba(255,255,255,0.3)" }}>{d}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Knowledge mastery + concept stages */}
-          <motion.div custom={1} variants={slideRight}>
-            <HudCard delay={0.2} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                   style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Knowledge mastery</span>
-              </div>
-              <div className="text-center mb-4">
-                <motion.span className="font-serif text-[48px] leading-none" style={{ color: "hsl(var(--background))" }}
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.8, delay: 0.3 }}>
-                  72%
-                </motion.span>
-                <p className="font-sans text-[10px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>Average across all test types</p>
-              </div>
-              {/* Three scores */}
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                {[
-                  { label: "Quiz", score: "78%", emoji: "🧪" },
-                  { label: "Explain It", score: "65%", emoji: "🎙️" },
-                  { label: "Apply", score: "73%", emoji: "🌍" },
-                ].map(s => (
-                  <div key={s.label} className="text-center py-2 rounded-[8px]" style={{ background: "rgba(255,255,255,0.04)" }}>
-                    <span className="text-[14px]">{s.emoji}</span>
-                    <p className="font-serif text-[18px] leading-none mt-1" style={{ color: "hsl(var(--background))" }}>{s.score}</p>
-                    <p className="font-sans text-[8px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-              {/* Concept breakdown */}
-              <p className="font-sans text-[8px] uppercase tracking-[0.15em] mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Concept library</p>
-              <div className="w-full h-3 rounded-full flex overflow-hidden mb-2" style={{ background: "rgba(255,255,255,0.06)" }}>
-                <motion.div className="h-full" style={{ background: "hsl(var(--sage))" }}
-                  initial={{ width: 0 }} animate={inView ? { width: "35%" } : {}} transition={{ duration: 0.8, ease }} />
-                <motion.div className="h-full" style={{ background: "hsl(var(--accent))" }}
-                  initial={{ width: 0 }} animate={inView ? { width: "40%" } : {}} transition={{ duration: 0.8, delay: 0.1, ease }} />
-                <motion.div className="h-full" style={{ background: "hsl(var(--amber-bright))" }}
-                  initial={{ width: 0 }} animate={inView ? { width: "25%" } : {}} transition={{ duration: 0.8, delay: 0.2, ease }} />
-              </div>
-              <div className="flex gap-3">
-                {[
-                  { label: "Solid", count: 7, color: "hsl(var(--sage))" },
-                  { label: "Getting there", count: 8, color: "hsl(var(--accent))" },
-                  { label: "Practicing", count: 5, color: "hsl(var(--amber-bright))" },
-                ].map(s => (
-                  <div key={s.label} className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
-                    <span className="font-sans text-[8px]" style={{ color: "rgba(255,255,255,0.4)" }}>{s.label} · <strong style={{ color: "rgba(255,255,255,0.7)" }}>{s.count}</strong></span>
-                  </div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Repetition schedule */}
-          <motion.div custom={2} variants={slideRight}>
-            <HudCard delay={0.3} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <span className="font-sans text-[8px] font-bold uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.4)" }}>Repetition schedule</span>
-              <div className="flex items-end gap-2 h-[80px] mt-3">
-                {scheduleData.map((day, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center justify-end h-full">
-                    {day.count > 0 && (
-                      <motion.span className="font-sans text-[8px] font-medium mb-1" style={{ color: "rgba(255,255,255,0.6)" }}
-                        initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.3 + i * 0.08 }}>
-                        {day.count}
-                      </motion.span>
-                    )}
-                    <motion.div className="w-full rounded-t-[4px]"
-                      style={{ background: "hsl(var(--amber-bright))" }}
-                      initial={{ height: 0 }}
-                      animate={inView ? { height: `${(day.count / maxCount) * 60}px` } : {}}
-                      transition={{ duration: 0.6, delay: 0.2 + i * 0.08, ease }} />
-                    <span className="font-sans text-[7px] mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>{day.label}</span>
-                  </div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
+        {/* Right side: phone with analytics screen */}
+        <CinematicSection className="flex flex-col items-center justify-center">
+          <DemoPhoneFrame dark>
+            <PhoneAnalyticsScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
@@ -1710,82 +1322,11 @@ function Panel7({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right side: mockup of meeting transcript */}
-        <CinematicSection className="flex flex-col gap-4">
-          <motion.div custom={0} variants={slideRight}>
-            <HudCard delay={0.1} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <motion.div className="w-2.5 h-2.5 rounded-full"
-                    style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 8px hsla(8,50%,52%,0.6)" }}
-                    animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
-                  <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: "hsl(8,50%,52%)" }}>
-                    Recording · 14:32
-                  </span>
-                </div>
-                <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  Conference
-                </span>
-              </div>
-              <div className="space-y-2">
-                {[
-                  "We need to prioritise the mobile experience for Q2.",
-                  "The API team confirmed they can support the new endpoints by March.",
-                  "Double materiality is becoming the standard across all frameworks.",
-                ].map((line, i) => (
-                  <motion.p key={i} className="font-sans text-[12px] leading-[1.6]"
-                    style={{ color: i === 2 ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.7)" }}
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 + i * 0.2, duration: 0.4 }}>
-                    {line}
-                    {i === 2 && <motion.span className="inline-block ml-1 w-[2px] h-[14px] align-middle"
-                      style={{ background: "hsl(8,50%,52%)" }}
-                      animate={{ opacity: [1, 0, 1] }} transition={{ duration: 0.8, repeat: Infinity }} />}
-                  </motion.p>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Post-meeting output */}
-          <motion.div custom={1} variants={slideRight}>
-            <HudCard delay={0.3} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ AI Analysis</span>
-              </div>
-              <p className="font-sans text-[13px] font-semibold mb-2" style={{ color: "hsl(var(--background))" }}>Key Learnings</p>
-              <div className="space-y-1.5">
-                {[
-                  "Mobile-first strategy is critical for Q2 goals",
-                  "API readiness confirmed for new endpoints",
-                  "Double materiality as emerging standard",
-                ].map((l, i) => (
-                  <motion.div key={i} className="flex items-center gap-2"
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.7 + i * 0.1, duration: 0.4 }}>
-                    <motion.span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold shrink-0"
-                      style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))" }}
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}>
-                      {i + 1}
-                    </motion.span>
-                    <span className="font-sans text-[11px]" style={{ color: "rgba(255,255,255,0.6)" }}>{l}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.button className="mt-4 w-full rounded-[10px] py-2.5 font-sans text-[11px] font-semibold"
-                style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))", border: "1px solid hsla(32,82%,51%,0.3)" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}>
-                📚 Turn into study topic →
-              </motion.button>
-            </HudCard>
-          </motion.div>
+        {/* Right side: phone with meeting screen */}
+        <CinematicSection className="flex flex-col items-center justify-center">
+          <DemoPhoneFrame dark>
+            <PhoneMeetingScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
