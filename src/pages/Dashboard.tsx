@@ -38,17 +38,19 @@ export default function Dashboard() {
 
   // Fetch quiz accuracy for "progress" stat
   const [quizAccuracy, setQuizAccuracy] = useState<number | null>(null);
+  const [meetings, setMeetings] = useState<any[]>([]);
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data } = await supabase
-        .from("quiz_attempts")
-        .select("is_correct")
-        .eq("user_id", user.id);
-      if (data && data.length > 0) {
-        const correct = data.filter((a: any) => a.is_correct).length;
-        setQuizAccuracy(Math.round((correct / data.length) * 100));
+      const [quizRes, meetingsRes] = await Promise.all([
+        supabase.from("quiz_attempts").select("is_correct").eq("user_id", user.id),
+        supabase.from("meetings").select("id, title, meeting_type, status, created_at, duration_seconds").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
+      ]);
+      if (quizRes.data && quizRes.data.length > 0) {
+        const correct = quizRes.data.filter((a: any) => a.is_correct).length;
+        setQuizAccuracy(Math.round((correct / quizRes.data.length) * 100));
       }
+      if (meetingsRes.data) setMeetings(meetingsRes.data);
     })();
   }, [user]);
 
