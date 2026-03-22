@@ -56,7 +56,7 @@ function StateUpload() {
         </p>
       </div>
       <button className="w-full rounded-pill py-2 font-sans text-[9px] font-semibold" style={{ background: amber, color: "#fff" }}>
-        Generate Module →
+        Generate Topic →
       </button>
     </div>
   );
