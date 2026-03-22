@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PhoneMockup from "@/components/demo/PhoneMockup";
 import { useTTS } from "@/hooks/useSpeech";
 
-const PANEL_COUNT = 9;
+const PANEL_COUNT = 11;
 
 const panelNarrations = [
   "You know more than you can explain. Upload what you're studying, the AI breaks it down, and you prove you own it.",
