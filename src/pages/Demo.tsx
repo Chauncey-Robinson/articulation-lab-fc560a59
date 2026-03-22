@@ -1433,7 +1433,7 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
               <div className="grid grid-cols-3 gap-2 mb-4">
                 {[
                   { label: "Quiz", score: "78%", emoji: "🧪" },
-                  { label: "Teach Back", score: "65%", emoji: "🎙️" },
+                  { label: "Explain It", score: "65%", emoji: "🎙️" },
                   { label: "Apply", score: "73%", emoji: "🌍" },
                 ].map(s => (
                   <div key={s.label} className="text-center py-2 rounded-[8px]" style={{ background: "rgba(255,255,255,0.04)" }}>
