@@ -657,7 +657,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
                   style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Topic generated</span>
               </div>
               <p className="font-serif text-[18px]" style={{ color: "hsl(var(--foreground))" }}>GRI Standards</p>
-              <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 lessons · 12 quiz questions</p>
+              <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 sessions · 12 quiz questions</p>
               <div className="mt-3 space-y-1.5">
                 {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
                   <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
