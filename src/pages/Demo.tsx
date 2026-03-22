@@ -1626,7 +1626,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
 /* PANEL 7 — MEETING MODE (NEW) */
 function Panel7({ speaking }: { speaking: boolean }) {
   return (
-    <section id="panel-7" className="min-h-screen snap-start flex items-center relative overflow-hidden"
+     <section id="panel-9" className="min-h-screen snap-start flex items-center relative overflow-hidden"
       style={{ background: "hsl(var(--foreground))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
