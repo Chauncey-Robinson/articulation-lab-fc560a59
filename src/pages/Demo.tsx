@@ -1681,7 +1681,7 @@ function Panel7({ speaking }: { speaking: boolean }) {
             {[
               { step: "01", title: "Live transcription", desc: "Real-time speech-to-text with ElevenLabs Scribe", icon: "🎙" },
               { step: "02", title: "AI analysis", desc: "Summary, action items, decisions, and key learnings extracted automatically", icon: "🧠" },
-              { step: "03", title: "Turn into a module", desc: "One tap to generate lessons, quizzes, and flashcards from the meeting", icon: "📚" },
+              { step: "03", title: "Turn into a topic", desc: "One tap to generate sessions, quizzes, and flashcards from the meeting", icon: "📚" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.4}>
