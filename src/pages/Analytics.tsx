@@ -258,7 +258,7 @@ export default function Analytics() {
               </div>
               <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5 text-center animate-fade-up stagger-5">
                 <p className="font-serif text-[2.5rem] leading-none text-foreground">{completedLessons}</p>
-                <p className="text-[12px] font-sans text-ink-3 mt-2">lessons done</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">sessions done</p>
               </div>
               <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5 text-center animate-fade-up stagger-6">
                 <p className="font-serif text-[2.5rem] leading-none text-foreground">{completedModules}</p>
