@@ -272,7 +272,7 @@ export default function Flashcards() {
             </button>
             <button onClick={() => navigate(`/module/${moduleId}`)}
               className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              Back to module
+              Back to topic
             </button>
           </div>
         </div>

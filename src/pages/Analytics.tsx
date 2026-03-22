@@ -311,7 +311,7 @@ export default function Analytics() {
             {progress.longest_streak > 0 && (
               <div className="bg-accent-bright/10 rounded-[16px] border-[1.5px] border-accent-bright/30 p-5 mt-4 text-center animate-fade-up stagger-7">
                 <p className="text-[12px] font-sans text-accent-bright font-semibold uppercase tracking-[0.1em] mb-1">BEST STREAK</p>
-                <p className="font-serif text-[2rem] text-foreground">{progress.longest_streak} days</p>
+                <p className="font-serif text-[2rem] text-foreground">{progress.longest_streak} {progress.longest_streak === 1 ? "day" : "days"}</p>
               </div>
             )}
           </>

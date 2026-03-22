@@ -151,9 +151,9 @@ export default function MeetingRecord() {
         {!isRecording && transcriptChunks.length === 0 ? (
           /* Pre-recording UI */
           <div className="flex-1 flex flex-col items-center justify-center">
-            <h1 className="font-serif text-[1.75rem] text-foreground text-center mb-2">Meeting Mode</h1>
+            <h1 className="font-serif text-[1.75rem] text-foreground text-center mb-2">Prep for a meeting</h1>
             <p className="text-[14px] font-sans text-ink-3 text-center mb-8">
-              Capture, transcribe, and learn from any live session.
+              Record anything. We'll turn it into something you can study.
             </p>
 
             {/* Type selector */}

@@ -108,7 +108,7 @@ export default function Deadlines() {
 
               <button onClick={handleAdd} disabled={!selectedModule || !selectedDate}
                 className="w-full rounded-pill bg-primary py-3 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-40">
-                Set deadline
+                Save
               </button>
             </div>
           </div>
