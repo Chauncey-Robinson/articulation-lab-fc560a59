@@ -1782,7 +1782,7 @@ function Panel7({ speaking }: { speaking: boolean }) {
                 style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))", border: "1px solid hsla(32,82%,51%,0.3)" }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}>
-                📚 Turn into study module →
+                📚 Turn into study topic →
               </motion.button>
             </HudCard>
           </motion.div>
