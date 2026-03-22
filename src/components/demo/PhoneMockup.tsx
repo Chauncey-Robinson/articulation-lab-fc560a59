@@ -84,7 +84,7 @@ function StateLessonStudy() {
           Discuss 💬
         </button>
         <button className="flex-1 rounded-pill py-2 font-sans text-[9px] font-semibold" style={{ background: amber, color: "#fff" }}>
-          Test Me 📝
+          Explain It 📝
         </button>
       </div>
     </div>
