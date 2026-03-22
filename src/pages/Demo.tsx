@@ -1673,7 +1673,7 @@ function Panel7({ speaking }: { speaking: boolean }) {
           <SpeakingGlow speaking={speaking}>
             <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6"
               style={{ color: "rgba(255,255,255,0.5)" }}>
-              Conference, lecture, or team meeting — the AI transcribes live, then extracts key learnings, action items, and turns everything into a study module.
+              Conference, lecture, or team meeting. The AI transcribes live, then extracts key learnings, action items, and turns everything into a study topic.
             </motion.p>
           </SpeakingGlow>
 
