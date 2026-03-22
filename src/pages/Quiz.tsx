@@ -262,7 +262,7 @@ export default function Quiz() {
             <button onClick={handleSubmit}
               disabled={submitting || (currentQ.question_type === "open" ? answer.trim().length < 5 : !selectedOption)}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-5">
-              {submitting ? "Checking..." : "Submit"}
+              {submitting ? "Checking..." : "That's my answer"}
             </button>
           </>
         )}

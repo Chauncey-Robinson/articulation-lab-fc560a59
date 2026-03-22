@@ -125,7 +125,7 @@ export default function Apply() {
             <div className="flex flex-col gap-3">
               <button onClick={() => navigate(`/module/${lesson.module_id}`)}
                 className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all">
-                Back to module
+                Back to topic
               </button>
               <button onClick={() => navigate("/dashboard")}
                 className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
