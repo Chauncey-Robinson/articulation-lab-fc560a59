@@ -211,7 +211,7 @@ export default function Quiz() {
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <div className="flex items-center justify-between mb-6">
         <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
-        <span className="text-[13px] font-sans text-ink-3">{currentIdx + 1} / {questions.length}</span>
+        <span className="text-[13px] font-sans text-ink-3">{currentIdx + 1} of {questions.length}</span>
         <button onClick={toggleMute} className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">
           {muted ? "🔇" : "🔊"}
         </button>
