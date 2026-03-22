@@ -6,16 +6,16 @@ import { useTTS } from "@/hooks/useSpeech";
 const PANEL_COUNT = 11;
 
 const panelNarrations = [
-  "You know more than you can explain. Upload what you're studying, the AI breaks it down, and you prove you own it.",
-  "87 percent of professionals said the same thing — they studied, they finished, then someone asked and nothing came out.",
-  "Think of it as a gym for your knowledge. Upload anything, it personalises to how you learn, then you prove it five ways.",
-  "Paste text, upload a PDF, drop in your notes — the AI pulls out the key ideas and builds your modules.",
-  "Every lesson is read aloud. Toggle it on or off. Then discuss with the tutor or speak your answers back.",
-  "Quizzes start easy with multiple choice, then move to true or false, then open-ended — all adapting to your style. Plus teach-back, scenarios, dialogue, and flashcards.",
-  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with — so it brings those back at exactly the right time.",
-  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type — you always know exactly where you stand.",
-  "Nobody else combines voice lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is genuinely unique.",
-  "And here's something no one else does — meeting mode. Walk into any conference, lecture, or meeting, hit record, and the AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study module — all inside the same app you learn in.",
+  "You know more than you can explain. Upload what you're studying. The AI breaks it down. Then you prove you own it.",
+  "87 percent of professionals said the same thing. They studied. They finished. Then someone asked and nothing came out.",
+  "Think of it as a gym for your knowledge. Upload anything. It personalises to how you learn. Then you prove it five ways.",
+  "Paste text, upload a PDF, drop in your notes. The AI pulls out the key ideas and builds your topics.",
+  "Every session is read aloud. Toggle it on or off. Then discuss with the coach or speak your answers back.",
+  "Quizzes start easy with multiple choice, then true or false, then open-ended. All adapting to your style. Plus explain-it-back, scenarios, dialogue, and flashcards.",
+  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with. It brings those back at exactly the right time.",
+  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type. You always know exactly where you stand.",
+  "Nobody else combines voice sessions, progressive quizzes, and five coaching modes. This is genuinely unique.",
+  "And here's something no one else does. Meeting mode. Walk into any conference, lecture, or meeting. Hit record. The AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study topic. All inside the same app.",
   "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
