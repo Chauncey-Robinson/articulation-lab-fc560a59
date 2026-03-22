@@ -20,13 +20,17 @@ export default function Analytics() {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data } = await supabase.from("quiz_attempts").select("is_correct").eq("user_id", user.id);
-      if (data) {
+      const [quizRes, conceptsRes] = await Promise.all([
+        supabase.from("quiz_attempts").select("is_correct").eq("user_id", user.id),
+        supabase.from("concepts").select("status, next_practice_date").eq("user_id", user.id),
+      ]);
+      if (quizRes.data) {
         setQuizStats({
-          total: data.length,
-          correct: data.filter((a: any) => a.is_correct).length,
+          total: quizRes.data.length,
+          correct: quizRes.data.filter((a: any) => a.is_correct).length,
         });
       }
+      if (conceptsRes.data) setConcepts(conceptsRes.data as ConceptRow[]);
       const tbScores = JSON.parse(localStorage.getItem("tutor_teachback_scores") || "[]");
       if (tbScores.length > 0) {
         setTeachBackScore(Math.round(tbScores.reduce((a: number, b: number) => a + b, 0) / tbScores.length));
