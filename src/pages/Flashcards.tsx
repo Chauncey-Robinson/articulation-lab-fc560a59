@@ -147,7 +147,7 @@ export default function Flashcards() {
 
   const accuracyPct = completedResults.length > 0 ? Math.round((knewCount / completedResults.length) * 100) : 0;
 
-  // Save session to localStorage for analytics
+  // Save session to localStorage for analytics & update progress
   useEffect(() => {
     if (isFinished && cards.length > 0) {
       const sessions = JSON.parse(localStorage.getItem("flashcard_sessions") || "[]");
@@ -162,6 +162,32 @@ export default function Flashcards() {
         accuracy: accuracyPct,
       });
       localStorage.setItem("flashcard_sessions", JSON.stringify(sessions.slice(-50)));
+
+      // Update user_progress
+      if (user) {
+        (async () => {
+          const today = new Date().toISOString().split("T")[0];
+          const { data: existing } = await supabase.from("user_progress").select("*").eq("user_id", user.id).single();
+          if (existing) {
+            const lastDate = (existing as any).last_practice_date;
+            let newStreak = (existing as any).current_streak || 0;
+            if (lastDate !== today) {
+              const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+              newStreak = lastDate === yesterday ? newStreak + 1 : 1;
+            }
+            await supabase.from("user_progress").update({
+              total_sessions: ((existing as any).total_sessions || 0) + 1,
+              current_streak: newStreak,
+              longest_streak: Math.max((existing as any).longest_streak || 0, newStreak),
+              last_practice_date: today,
+            } as any).eq("user_id", user.id);
+          } else {
+            await supabase.from("user_progress").insert({
+              user_id: user.id, total_sessions: 1, current_streak: 1, longest_streak: 1, last_practice_date: today,
+            } as any);
+          }
+        })();
+      }
     }
   }, [isFinished]);
 

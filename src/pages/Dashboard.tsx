@@ -27,26 +27,30 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect to onboarding if profile not yet completed
+  // Redirect to onboarding if profile not yet completed or doesn't exist
   useEffect(() => {
-    if (!loading && profile && !profile.onboarded) {
-      navigate("/onboarding", { replace: true });
+    if (!loading && user) {
+      if (!profile || !profile.onboarded) {
+        navigate("/onboarding", { replace: true });
+      }
     }
-  }, [loading, profile, navigate]);
+  }, [loading, profile, user, navigate]);
 
   // Fetch quiz accuracy for "progress" stat
   const [quizAccuracy, setQuizAccuracy] = useState<number | null>(null);
+  const [meetings, setMeetings] = useState<any[]>([]);
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data } = await supabase
-        .from("quiz_attempts")
-        .select("is_correct")
-        .eq("user_id", user.id);
-      if (data && data.length > 0) {
-        const correct = data.filter((a: any) => a.is_correct).length;
-        setQuizAccuracy(Math.round((correct / data.length) * 100));
+      const [quizRes, meetingsRes] = await Promise.all([
+        supabase.from("quiz_attempts").select("is_correct").eq("user_id", user.id),
+        supabase.from("meetings").select("id, title, meeting_type, status, created_at, duration_seconds").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
+      ]);
+      if (quizRes.data && quizRes.data.length > 0) {
+        const correct = quizRes.data.filter((a: any) => a.is_correct).length;
+        setQuizAccuracy(Math.round((correct / quizRes.data.length) * 100));
       }
+      if (meetingsRes.data) setMeetings(meetingsRes.data);
     })();
   }, [user]);
 
@@ -184,6 +188,33 @@ export default function Dashboard() {
                 <p className="text-[12px] font-sans text-ink-3">{mod.lesson_count} lessons completed</p>
               </button>
             ))}
+          </div>
+        )}
+
+        {/* Recent meetings */}
+        {meetings.length > 0 && (
+          <div className="mb-6">
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">RECENT MEETINGS</p>
+            {meetings.map(m => {
+              const formatDuration = (s: number) => s >= 60 ? `${Math.floor(s / 60)}m` : `${s}s`;
+              return (
+                <button key={m.id} onClick={() => navigate(`/meeting/${m.id}`)}
+                  className="w-full text-left bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-2 hover:border-accent transition-all duration-[180ms]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[14px]">{m.meeting_type === "conference" ? "🎤" : m.meeting_type === "lecture" ? "🎓" : "💼"}</span>
+                      <div>
+                        <h3 className="text-[13px] font-sans font-medium text-foreground">{m.title}</h3>
+                        <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : "—"}</p>
+                      </div>
+                    </div>
+                    <span className={`text-[10px] font-sans font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-pill ${m.status === "completed" ? "bg-sage/20 text-sage" : "bg-accent-pale text-accent"}`}>
+                      {m.status === "completed" ? "Done" : m.status}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         )}
 

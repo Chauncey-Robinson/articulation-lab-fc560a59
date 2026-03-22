@@ -51,7 +51,22 @@ export default function Quiz() {
         const sorted = result.questions
           .map(q => ({ ...q, lesson_id: lesson.id }))
           .sort((a, b) => (order[a.question_type] ?? 9) - (order[b.question_type] ?? 9));
-        setQuestions(sorted);
+
+        // Save questions to DB so attempts can be tracked
+        const questionInserts = sorted.map(q => ({
+          lesson_id: q.lesson_id,
+          user_id: user.id,
+          question: q.question,
+          question_type: q.question_type,
+          correct_answer: q.correct_answer,
+          options: q.options || null,
+        }));
+        const { data: savedQs } = await supabase.from("quiz_questions").insert(questionInserts as any).select();
+        if (savedQs) {
+          setQuestions(sorted.map((q, i) => ({ ...q, id: (savedQs[i] as any).id })));
+        } else {
+          setQuestions(sorted);
+        }
       } catch (e: any) {
         setError(e.message || "Failed to generate quiz.");
       } finally {
@@ -112,7 +127,41 @@ export default function Quiz() {
     }
   };
 
+  // Update progress when quiz is finished
+  const updateProgress = async () => {
+    if (!user) return;
+    const today = new Date().toISOString().split("T")[0];
+    const { data: existing } = await supabase.from("user_progress").select("*").eq("user_id", user.id).single();
+    if (existing) {
+      const lastDate = (existing as any).last_practice_date;
+      let newStreak = (existing as any).current_streak || 0;
+      if (lastDate !== today) {
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+        newStreak = lastDate === yesterday ? newStreak + 1 : 1;
+      }
+      await supabase.from("user_progress").update({
+        total_sessions: ((existing as any).total_sessions || 0) + 1,
+        current_streak: newStreak,
+        longest_streak: Math.max((existing as any).longest_streak || 0, newStreak),
+        last_practice_date: today,
+      } as any).eq("user_id", user.id);
+    } else {
+      await supabase.from("user_progress").insert({
+        user_id: user.id, total_sessions: 1, current_streak: 1, longest_streak: 1, last_practice_date: today,
+      } as any);
+    }
+  };
+
   const isFinished = feedback && currentIdx === questions.length - 1;
+
+  // Track progress when quiz completes
+  const [progressSaved, setProgressSaved] = useState(false);
+  useEffect(() => {
+    if (isFinished && !progressSaved) {
+      setProgressSaved(true);
+      updateProgress();
+    }
+  }, [isFinished]);
 
   if (loading) {
     return (
@@ -238,7 +287,7 @@ export default function Quiz() {
               </div>
             )}
 
-            <button onClick={currentIdx < questions.length - 1 ? handleNext : () => {}}
+            <button onClick={currentIdx < questions.length - 1 ? handleNext : () => { /* trigger finished state re-render */ setFeedback(feedback); }}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all mt-4">
               {currentIdx < questions.length - 1 ? "Next question" : "See results"}
             </button>
