@@ -20,9 +20,9 @@ function StateDashboard() {
         <p className="font-sans text-[9px] mt-1" style={{ color: ink3 }}>3 topics · 12 sessions</p>
       </div>
       {[
-        { title: "GRI Standards", lessons: "5 lessons", progress: 60, color: amber },
-        { title: "Atomic Habits", lessons: "4 lessons", progress: 100, color: sage },
-        { title: "IFRS 15", lessons: "3 lessons", progress: 25, color: amber },
+        { title: "GRI Standards", lessons: "5 sessions", progress: 60, color: amber },
+        { title: "Atomic Habits", lessons: "4 sessions", progress: 100, color: sage },
+        { title: "IFRS 15", lessons: "3 sessions", progress: 25, color: amber },
       ].map((m) => (
         <div key={m.title} className="rounded-[12px] border-[1.5px] border-border bg-card p-3">
           <div className="flex justify-between items-start">
