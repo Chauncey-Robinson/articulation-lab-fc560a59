@@ -680,7 +680,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
                 <motion.div className="w-1.5 h-1.5 rounded-full"
                   style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                   animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>Ready · Module compiled</span>
+                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>Ready · Topic compiled</span>
               </div>
             </HudCard>
           </motion.div>
