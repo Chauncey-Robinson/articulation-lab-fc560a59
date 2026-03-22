@@ -103,7 +103,7 @@ export default function Apply() {
             <button onClick={handleSubmit}
               disabled={submitting || response.trim().length < 10}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-40 mt-auto animate-fade-up stagger-5">
-              {submitting ? "Evaluating..." : "Submit response"}
+              {submitting ? "Evaluating..." : "That's what I'd say"}
             </button>
           </>
         ) : (
