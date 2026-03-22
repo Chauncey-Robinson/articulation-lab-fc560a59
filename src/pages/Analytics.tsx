@@ -160,7 +160,7 @@ export default function Analytics() {
             {/* Knowledge retention */}
             {avgRetention !== null && (
               <div className="bg-card rounded-[20px] border-[1.5px] border-border p-6 mb-4 text-center animate-fade-up stagger-3">
-                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">KNOWLEDGE RETENTION</p>
+                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">OVERALL SCORE</p>
                 <p className="font-serif text-[3.5rem] leading-none text-foreground">{avgRetention}%</p>
                 <p className="text-[12px] font-sans text-ink-3 mt-2">Average across all test types</p>
               </div>
