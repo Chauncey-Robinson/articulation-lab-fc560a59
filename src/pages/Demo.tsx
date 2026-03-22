@@ -996,98 +996,11 @@ function PanelFlashcards({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right side: flashcard mockup */}
-        <CinematicSection className="flex flex-col gap-4">
-          {/* Active card */}
-          <motion.div custom={0} variants={slideRight}>
-            <HudCard delay={0.1}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>Card 3 of 5</span>
-                <span className="font-sans text-[10px]" style={{ color: "hsl(var(--ink-3))" }}>3 remaining</span>
-              </div>
-              {/* Progress dots */}
-              <div className="flex gap-1.5 mb-4">
-                {mockCards.map((c, i) => (
-                  <motion.div key={i} className="h-1.5 flex-1 rounded-full"
-                    initial={{ scaleX: 0 }}
-                    animate={inView ? { scaleX: 1 } : {}}
-                    transition={{ duration: 0.4, delay: i * 0.1, ease }}
-                    style={{
-                      background: c.status === "knew" ? "hsl(var(--sage))" : c.status === "didnt" ? "hsl(var(--amber-bright))" : "hsl(var(--border))",
-                      transformOrigin: "left"
-                    }} />
-                ))}
-              </div>
-              <div ref={ref} className="text-center py-8">
-                <p className="font-serif text-[22px] font-light leading-[1.5]" style={{ color: "hsl(var(--foreground))" }}>
-                  What does GRI 3 require?
-                </p>
-                <p className="font-sans text-[11px] mt-3" style={{ color: "hsl(var(--ink-3))" }}>Tap to reveal</p>
-              </div>
-              {/* Difficulty buttons */}
-              <div className="flex gap-2 mt-2">
-                {["Didn't know", "Knew it"].map((label, i) => (
-                  <motion.div key={label} className="flex-1 text-center py-2.5 rounded-[10px] font-sans text-[11px] font-medium"
-                    style={{
-                      background: i === 0 ? "hsla(32,82%,51%,0.1)" : "hsla(140,22%,45%,0.1)",
-                      color: i === 0 ? "hsl(var(--amber-bright))" : "hsl(var(--sage))",
-                      border: `1px solid ${i === 0 ? "hsla(32,82%,51%,0.3)" : "hsla(140,22%,45%,0.3)"}`,
-                    }}
-                    animate={{ scale: [1, 1.02, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}>
-                    {label}
-                  </motion.div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Session results preview */}
-          <motion.div custom={1} variants={slideRight}>
-            <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.2)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Session results</span>
-              </div>
-              <div className="grid grid-cols-3 gap-3 mb-3">
-                <div className="text-center">
-                  <span className="font-serif text-[28px] leading-none" style={{ color: "hsl(var(--foreground))" }}>80%</span>
-                  <p className="font-sans text-[9px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Accuracy</p>
-                </div>
-                <div className="text-center">
-                  <span className="font-serif text-[28px] leading-none" style={{ color: "hsl(var(--sage))" }}>4</span>
-                  <p className="font-sans text-[9px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Knew it</p>
-                </div>
-                <div className="text-center">
-                  <span className="font-serif text-[28px] leading-none" style={{ color: "hsl(var(--amber-bright))" }}>1</span>
-                  <p className="font-sans text-[9px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>Review</p>
-                </div>
-              </div>
-              {/* Difficulty breakdown bars */}
-              <p className="font-sans text-[8px] uppercase tracking-[0.15em] mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Difficulty breakdown</p>
-              <div className="flex gap-2">
-                {[
-                  { label: "Easy", pct: 60, color: "hsl(var(--sage))" },
-                  { label: "Medium", pct: 20, color: "hsl(var(--accent))" },
-                  { label: "Hard", pct: 20, color: "hsl(var(--amber-bright))" },
-                ].map(d => (
-                  <div key={d.label} className="flex-1">
-                    <div className="w-full h-2 rounded-full" style={{ background: "hsl(var(--border))" }}>
-                      <motion.div className="h-full rounded-full" style={{ background: d.color }}
-                        initial={{ width: 0 }}
-                        animate={inView ? { width: `${d.pct}%` } : {}}
-                        transition={{ duration: 1, ease }} />
-                    </div>
-                    <p className="font-sans text-[8px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>{d.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-3 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                <span className="font-sans text-[9px]" style={{ color: "hsl(var(--muted-foreground))" }}>Avg time per card: <strong style={{ color: "hsl(var(--foreground))" }}>6s</strong></span>
-              </div>
-            </HudCard>
-          </motion.div>
+        {/* Right side: phone with flashcard screen */}
+        <CinematicSection className="flex flex-col items-center justify-center">
+          <DemoPhoneFrame>
+            <PhoneFlashcardScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
