@@ -11,8 +11,8 @@ interface ConceptRow {
 
 export default function Analytics() {
   const { modules, progress } = useTutor();
-  const { concepts } = useApp();
   const { user } = useAuth();
+  const [concepts, setConcepts] = useState<ConceptRow[]>([]);
   const [quizStats, setQuizStats] = useState({ total: 0, correct: 0 });
   const [teachBackScore, setTeachBackScore] = useState<number | null>(null);
   const [applyScore, setApplyScore] = useState<number | null>(null);
