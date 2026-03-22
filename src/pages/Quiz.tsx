@@ -154,6 +154,15 @@ export default function Quiz() {
 
   const isFinished = feedback && currentIdx === questions.length - 1;
 
+  // Track progress when quiz completes
+  const [progressSaved, setProgressSaved] = useState(false);
+  useEffect(() => {
+    if (isFinished && !progressSaved) {
+      setProgressSaved(true);
+      updateProgress();
+    }
+  }, [isFinished]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
