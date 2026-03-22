@@ -27,12 +27,14 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect to onboarding if profile not yet completed
+  // Redirect to onboarding if profile not yet completed or doesn't exist
   useEffect(() => {
-    if (!loading && profile && !profile.onboarded) {
-      navigate("/onboarding", { replace: true });
+    if (!loading && user) {
+      if (!profile || !profile.onboarded) {
+        navigate("/onboarding", { replace: true });
+      }
     }
-  }, [loading, profile, navigate]);
+  }, [loading, profile, user, navigate]);
 
   // Fetch quiz accuracy for "progress" stat
   const [quizAccuracy, setQuizAccuracy] = useState<number | null>(null);
