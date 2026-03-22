@@ -191,6 +191,33 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* Recent meetings */}
+        {meetings.length > 0 && (
+          <div className="mb-6">
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">RECENT MEETINGS</p>
+            {meetings.map(m => {
+              const formatDuration = (s: number) => s >= 60 ? `${Math.floor(s / 60)}m` : `${s}s`;
+              return (
+                <button key={m.id} onClick={() => navigate(`/meeting/${m.id}`)}
+                  className="w-full text-left bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-2 hover:border-accent transition-all duration-[180ms]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[14px]">{m.meeting_type === "conference" ? "🎤" : m.meeting_type === "lecture" ? "🎓" : "💼"}</span>
+                      <div>
+                        <h3 className="text-[13px] font-sans font-medium text-foreground">{m.title}</h3>
+                        <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : "—"}</p>
+                      </div>
+                    </div>
+                    <span className={`text-[10px] font-sans font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-pill ${m.status === "completed" ? "bg-sage/20 text-sage" : "bg-accent-pale text-accent"}`}>
+                      {m.status === "completed" ? "Done" : m.status}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Upload CTA */}
         <div className="flex gap-3 animate-fade-up stagger-6">
           <Link to="/upload"
