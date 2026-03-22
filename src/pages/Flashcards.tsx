@@ -327,7 +327,7 @@ export default function Flashcards() {
           )}
           {isImageLoading && !currentImage && (
             <div className="w-[200px] h-[120px] mb-4 rounded-[12px] bg-muted animate-pulse flex items-center justify-center">
-              <span className="text-[10px] font-sans text-ink-3">Generating illustration...</span>
+              <span className="text-[10px] font-sans text-ink-3">Loading...</span>
             </div>
           )}
 
