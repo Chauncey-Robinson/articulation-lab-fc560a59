@@ -185,17 +185,17 @@ export default function Quiz() {
     return (
       <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
         <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col items-center justify-center text-center">
-          <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Quiz complete!</h1>
+          <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Session complete!</h1>
           <p className="font-serif text-[4rem] text-foreground leading-none mb-2 animate-fade-up stagger-2">
             {score.correct}/{score.total}
           </p>
           <p className="text-[14px] font-sans text-ink-3 mb-8 animate-fade-up stagger-3">
-            {score.correct === score.total ? "Perfect score! You really know this." : score.correct > 0 ? "Good effort. Keep studying and try again." : "Don't worry — that's what practice is for."}
+            {score.correct === score.total ? "Perfect score! You really know this." : score.correct > 0 ? "Good effort. Keep studying and try again." : "Don't worry. That's what practice is for."}
           </p>
           <div className="flex flex-col gap-3 w-full animate-fade-up stagger-4">
             <button onClick={() => navigate(`/module/${moduleId}`)}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all">
-              Back to module
+              Back to topic
             </button>
             <button onClick={() => navigate("/dashboard")}
               className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
