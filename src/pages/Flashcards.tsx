@@ -308,7 +308,7 @@ export default function Flashcards() {
           </div>
         )}
 
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-4 animate-fade-up">FLASHCARD {currentIdx + 1} of {cards.length}</p>
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-4 animate-fade-up">Card {currentIdx + 1} of {cards.length}</p>
 
         {/* Card */}
         <button onClick={() => { setFlipped(!flipped); if (!flipped && currentCard) speak(currentCard.back); }}
