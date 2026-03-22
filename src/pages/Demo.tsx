@@ -791,81 +791,11 @@ function Panel4({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right: HUD voice visualiser */}
+        {/* Right: Phone with study screen */}
         <CinematicSection className="flex flex-col items-center justify-center">
-          <motion.div custom={0} variants={fadeScale} className="relative">
-            {/* Rotating ring */}
-            <motion.div className="absolute" style={{ inset: -30 }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
-              <svg viewBox="0 0 400 400" className="w-full h-full">
-                <circle cx="200" cy="200" r="180" fill="none" stroke="hsla(32,82%,51%,0.08)" strokeWidth="1" />
-                <circle cx="200" cy="200" r="180" fill="none" stroke="hsla(32,82%,51%,0.4)" strokeWidth="1.5"
-                  strokeDasharray="20 40 10 30" strokeLinecap="round" />
-              </svg>
-            </motion.div>
-
-            {/* Inner rotating ring */}
-            <motion.div className="absolute" style={{ inset: -15 }}
-              animate={{ rotate: -360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
-              <svg viewBox="0 0 400 400" className="w-full h-full">
-                <circle cx="200" cy="200" r="185" fill="none" stroke="hsla(32,82%,51%,0.06)" strokeWidth="0.5"
-                  strokeDasharray="5 15" />
-              </svg>
-            </motion.div>
-
-            <HudCard className="!rounded-[28px] !p-8 text-center" style={{ width: 300 }}>
-              {/* Callout labels around the card */}
-              <div className="absolute -left-[140px] top-[30%]">
-                <HudCallout label="ElevenLabs API" side="left" delay={0.3} />
-              </div>
-              <div className="absolute -right-[120px] top-[25%]">
-                <HudCallout label="British accent" side="right" delay={0.5} />
-              </div>
-              <div className="absolute -left-[130px] top-[65%]">
-                <HudCallout label="Real-time stream" side="left" delay={0.7} />
-              </div>
-              <div className="absolute -right-[110px] top-[70%]">
-                <HudCallout label="Voice ID: Lily" side="right" delay={0.9} />
-              </div>
-
-              <motion.div
-                className="w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-5"
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--amber-bright)), hsla(32,82%,51%,0.4))",
-                  boxShadow: "0 0 40px hsla(32,82%,51%,0.3)",
-                }}
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-                <span className="text-white text-[30px]">🔊</span>
-              </motion.div>
-              <p className="font-serif text-[20px] italic" style={{ color: "hsl(var(--foreground))" }}>Lily</p>
-              <p className="font-sans text-[10px] mt-1 uppercase tracking-[0.15em]"
-                style={{ color: "hsl(var(--muted-foreground))" }}>Neural voice engine</p>
-
-              {/* Waveform */}
-              <div className="flex items-end justify-center gap-[2px] mt-6 h-10">
-                {Array.from({ length: 28 }).map((_, i) => (
-                  <motion.div key={i} className="w-[2.5px] rounded-full"
-                    style={{ background: `hsla(32,82%,51%,${0.4 + Math.random() * 0.5})` }}
-                    animate={{ height: [3, 6 + Math.random() * 28, 3] }}
-                    transition={{ duration: 0.4 + Math.random() * 0.6, repeat: Infinity, delay: i * 0.04, ease: "easeInOut" }}
-                  />
-                ))}
-              </div>
-
-              {/* Status line */}
-              <motion.div className="flex items-center justify-center gap-2 mt-4"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}>
-                <div className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--sage))", boxShadow: "0 0 6px hsl(var(--sage))" }} />
-                <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--sage))" }}>
-                  Streaming
-                </span>
-              </motion.div>
-            </HudCard>
-          </motion.div>
+          <DemoPhoneFrame>
+            <PhoneStudyScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
