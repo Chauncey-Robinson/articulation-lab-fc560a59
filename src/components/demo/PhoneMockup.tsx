@@ -66,7 +66,7 @@ function StateLessonStudy() {
   return (
     <div className="flex flex-col gap-2.5 p-4">
       <div className="flex justify-between items-center">
-        <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Lesson 1 of 5</span>
+        <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Session 1 of 5</span>
         <span className="font-sans text-[8px] px-2 py-0.5 rounded-full" style={{ background: amberPale, color: amber }}>🔊 Lily speaking</span>
       </div>
       <p className="font-serif text-[15px]" style={{ color: ink }}>Double Materiality</p>
