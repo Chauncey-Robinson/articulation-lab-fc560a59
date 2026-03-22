@@ -51,7 +51,22 @@ export default function Quiz() {
         const sorted = result.questions
           .map(q => ({ ...q, lesson_id: lesson.id }))
           .sort((a, b) => (order[a.question_type] ?? 9) - (order[b.question_type] ?? 9));
-        setQuestions(sorted);
+
+        // Save questions to DB so attempts can be tracked
+        const questionInserts = sorted.map(q => ({
+          lesson_id: q.lesson_id,
+          user_id: user.id,
+          question: q.question,
+          question_type: q.question_type,
+          correct_answer: q.correct_answer,
+          options: q.options || null,
+        }));
+        const { data: savedQs } = await supabase.from("quiz_questions").insert(questionInserts as any).select();
+        if (savedQs) {
+          setQuestions(sorted.map((q, i) => ({ ...q, id: (savedQs[i] as any).id })));
+        } else {
+          setQuestions(sorted);
+        }
       } catch (e: any) {
         setError(e.message || "Failed to generate quiz.");
       } finally {
