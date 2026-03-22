@@ -381,7 +381,7 @@ function Panel1({ speaking }: { speaking: boolean }) {
             animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
           <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--destructive) / 0.7)" }}>Warning · Knowledge decay detected</span>
         </div>
-        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "hsl(var(--border))" }}>DIAG-001 · RETENTION FAILURE</span>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "hsl(var(--border))" }}>DIAG-001 · KNOWLEDGE DECAY</span>
       </motion.div>
 
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
