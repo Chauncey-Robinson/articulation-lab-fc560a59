@@ -170,7 +170,7 @@ export default function Analytics() {
             <div className="grid grid-cols-3 gap-3 mb-4">
               {[
                 { emoji: "🧪", score: quizRate, label: "Quiz" },
-                { emoji: "🎙️", score: teachBackScore, label: "Teach Back" },
+                { emoji: "🎙️", score: teachBackScore, label: "Explain It" },
                 { emoji: "🌍", score: applyScore, label: "Apply" },
               ].map(s => (
                 <div key={s.label} className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center animate-fade-up stagger-3">
