@@ -1001,7 +1001,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
 
           {/* Grid layout for the 5 cards */}
           <div className="grid grid-cols-3 gap-4" style={{ gridTemplateRows: "auto auto" }}>
-            {/* Top row: Quiz — center title — Teach Back */}
+            {/* Top row: Quiz, center title, Explain It */}
             {[features[0], features[4], features[1]].map((f, idx) => (
               <motion.div key={f.title}
                 initial={{ opacity: 0, y: 30 }}
