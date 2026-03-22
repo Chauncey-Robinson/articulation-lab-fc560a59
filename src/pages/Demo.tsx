@@ -1504,18 +1504,18 @@ function Panel6({ speaking }: { speaking: boolean }) {
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   const rows = [
-    ["AI breaks content into modules & lessons", true, false, true],
-    ["Learning style assessment & personalisation", true, false, false],
-    ["PDF & document upload", true, false, true],
-    ["Voice reads lessons aloud (ElevenLabs)", true, false, false],
+    ["AI breaks content into topics and sessions", true, false, true],
+    ["Personalised to how you learn", true, false, false],
+    ["PDF and document upload", true, false, true],
+    ["Voice reads sessions aloud", true, false, false],
     ["Voice toggle on every screen", true, false, false],
-    ["Progressive quiz difficulty (MC → T/F → open)", true, false, false],
+    ["Progressive quiz difficulty", true, false, false],
     ["AI dialogue / conversation", true, false, true],
-    ["Teach-back evaluation", true, false, false],
+    ["Explain-it-back evaluation", true, false, false],
     ["Real-world scenario practice", true, false, false],
     ["Flashcards with voice", true, false, false],
     ["Fluency score (not just recall)", true, false, false],
-    ["Live meeting transcription & learning", true, false, false],
+    ["Live meeting transcription", true, false, false],
   ] as const;
 
   return (
