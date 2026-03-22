@@ -53,8 +53,8 @@ export default function Deadlines() {
       <button onClick={() => navigate("/dashboard")} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
 
       <div className="max-w-[460px] mx-auto w-full">
-        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Deadlines.</h1>
-        <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">Set goals and stay on track.</p>
+        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">When do you need to know this?</h1>
+        <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">Set a target date. We'll remind you.</p>
 
         {/* Active deadlines */}
         {deadlines.length > 0 && (
