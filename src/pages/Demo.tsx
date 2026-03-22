@@ -631,70 +631,11 @@ function Panel3({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        <CinematicSection className="flex flex-col gap-4">
-          {/* Input card */}
-          <motion.div custom={0} variants={slideRight}>
-            <HudCard delay={0.1}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsl(var(--muted))", color: "hsl(var(--ink-3))" }}>Input</span>
-                <HudCallout label="Raw text" side="right" delay={0.3} />
-              </div>
-              <p className="font-serif text-[11px] font-light leading-[1.6]" style={{ color: "hsl(var(--ink-2))" }}>
-                "GRI 3 requires organisations to determine which topics are material… double materiality considers both financial and impact materiality…"
-              </p>
-            </HudCard>
-          </motion.div>
-
-          {/* Arrow */}
-          <motion.div custom={1} variants={fadeUp} className="flex flex-col items-center gap-1 py-1">
-            <motion.div className="flex flex-col items-center"
-              animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-              <div className="w-[1px] h-6" style={{ background: "linear-gradient(to bottom, hsla(32,82%,51%,0.6), hsla(32,82%,51%,0.1))" }} />
-              <div className="w-0 h-0" style={{ borderLeft: "4px solid transparent", borderRight: "4px solid transparent", borderTop: "5px solid hsla(32,82%,51%,0.5)" }} />
-            </motion.div>
-            <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--muted-foreground))" }}>Processing</span>
-          </motion.div>
-
-          {/* Output card */}
-          <motion.div custom={2} variants={slideRight} className="relative">
-            <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <HudCallout label="AI generated" side="right" delay={0.6} />
-                <HudCallout label="5 sessions" side="right" delay={0.8} />
-              </div>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Topic generated</span>
-              </div>
-              <p className="font-serif text-[18px]" style={{ color: "hsl(var(--foreground))" }}>GRI Standards</p>
-              <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 sessions · 12 quiz questions</p>
-              <div className="mt-3 space-y-1.5">
-                {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
-                  <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
-                    style={{ color: "hsl(var(--ink-2))" }}
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}>
-                    <motion.span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold shrink-0"
-                      style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))" }}
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}>
-                      {i + 1}
-                    </motion.span>
-                    {l}
-                  </motion.div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-4 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                <motion.div className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                  animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>Ready · Topic compiled</span>
-              </div>
-            </HudCard>
-          </motion.div>
+        <CinematicSection className="flex flex-col items-center gap-6">
+          {/* iPhone showing upload screen */}
+          <DemoPhoneFrame>
+            <PhoneUploadScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
