@@ -1099,114 +1099,11 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right side: analytics mockups */}
-        <CinematicSection className="flex flex-col gap-4">
-          {/* Streak */}
-          <motion.div ref={ref} custom={0} variants={slideRight}>
-            <HudCard delay={0.1} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.4)" }}>Streak</span>
-                <span className="font-sans text-[12px] font-medium" style={{ color: "hsl(var(--background))" }}>🔥 5 days</span>
-              </div>
-              <div className="flex gap-2 justify-between">
-                {streakDays.map((d, i) => (
-                  <motion.div key={i} className="flex flex-col items-center gap-1.5"
-                    initial={{ scale: 0 }}
-                    animate={inView ? { scale: 1 } : {}}
-                    transition={{ duration: 0.3, delay: i * 0.08, ease }}>
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px]"
-                      style={{
-                        background: streakActive[i] ? "hsl(var(--amber-bright))" : "rgba(255,255,255,0.06)",
-                        color: streakActive[i] ? "white" : "rgba(255,255,255,0.3)",
-                      }}>
-                      {streakActive[i] ? "✓" : "·"}
-                    </div>
-                    <span className="font-sans text-[8px]" style={{ color: "rgba(255,255,255,0.3)" }}>{d}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Knowledge mastery + concept stages */}
-          <motion.div custom={1} variants={slideRight}>
-            <HudCard delay={0.2} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                   style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Knowledge mastery</span>
-              </div>
-              <div className="text-center mb-4">
-                <motion.span className="font-serif text-[48px] leading-none" style={{ color: "hsl(var(--background))" }}
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.8, delay: 0.3 }}>
-                  72%
-                </motion.span>
-                <p className="font-sans text-[10px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>Average across all test types</p>
-              </div>
-              {/* Three scores */}
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                {[
-                  { label: "Quiz", score: "78%", emoji: "🧪" },
-                  { label: "Explain It", score: "65%", emoji: "🎙️" },
-                  { label: "Apply", score: "73%", emoji: "🌍" },
-                ].map(s => (
-                  <div key={s.label} className="text-center py-2 rounded-[8px]" style={{ background: "rgba(255,255,255,0.04)" }}>
-                    <span className="text-[14px]">{s.emoji}</span>
-                    <p className="font-serif text-[18px] leading-none mt-1" style={{ color: "hsl(var(--background))" }}>{s.score}</p>
-                    <p className="font-sans text-[8px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-              {/* Concept breakdown */}
-              <p className="font-sans text-[8px] uppercase tracking-[0.15em] mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Concept library</p>
-              <div className="w-full h-3 rounded-full flex overflow-hidden mb-2" style={{ background: "rgba(255,255,255,0.06)" }}>
-                <motion.div className="h-full" style={{ background: "hsl(var(--sage))" }}
-                  initial={{ width: 0 }} animate={inView ? { width: "35%" } : {}} transition={{ duration: 0.8, ease }} />
-                <motion.div className="h-full" style={{ background: "hsl(var(--accent))" }}
-                  initial={{ width: 0 }} animate={inView ? { width: "40%" } : {}} transition={{ duration: 0.8, delay: 0.1, ease }} />
-                <motion.div className="h-full" style={{ background: "hsl(var(--amber-bright))" }}
-                  initial={{ width: 0 }} animate={inView ? { width: "25%" } : {}} transition={{ duration: 0.8, delay: 0.2, ease }} />
-              </div>
-              <div className="flex gap-3">
-                {[
-                  { label: "Solid", count: 7, color: "hsl(var(--sage))" },
-                  { label: "Getting there", count: 8, color: "hsl(var(--accent))" },
-                  { label: "Practicing", count: 5, color: "hsl(var(--amber-bright))" },
-                ].map(s => (
-                  <div key={s.label} className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
-                    <span className="font-sans text-[8px]" style={{ color: "rgba(255,255,255,0.4)" }}>{s.label} · <strong style={{ color: "rgba(255,255,255,0.7)" }}>{s.count}</strong></span>
-                  </div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Repetition schedule */}
-          <motion.div custom={2} variants={slideRight}>
-            <HudCard delay={0.3} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <span className="font-sans text-[8px] font-bold uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.4)" }}>Repetition schedule</span>
-              <div className="flex items-end gap-2 h-[80px] mt-3">
-                {scheduleData.map((day, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center justify-end h-full">
-                    {day.count > 0 && (
-                      <motion.span className="font-sans text-[8px] font-medium mb-1" style={{ color: "rgba(255,255,255,0.6)" }}
-                        initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.3 + i * 0.08 }}>
-                        {day.count}
-                      </motion.span>
-                    )}
-                    <motion.div className="w-full rounded-t-[4px]"
-                      style={{ background: "hsl(var(--amber-bright))" }}
-                      initial={{ height: 0 }}
-                      animate={inView ? { height: `${(day.count / maxCount) * 60}px` } : {}}
-                      transition={{ duration: 0.6, delay: 0.2 + i * 0.08, ease }} />
-                    <span className="font-sans text-[7px] mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>{day.label}</span>
-                  </div>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
+        {/* Right side: phone with analytics screen */}
+        <CinematicSection className="flex flex-col items-center justify-center">
+          <DemoPhoneFrame dark>
+            <PhoneAnalyticsScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
