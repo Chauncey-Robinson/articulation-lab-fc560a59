@@ -16,8 +16,8 @@ function StateDashboard() {
   return (
     <div className="flex flex-col gap-2.5 p-4">
       <div>
-        <p className="font-serif text-[16px] leading-[1.15]" style={{ color: ink }}>Your Modules</p>
-        <p className="font-sans text-[9px] mt-1" style={{ color: ink3 }}>3 modules · 12 lessons</p>
+        <p className="font-serif text-[16px] leading-[1.15]" style={{ color: ink }}>Your Topics</p>
+        <p className="font-sans text-[9px] mt-1" style={{ color: ink3 }}>3 topics · 12 sessions</p>
       </div>
       {[
         { title: "GRI Standards", lessons: "5 lessons", progress: 60, color: amber },
