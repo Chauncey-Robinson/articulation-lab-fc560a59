@@ -1413,12 +1413,12 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
             </HudCard>
           </motion.div>
 
-          {/* Knowledge retention + concept stages */}
+          {/* Knowledge mastery + concept stages */}
           <motion.div custom={1} variants={slideRight}>
             <HudCard delay={0.2} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
               <div className="flex items-center gap-2 mb-3">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Knowledge retention</span>
+                   style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Knowledge mastery</span>
               </div>
               <div className="text-center mb-4">
                 <motion.span className="font-serif text-[48px] leading-none" style={{ color: "hsl(var(--background))" }}
