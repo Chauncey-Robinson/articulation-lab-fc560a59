@@ -1172,10 +1172,10 @@ function PanelFlashcards({ speaking }: { speaking: boolean }) {
 
           <div className="mt-8 space-y-3">
             {[
-              { icon: "🃏", title: "Difficulty rating", desc: "Mark each card easy, medium, or hard — the system adapts" },
-              { icon: "⏱", title: "Time tracking", desc: "Average time per card shows where you hesitate" },
-              { icon: "🔁", title: "Spaced repetition", desc: "Hard cards come back sooner, easy ones space out" },
-              { icon: "📊", title: "Session accuracy", desc: "See your accuracy %, difficulty breakdown, and trends" },
+              { icon: "🃏", title: "Difficulty rating", desc: "Mark each card easy, medium, or hard. The system adapts." },
+              { icon: "⏱", title: "Time tracking", desc: "Average time per card shows where you hesitate." },
+              { icon: "🔁", title: "Spaced repetition", desc: "Hard cards come back sooner. Easy ones space out." },
+              { icon: "📊", title: "Session accuracy", desc: "See your accuracy %, difficulty breakdown, and trends." },
             ].map((s, i) => (
               <motion.div key={s.title} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.4}>
