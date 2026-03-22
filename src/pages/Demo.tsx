@@ -6,16 +6,16 @@ import { useTTS } from "@/hooks/useSpeech";
 const PANEL_COUNT = 11;
 
 const panelNarrations = [
-  "You know more than you can explain. Upload what you're studying, the AI breaks it down, and you prove you own it.",
-  "87 percent of professionals said the same thing — they studied, they finished, then someone asked and nothing came out.",
-  "Think of it as a gym for your knowledge. Upload anything, it personalises to how you learn, then you prove it five ways.",
-  "Paste text, upload a PDF, drop in your notes — the AI pulls out the key ideas and builds your modules.",
-  "Every lesson is read aloud. Toggle it on or off. Then discuss with the tutor or speak your answers back.",
-  "Quizzes start easy with multiple choice, then move to true or false, then open-ended — all adapting to your style. Plus teach-back, scenarios, dialogue, and flashcards.",
-  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with — so it brings those back at exactly the right time.",
-  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type — you always know exactly where you stand.",
-  "Nobody else combines voice lessons, learning style personalisation, progressive quizzes, and five assessment modes. This is genuinely unique.",
-  "And here's something no one else does — meeting mode. Walk into any conference, lecture, or meeting, hit record, and the AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study module — all inside the same app you learn in.",
+  "You know more than you can explain. Upload what you're studying. The AI breaks it down. Then you prove you own it.",
+  "87 percent of professionals said the same thing. They studied. They finished. Then someone asked and nothing came out.",
+  "Think of it as a gym for your knowledge. Upload anything. It personalises to how you learn. Then you prove it five ways.",
+  "Paste text, upload a PDF, drop in your notes. The AI pulls out the key ideas and builds your topics.",
+  "Every session is read aloud. Toggle it on or off. Then discuss with the coach or speak your answers back.",
+  "Quizzes start easy with multiple choice, then true or false, then open-ended. All adapting to your style. Plus explain-it-back, scenarios, dialogue, and flashcards.",
+  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with. It brings those back at exactly the right time.",
+  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type. You always know exactly where you stand.",
+  "Nobody else combines voice sessions, progressive quizzes, and five coaching modes. This is genuinely unique.",
+  "And here's something no one else does. Meeting mode. Walk into any conference, lecture, or meeting. Hit record. The AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study topic. All inside the same app.",
   "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -285,7 +285,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
               <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
               <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em]"
                 style={{ color: "hsl(var(--amber-bright))" }}>
-                A new kind of learning tool · 2025
+                A new kind of coaching tool · 2025
               </span>
             </motion.div>
 
@@ -381,7 +381,7 @@ function Panel1({ speaking }: { speaking: boolean }) {
             animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
           <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--destructive) / 0.7)" }}>Warning · Knowledge decay detected</span>
         </div>
-        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "hsl(var(--border))" }}>DIAG-001 · RETENTION FAILURE</span>
+        <span className="font-sans text-[7px] tracking-[0.15em]" style={{ color: "hsl(var(--border))" }}>DIAG-001 · KNOWLEDGE DECAY</span>
       </motion.div>
 
       <div className="mx-auto w-full max-w-[1200px] px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -399,16 +399,16 @@ function Panel1({ speaking }: { speaking: boolean }) {
             <span className="italic" style={{ color: "hsl(var(--destructive))" }}>Then nothing.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[20px] font-light leading-[1.6] mt-8" style={{ color: "hsl(var(--ink-3))" }}>
-            107 professionals told us the same thing. They studied. They finished. Then someone asked — and nothing came out.
+            107 professionals told us the same thing. They studied. They finished. Then someone asked. Nothing came out.
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp}>
             <SpeakingGlow speaking={speaking}>
               <HudCard delay={0.3} style={{ borderLeft: "2px solid hsl(8,50%,52%)" }}>
                 <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "hsl(var(--ink-2))" }}>
-                  "I started forgetting the details in the weeks after. When it came to applying it — I couldn't structure my thoughts."
+                  "I started forgetting the details in the weeks after. When it came to applying it, I couldn't structure my thoughts."
                 </p>
-                <p className="font-sans text-[10px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>— ESG Professional, GRI Certification, 2025</p>
+                <p className="font-sans text-[10px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>ESG Professional, GRI Certification, 2025</p>
               </HudCard>
             </SpeakingGlow>
           </motion.div>
@@ -433,7 +433,7 @@ function Panel1({ speaking }: { speaking: boolean }) {
             </motion.div>
             <div className="grid grid-cols-2 gap-4 mt-4">
               {[
-                { stat: "4×", desc: "times revisited before it sticks", tag: "RETENTION" },
+                { stat: "4×", desc: "times revisited before it sticks", tag: "PRACTICE" },
                 { stat: "£0", desc: "value of knowledge that can't be explained", tag: "FLUENCY" },
               ].map((c, i) => (
                 <motion.div key={c.stat} custom={i + 1} variants={slideRight}>
@@ -517,10 +517,10 @@ function Panel2({ speaking }: { speaking: boolean }) {
 
           <div className="mt-10 space-y-4">
             {[
-              { num: "00", title: "Discover your learning style", desc: "A quick assessment finds whether you're visual, auditory, reading, or hands-on — then personalises everything." },
-              { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized modules with a clear key idea per lesson." },
-              { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily. Toggle voice on or off. Then discuss with the AI tutor." },
-              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus teach-back, real-world scenarios, and flashcards." },
+              { num: "00", title: "Tell us how you like to learn", desc: "A quick setup finds your preferences. Then everything adapts to you." },
+              { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized topics with a clear key idea per session." },
+              { num: "02", title: "A voice reads it to you", desc: "Each session is read aloud. Toggle voice on or off. Then discuss with your AI coach." },
+              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus explain-it-back, real-world scenarios, and flashcards." },
             ].map((c, i) => (
               <SpeakingGlow speaking={speaking}>
                 <motion.div key={c.num} custom={i + 3} variants={slideRight}
@@ -583,7 +583,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
             <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>The AI does the rest.</span>
           </motion.h2>
           <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "hsl(var(--ink-3))" }}>
-            Drop in your study notes, textbook passages, PDFs, or certification material. The AI extracts key ideas and builds structured modules.
+            Drop in your study notes, textbook passages, PDFs, or certification material. The AI extracts key ideas and builds structured topics.
           </motion.p>
 
           {/* Pipeline steps */}
@@ -591,7 +591,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
             {[
               { step: "01", title: "Content ingestion", desc: "Paste text or upload PDF, DOCX, and more", icon: "📄" },
               { step: "02", title: "Key idea isolation", desc: "AI identifies core concepts per section", icon: "🧠" },
-              { step: "03", title: "Module generation", desc: "Structured lessons personalised to your learning style", icon: "📦" },
+              { step: "03", title: "Topic generation", desc: "Structured sessions personalised to how you learn", icon: "📦" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.4}>
@@ -650,14 +650,14 @@ function Panel3({ speaking }: { speaking: boolean }) {
             <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <HudCallout label="AI generated" side="right" delay={0.6} />
-                <HudCallout label="5 lessons" side="right" delay={0.8} />
+                <HudCallout label="5 sessions" side="right" delay={0.8} />
               </div>
               <div className="flex items-center gap-2 mb-3">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Module generated</span>
+                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Topic generated</span>
               </div>
               <p className="font-serif text-[18px]" style={{ color: "hsl(var(--foreground))" }}>GRI Standards</p>
-              <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 lessons · 12 quiz questions</p>
+              <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 sessions · 12 quiz questions</p>
               <div className="mt-3 space-y-1.5">
                 {["Double Materiality", "Stakeholder Engagement", "Scope 3 Emissions", "Reporting Boundaries", "Assurance Standards"].map((l, i) => (
                   <motion.div key={l} className="flex items-center gap-2 font-sans text-[11px]"
@@ -680,7 +680,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
                 <motion.div className="w-1.5 h-1.5 rounded-full"
                   style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
                   animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>Ready · Module compiled</span>
+                <span className="font-sans text-[7px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>Ready · Topic compiled</span>
               </div>
             </HudCard>
           </motion.div>
@@ -803,7 +803,7 @@ function Panel4({ speaking }: { speaking: boolean }) {
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-6"
             style={{ color: "hsl(var(--ink-3))" }}>
-            Each lesson is read aloud by Lily — a natural British AI voice. Toggle voice on or off anytime. Then discuss with the tutor and speak it back.
+            Each session is read aloud by a natural AI voice. Toggle voice on or off anytime. Then discuss with the coach and speak it back.
           </motion.p>
 
           {/* HUD feature callouts */}
@@ -923,11 +923,11 @@ function Panel4({ speaking }: { speaking: boolean }) {
 /* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
 function Panel5({ speaking }: { speaking: boolean }) {
   const features = [
-    { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to your learning style.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
-    { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
+    { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to how you learn.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
+    { icon: "🎤", title: "Explain It", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
     { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
-    { icon: "💬", title: "Dialogue", tag: "AI TUTOR", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
-    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front & back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
+    { icon: "💬", title: "Dialogue", tag: "AI COACH", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
+    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front and back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
   ];
 
   return (
@@ -1001,7 +1001,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
 
           {/* Grid layout for the 5 cards */}
           <div className="grid grid-cols-3 gap-4" style={{ gridTemplateRows: "auto auto" }}>
-            {/* Top row: Quiz — center title — Teach Back */}
+            {/* Top row: Quiz, center title, Explain It */}
             {[features[0], features[4], features[1]].map((f, idx) => (
               <motion.div key={f.title}
                 initial={{ opacity: 0, y: 30 }}
@@ -1045,7 +1045,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
               </motion.div>
             ))}
 
-            {/* Bottom row: Real-World — spacer — Dialogue */}
+            {/* Bottom row: Real-World, spacer, Dialogue */}
             {[features[2], null, features[3]].map((f, idx) => (
               f ? (
                 <motion.div key={f.title}
@@ -1166,16 +1166,16 @@ function PanelFlashcards({ speaking }: { speaking: boolean }) {
 
           <SpeakingGlow speaking={speaking}>
             <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "hsl(var(--ink-3))" }}>
-              Not just flip and forget. Every card tracks difficulty, timing, and accuracy — then comes back at the perfect moment.
+              Not just flip and forget. Every card tracks difficulty, timing, and accuracy. Then it comes back at the perfect moment.
             </motion.p>
           </SpeakingGlow>
 
           <div className="mt-8 space-y-3">
             {[
-              { icon: "🃏", title: "Difficulty rating", desc: "Mark each card easy, medium, or hard — the system adapts" },
-              { icon: "⏱", title: "Time tracking", desc: "Average time per card shows where you hesitate" },
-              { icon: "🔁", title: "Spaced repetition", desc: "Hard cards come back sooner, easy ones space out" },
-              { icon: "📊", title: "Session accuracy", desc: "See your accuracy %, difficulty breakdown, and trends" },
+              { icon: "🃏", title: "Difficulty rating", desc: "Mark each card easy, medium, or hard. The system adapts." },
+              { icon: "⏱", title: "Time tracking", desc: "Average time per card shows where you hesitate." },
+              { icon: "🔁", title: "Spaced repetition", desc: "Hard cards come back sooner. Easy ones space out." },
+              { icon: "📊", title: "Session accuracy", desc: "See your accuracy %, difficulty breakdown, and trends." },
             ].map((s, i) => (
               <motion.div key={s.title} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.4}>
@@ -1413,12 +1413,12 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
             </HudCard>
           </motion.div>
 
-          {/* Knowledge retention + concept stages */}
+          {/* Knowledge mastery + concept stages */}
           <motion.div custom={1} variants={slideRight}>
             <HudCard delay={0.2} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
               <div className="flex items-center gap-2 mb-3">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Knowledge retention</span>
+                   style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Knowledge mastery</span>
               </div>
               <div className="text-center mb-4">
                 <motion.span className="font-serif text-[48px] leading-none" style={{ color: "hsl(var(--background))" }}
@@ -1433,7 +1433,7 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
               <div className="grid grid-cols-3 gap-2 mb-4">
                 {[
                   { label: "Quiz", score: "78%", emoji: "🧪" },
-                  { label: "Teach Back", score: "65%", emoji: "🎙️" },
+                  { label: "Explain It", score: "65%", emoji: "🎙️" },
                   { label: "Apply", score: "73%", emoji: "🌍" },
                 ].map(s => (
                   <div key={s.label} className="text-center py-2 rounded-[8px]" style={{ background: "rgba(255,255,255,0.04)" }}>
@@ -1504,18 +1504,18 @@ function Panel6({ speaking }: { speaking: boolean }) {
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   const rows = [
-    ["AI breaks content into modules & lessons", true, false, true],
-    ["Learning style assessment & personalisation", true, false, false],
-    ["PDF & document upload", true, false, true],
-    ["Voice reads lessons aloud (ElevenLabs)", true, false, false],
+    ["AI breaks content into topics and sessions", true, false, true],
+    ["Personalised to how you learn", true, false, false],
+    ["PDF and document upload", true, false, true],
+    ["Voice reads sessions aloud", true, false, false],
     ["Voice toggle on every screen", true, false, false],
-    ["Progressive quiz difficulty (MC → T/F → open)", true, false, false],
+    ["Progressive quiz difficulty", true, false, false],
     ["AI dialogue / conversation", true, false, true],
-    ["Teach-back evaluation", true, false, false],
+    ["Explain-it-back evaluation", true, false, false],
     ["Real-world scenario practice", true, false, false],
     ["Flashcards with voice", true, false, false],
     ["Fluency score (not just recall)", true, false, false],
-    ["Live meeting transcription & learning", true, false, false],
+    ["Live meeting transcription", true, false, false],
   ] as const;
 
   return (
@@ -1673,7 +1673,7 @@ function Panel7({ speaking }: { speaking: boolean }) {
           <SpeakingGlow speaking={speaking}>
             <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6"
               style={{ color: "rgba(255,255,255,0.5)" }}>
-              Conference, lecture, or team meeting — the AI transcribes live, then extracts key learnings, action items, and turns everything into a study module.
+              Conference, lecture, or team meeting. The AI transcribes live, then extracts key learnings, action items, and turns everything into a study topic.
             </motion.p>
           </SpeakingGlow>
 
@@ -1681,7 +1681,7 @@ function Panel7({ speaking }: { speaking: boolean }) {
             {[
               { step: "01", title: "Live transcription", desc: "Real-time speech-to-text with ElevenLabs Scribe", icon: "🎙" },
               { step: "02", title: "AI analysis", desc: "Summary, action items, decisions, and key learnings extracted automatically", icon: "🧠" },
-              { step: "03", title: "Turn into a module", desc: "One tap to generate lessons, quizzes, and flashcards from the meeting", icon: "📚" },
+              { step: "03", title: "Turn into a topic", desc: "One tap to generate sessions, quizzes, and flashcards from the meeting", icon: "📚" },
             ].map((s, i) => (
               <motion.div key={s.step} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.4}>
@@ -1782,7 +1782,7 @@ function Panel7({ speaking }: { speaking: boolean }) {
                 style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))", border: "1px solid hsla(32,82%,51%,0.3)" }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}>
-                📚 Turn into study module →
+                📚 Turn into study topic →
               </motion.button>
             </HudCard>
           </motion.div>

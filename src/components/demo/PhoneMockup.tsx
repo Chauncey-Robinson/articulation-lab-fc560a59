@@ -16,13 +16,13 @@ function StateDashboard() {
   return (
     <div className="flex flex-col gap-2.5 p-4">
       <div>
-        <p className="font-serif text-[16px] leading-[1.15]" style={{ color: ink }}>Your Modules</p>
-        <p className="font-sans text-[9px] mt-1" style={{ color: ink3 }}>3 modules · 12 lessons</p>
+        <p className="font-serif text-[16px] leading-[1.15]" style={{ color: ink }}>Your Topics</p>
+        <p className="font-sans text-[9px] mt-1" style={{ color: ink3 }}>3 topics · 12 sessions</p>
       </div>
       {[
-        { title: "GRI Standards", lessons: "5 lessons", progress: 60, color: amber },
-        { title: "Atomic Habits", lessons: "4 lessons", progress: 100, color: sage },
-        { title: "IFRS 15", lessons: "3 lessons", progress: 25, color: amber },
+        { title: "GRI Standards", lessons: "5 sessions", progress: 60, color: amber },
+        { title: "Atomic Habits", lessons: "4 sessions", progress: 100, color: sage },
+        { title: "IFRS 15", lessons: "3 sessions", progress: 25, color: amber },
       ].map((m) => (
         <div key={m.title} className="rounded-[12px] border-[1.5px] border-border bg-card p-3">
           <div className="flex justify-between items-start">
@@ -56,7 +56,7 @@ function StateUpload() {
         </p>
       </div>
       <button className="w-full rounded-pill py-2 font-sans text-[9px] font-semibold" style={{ background: amber, color: "#fff" }}>
-        Generate Module →
+        Generate Topic →
       </button>
     </div>
   );
@@ -66,7 +66,7 @@ function StateLessonStudy() {
   return (
     <div className="flex flex-col gap-2.5 p-4">
       <div className="flex justify-between items-center">
-        <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Lesson 1 of 5</span>
+        <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Session 1 of 5</span>
         <span className="font-sans text-[8px] px-2 py-0.5 rounded-full" style={{ background: amberPale, color: amber }}>🔊 Lily speaking</span>
       </div>
       <p className="font-serif text-[15px]" style={{ color: ink }}>Double Materiality</p>
@@ -84,7 +84,7 @@ function StateLessonStudy() {
           Discuss 💬
         </button>
         <button className="flex-1 rounded-pill py-2 font-sans text-[9px] font-semibold" style={{ background: amber, color: "#fff" }}>
-          Test Me 📝
+          Explain It 📝
         </button>
       </div>
     </div>
@@ -108,7 +108,7 @@ function StateDialogue() {
         </div>
         <div className="rounded-[10px] p-2.5" style={{ background: surface2 }}>
           <p className="font-sans text-[9px] leading-[1.5]" style={{ color: ink2 }}>
-            🎙️ "Good start. Now push deeper — what's the impact side?"
+            🎙️ "Good start. Now push deeper. What's the impact side?"
           </p>
         </div>
       </div>
@@ -153,7 +153,7 @@ function StateApply() {
       <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Real-World Scenario</span>
       <div className="rounded-[10px] p-3" style={{ background: surface2, borderLeft: `2px solid ${amber}` }}>
         <p className="font-serif text-[10px] italic leading-[1.5]" style={{ color: ink2 }}>
-          "A CFO has two minutes before a board meeting. Explain double materiality in plain English — and why it matters to their bottom line."
+          "A CFO has two minutes before a board meeting. Explain double materiality in plain English. Why does it matter to their bottom line?"
         </p>
       </div>
       <div className="rounded-[10px] border-[1.5px] border-border p-2.5" style={{ background: bg }}>

@@ -91,7 +91,7 @@ export default function Library() {
 
         {sorted.length > 0 && sorted.length < 3 && (
           <p className="text-[14px] font-sans text-ink-3 text-center py-8">
-            Keep going — this gets more useful the more you add to it.
+            Keep going. This gets more useful the more you add to it.
           </p>
         )}
       </div>

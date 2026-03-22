@@ -240,7 +240,7 @@ export default function Drill() {
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Try again — you've got this…"
+                placeholder="Try again. You've got this…"
                 className="w-full min-h-[120px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y mb-3"
               />
             </div>
