@@ -30,7 +30,7 @@ export default function Dialogue() {
       if (data) {
         const l = data as unknown as Lesson;
         setLesson(l);
-        const greeting = `Let's discuss "${l.title}". Ask me anything about this topic — I'll explain, challenge your thinking, or help you connect ideas.`;
+        const greeting = `Let's talk about this. Ask me anything. I'll explain it, push back on your thinking, or help you connect it to something you already know.`;
         setMessages([{ role: "assistant", content: greeting }]);
         speak(greeting);
       }
