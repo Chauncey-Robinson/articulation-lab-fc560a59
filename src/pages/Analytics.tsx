@@ -294,7 +294,7 @@ export default function Analytics() {
             )}
 
             {/* Module breakdown */}
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-7">MODULE BREAKDOWN</p>
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-7">BY TOPIC</p>
             {modules.map((mod, idx) => (
               <div key={mod.id} className="bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-3 animate-fade-up" style={{ animationDelay: `${(idx + 7) * 65}ms` }}>
                 <div className="flex items-center justify-between mb-2">
