@@ -1166,7 +1166,7 @@ function PanelFlashcards({ speaking }: { speaking: boolean }) {
 
           <SpeakingGlow speaking={speaking}>
             <motion.p custom={2} variants={fadeUp} className="font-serif text-[19px] font-light leading-[1.6] mt-6" style={{ color: "hsl(var(--ink-3))" }}>
-              Not just flip and forget. Every card tracks difficulty, timing, and accuracy — then comes back at the perfect moment.
+              Not just flip and forget. Every card tracks difficulty, timing, and accuracy. Then it comes back at the perfect moment.
             </motion.p>
           </SpeakingGlow>
 
