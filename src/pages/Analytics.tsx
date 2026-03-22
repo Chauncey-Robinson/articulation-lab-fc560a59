@@ -273,8 +273,8 @@ export default function Analytics() {
             {/* Gap identification */}
             {moduleGaps.length > 0 && (
               <div className="mb-4 animate-fade-up stagger-6">
-                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2">GAP IDENTIFICATION</p>
-                <p className="text-[12px] font-sans text-ink-3 mb-3">These areas need more focus.</p>
+                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2">WORK ON THESE</p>
+                <p className="text-[12px] font-sans text-ink-3 mb-3">You haven't explained these yet.</p>
                 {moduleGaps.map(mod => {
                   const pct = mod.lesson_count > 0 ? Math.round((mod.completed_lessons / mod.lesson_count) * 100) : 0;
                   return (
