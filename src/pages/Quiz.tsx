@@ -185,17 +185,17 @@ export default function Quiz() {
     return (
       <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
         <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col items-center justify-center text-center">
-          <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Quiz complete!</h1>
+          <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Session complete!</h1>
           <p className="font-serif text-[4rem] text-foreground leading-none mb-2 animate-fade-up stagger-2">
             {score.correct}/{score.total}
           </p>
           <p className="text-[14px] font-sans text-ink-3 mb-8 animate-fade-up stagger-3">
-            {score.correct === score.total ? "Perfect score! You really know this." : score.correct > 0 ? "Good effort. Keep studying and try again." : "Don't worry — that's what practice is for."}
+            {score.correct === score.total ? "Perfect score! You really know this." : score.correct > 0 ? "Good effort. Keep studying and try again." : "Don't worry. That's what practice is for."}
           </p>
           <div className="flex flex-col gap-3 w-full animate-fade-up stagger-4">
             <button onClick={() => navigate(`/module/${moduleId}`)}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all">
-              Back to module
+              Back to topic
             </button>
             <button onClick={() => navigate("/dashboard")}
               className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
@@ -211,7 +211,7 @@ export default function Quiz() {
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <div className="flex items-center justify-between mb-6">
         <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
-        <span className="text-[13px] font-sans text-ink-3">{currentIdx + 1} / {questions.length}</span>
+        <span className="text-[13px] font-sans text-ink-3">{currentIdx + 1} of {questions.length}</span>
         <button onClick={toggleMute} className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">
           {muted ? "🔇" : "🔊"}
         </button>
@@ -227,7 +227,7 @@ export default function Quiz() {
 
         {/* Question type badge */}
         <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-3 animate-fade-up stagger-1">
-          {currentQ.question_type === "open" ? "EXPLAIN" : currentQ.question_type === "multiple_choice" ? "CHOOSE ONE" : "TRUE OR FALSE"}
+          {currentQ.question_type === "open" ? "EXPLAIN" : currentQ.question_type === "multiple_choice" ? "PICK ONE" : "TRUE OR FALSE"}
         </p>
 
         {/* Question */}
@@ -262,7 +262,7 @@ export default function Quiz() {
             <button onClick={handleSubmit}
               disabled={submitting || (currentQ.question_type === "open" ? answer.trim().length < 5 : !selectedOption)}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-5">
-              {submitting ? "Checking..." : "Submit"}
+              {submitting ? "Checking..." : "That's my answer"}
             </button>
           </>
         )}

@@ -30,7 +30,7 @@ export default function Dialogue() {
       if (data) {
         const l = data as unknown as Lesson;
         setLesson(l);
-        const greeting = `Let's discuss "${l.title}". Ask me anything about this topic — I'll explain, challenge your thinking, or help you connect ideas.`;
+        const greeting = `Let's talk about this. Ask me anything. I'll explain it, push back on your thinking, or help you connect it to something you already know.`;
         setMessages([{ role: "assistant", content: greeting }]);
         speak(greeting);
       }
@@ -86,7 +86,7 @@ export default function Dialogue() {
       <div className="px-6 pt-4 pb-3 border-b border-border flex items-center gap-3">
         <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent">DIALOGUE</p>
+          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent">DISCUSS</p>
           <p className="text-[13px] font-sans text-foreground truncate">{lesson.title}</p>
         </div>
         <button onClick={toggleMute} className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors shrink-0">

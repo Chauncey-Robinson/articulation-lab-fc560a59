@@ -70,7 +70,7 @@ export default function Apply() {
       <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2 animate-fade-up stagger-1">APPLY IN REAL LIFE</p>
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2 animate-fade-up stagger-1">REAL SITUATION</p>
         <h1 className="font-serif text-[1.6rem] text-foreground mb-4 animate-fade-up stagger-1">Here's a real situation.</h1>
 
         {/* Scenario card */}
@@ -103,7 +103,7 @@ export default function Apply() {
             <button onClick={handleSubmit}
               disabled={submitting || response.trim().length < 10}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-40 mt-auto animate-fade-up stagger-5">
-              {submitting ? "Evaluating..." : "Submit response"}
+              {submitting ? "Evaluating..." : "That's what I'd say"}
             </button>
           </>
         ) : (
@@ -125,7 +125,7 @@ export default function Apply() {
             <div className="flex flex-col gap-3">
               <button onClick={() => navigate(`/module/${lesson.module_id}`)}
                 className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all">
-                Back to module
+                Back to topic
               </button>
               <button onClick={() => navigate("/dashboard")}
                 className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">

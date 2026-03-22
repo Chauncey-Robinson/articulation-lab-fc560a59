@@ -272,7 +272,7 @@ export default function Flashcards() {
             </button>
             <button onClick={() => navigate(`/module/${moduleId}`)}
               className="w-full rounded-pill border-[1.5px] border-border bg-card py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              Back to module
+              Back to topic
             </button>
           </div>
         </div>
@@ -284,7 +284,7 @@ export default function Flashcards() {
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <div className="flex items-center justify-between mb-4">
         <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
-        <span className="text-[13px] font-sans text-ink-3">{remaining} card{remaining !== 1 ? "s" : ""} remaining</span>
+        <span className="text-[13px] font-sans text-ink-3">{remaining} left</span>
       </div>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
@@ -308,7 +308,7 @@ export default function Flashcards() {
           </div>
         )}
 
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-4 animate-fade-up">FLASHCARD {currentIdx + 1} of {cards.length}</p>
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-4 animate-fade-up">Card {currentIdx + 1} of {cards.length}</p>
 
         {/* Card */}
         <button onClick={() => { setFlipped(!flipped); if (!flipped && currentCard) speak(currentCard.back); }}
@@ -327,7 +327,7 @@ export default function Flashcards() {
           )}
           {isImageLoading && !currentImage && (
             <div className="w-[200px] h-[120px] mb-4 rounded-[12px] bg-muted animate-pulse flex items-center justify-center">
-              <span className="text-[10px] font-sans text-ink-3">Generating illustration...</span>
+              <span className="text-[10px] font-sans text-ink-3">Loading...</span>
             </div>
           )}
 

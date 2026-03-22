@@ -7,24 +7,22 @@ import { generateLessons } from "@/lib/tutor-ai";
 import MicButton from "@/components/MicButton";
 
 const inputMethods = [
-  { key: "text", emoji: "📝", label: "Paste text", desc: "Book chapter, article, or notes" },
-  { key: "file", emoji: "📄", label: "Upload file", desc: "PDF, DOCX, TXT, or Markdown" },
-  { key: "url", emoji: "🔗", label: "Reference URL", desc: "Link to open source material" },
-  { key: "record", emoji: "🎙️", label: "Record audio", desc: "Conference, lecture, or event" },
+  { key: "text", emoji: "📝", label: "Paste text" },
+  { key: "file", emoji: "📄", label: "Upload file", desc: "PDF or document" },
+  { key: "url", emoji: "🔗", label: "Paste a link" },
+  { key: "record", emoji: "🎙️", label: "Record audio", desc: "Something you heard at a talk or meeting" },
 ];
 
 const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md,.csv,.json,.xml,.rtf";
-const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 async function extractTextFromFile(file: File): Promise<string> {
   const name = file.name.toLowerCase();
 
-  // Plain text files — read directly
   if (name.endsWith(".txt") || name.endsWith(".md") || name.endsWith(".csv") || name.endsWith(".json") || name.endsWith(".xml") || name.endsWith(".rtf")) {
     return await file.text();
   }
 
-  // PDF / DOCX — use edge function for server-side parsing
   const formData = new FormData();
   formData.append("file", file);
 
@@ -105,14 +103,14 @@ export default function Upload() {
     setError("");
 
     const materialContent = method === "url"
-      ? `Please analyze and create lessons from the following URL content reference: ${url}\n\nNote: Treat this URL as a topic reference. Create educational lessons about the subject matter this URL likely covers based on the URL path and domain.`
+      ? `Please analyze and create sessions from the following URL content reference: ${url}\n\nNote: Treat this URL as a topic reference. Create educational sessions about the subject matter this URL likely covers based on the URL path and domain.`
       : content;
 
     try {
       setStatus("Finding key concepts...");
       const result = await generateLessons(materialContent);
 
-      setStatus("Creating your module...");
+      setStatus("Creating your topic...");
       const { data: moduleData, error: modErr } = await supabase.from("modules").insert({
         user_id: user.id,
         title: result.title,
@@ -126,7 +124,7 @@ export default function Upload() {
       if (modErr) throw modErr;
       const moduleId = (moduleData as any).id;
 
-      setStatus("Building your lessons...");
+      setStatus("Building your sessions...");
       const lessonInserts = result.lessons.map((lesson, idx) => ({
         module_id: moduleId,
         user_id: user.id,
@@ -155,9 +153,9 @@ export default function Upload() {
       </div>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Upload your material.</h1>
+        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">What are you learning?</h1>
         <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">
-          Choose how you'd like to add your learning material.
+          Paste it, link it, or drop in a file.
         </p>
 
         {/* Input method selector */}
@@ -171,7 +169,7 @@ export default function Upload() {
               }`}>
               <p className="text-[18px] mb-1">{m.emoji}</p>
               <p className="text-[13px] font-sans font-semibold text-foreground">{m.label}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1 leading-[1.4]">{m.desc}</p>
+              {m.desc && <p className="text-[11px] font-sans text-ink-3 mt-1 leading-[1.4]">{m.desc}</p>}
             </button>
           ))}
         </div>
@@ -182,7 +180,7 @@ export default function Upload() {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Paste your learning material here — an article, textbook chapter, course notes..."
+              placeholder="Paste anything here. Even one paragraph is enough to start."
               className="w-full min-h-[180px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y mb-1"
               disabled={loading}
             />
@@ -272,7 +270,6 @@ export default function Upload() {
               className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] mb-3"
               disabled={loading}
             />
-            <p className="text-[12px] font-sans text-ink-3 mb-2">Paste a link to an article, paper, or open-source material.</p>
           </div>
         )}
 
@@ -280,7 +277,7 @@ export default function Upload() {
         {method === "record" && (
           <div className="animate-fade-up stagger-4">
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-5 mb-4 text-center">
-              <p className="text-[14px] font-sans text-ink-3 mb-4">Record a lecture, conference talk, or any audio content.</p>
+              <p className="text-[14px] font-sans text-ink-3 mb-4">Record a lecture, talk, or any audio content.</p>
               <MicButton onTranscript={(t) => setContent(prev => prev ? prev + " " + t : t)} />
               {content.length > 0 && (
                 <div className="mt-4 text-left">
@@ -311,10 +308,10 @@ export default function Upload() {
             onClick={handleUpload}
             disabled={!isValid || loading || fileProcessing}
             className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed">
-            {loading ? "Processing..." : "Create lessons"}
+            {loading ? "Processing..." : "Start coaching session"}
           </button>
           <p className="text-[12px] font-sans text-ink-3 text-center mt-3">
-            AI will split this into 3-5 mini-lectures you can study and test yourself on.
+            AI will split this into 3–5 sessions you can study and explain back.
           </p>
         </div>
       </div>

@@ -5,9 +5,9 @@ import { useAuth } from "@/hooks/useAuth";
 import type { Module } from "@/lib/TutorContext";
 
 const digestPeriods = [
-  { key: "quick", label: "Quick dive", desc: "1-2 days", days: 2 },
+  { key: "quick", label: "Fast", desc: "1-2 days", days: 2 },
   { key: "standard", label: "Standard", desc: "3-5 days", days: 5 },
-  { key: "deep", label: "Deep study", desc: "1-2 weeks", days: 14 },
+  { key: "deep", label: "Thorough", desc: "1-2 weeks", days: 14 },
   { key: "extended", label: "Extended", desc: "1 month+", days: 30 },
 ];
 
@@ -30,7 +30,6 @@ export default function LearnConfig() {
   }, [moduleId]);
 
   const handleContinue = () => {
-    // Save config to localStorage for this module
     const config = { digestPeriod, priorKnowledge };
     localStorage.setItem(`learn_config_${moduleId}`, JSON.stringify(config));
     navigate(`/module/${moduleId}`);
@@ -45,13 +44,13 @@ export default function LearnConfig() {
       <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">Learning configuration.</h1>
+        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">How do you want to study this?</h1>
         <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">
-          Set up how you'd like to digest "{module?.title}".
+          Pick a pace. We'll break it into sessions.
         </p>
 
-        {/* Duration of digesting period */}
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">DIGESTING PERIOD</p>
+        {/* Pace */}
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">PACE</p>
         <div className="grid grid-cols-2 gap-3 mb-6">
           {digestPeriods.map(p => (
             <button key={p.key} onClick={() => setDigestPeriod(p.key)}
@@ -64,8 +63,8 @@ export default function LearnConfig() {
           ))}
         </div>
 
-        {/* Refer to previous knowledge */}
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-4">PRIOR KNOWLEDGE</p>
+        {/* Prior knowledge */}
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-4">CONNECT TO WHAT YOU KNOW</p>
         <div className="bg-card rounded-[16px] border-[1.5px] border-border p-5 mb-6 animate-fade-up stagger-5">
           <label className="flex items-center gap-4 cursor-pointer">
             <div onClick={() => setPriorKnowledge(!priorKnowledge)}
@@ -77,24 +76,24 @@ export default function LearnConfig() {
               }`} />
             </div>
             <div>
-              <p className="text-[14px] font-sans font-medium text-foreground">Refer to previous knowledge</p>
-              <p className="text-[12px] font-sans text-ink-3 mt-0.5">Connect to concepts from your other modules</p>
+              <p className="text-[14px] font-sans font-medium text-foreground">Link to my other topics</p>
+              <p className="text-[12px] font-sans text-ink-3 mt-0.5">Your coach will make connections across everything you've studied.</p>
             </div>
           </label>
         </div>
 
-        {/* Module info */}
+        {/* Topic info */}
         {module && (
           <div className="bg-card rounded-[16px] border-[1.5px] border-border p-5 mb-6 animate-fade-up stagger-6">
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">MODULE READY</p>
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">READY TO START</p>
             <h3 className="font-serif text-[18px] text-foreground mb-1">{module.title}</h3>
-            <p className="text-[12px] font-sans text-ink-3">{module.lesson_count} lessons generated</p>
+            <p className="text-[12px] font-sans text-ink-3">{module.lesson_count} sessions ready</p>
           </div>
         )}
 
         <button onClick={handleContinue}
           className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] mt-auto animate-fade-up stagger-7">
-          Start learning
+          Let's go
         </button>
       </div>
     </div>

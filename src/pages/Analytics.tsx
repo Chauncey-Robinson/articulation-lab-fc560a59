@@ -160,7 +160,7 @@ export default function Analytics() {
             {/* Knowledge retention */}
             {avgRetention !== null && (
               <div className="bg-card rounded-[20px] border-[1.5px] border-border p-6 mb-4 text-center animate-fade-up stagger-3">
-                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">KNOWLEDGE RETENTION</p>
+                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">OVERALL SCORE</p>
                 <p className="font-serif text-[3.5rem] leading-none text-foreground">{avgRetention}%</p>
                 <p className="text-[12px] font-sans text-ink-3 mt-2">Average across all test types</p>
               </div>
@@ -170,13 +170,14 @@ export default function Analytics() {
             <div className="grid grid-cols-3 gap-3 mb-4">
               {[
                 { emoji: "🧪", score: quizRate, label: "Quiz" },
-                { emoji: "🎙️", score: teachBackScore, label: "Teach Back" },
+                { emoji: "🎙️", score: teachBackScore, label: "Explain It" },
                 { emoji: "🌍", score: applyScore, label: "Apply" },
               ].map(s => (
                 <div key={s.label} className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center animate-fade-up stagger-3">
                   <p className="text-[16px] mb-1">{s.emoji}</p>
-                  <p className="font-serif text-[1.8rem] leading-none text-foreground">{s.score !== null ? `${s.score}%` : "—"}</p>
+                  <p className="font-serif text-[1.8rem] leading-none text-foreground">{s.score !== null ? `${s.score}%` : "–"}</p>
                   <p className="text-[10px] font-sans text-ink-3 mt-1">{s.label}</p>
+                  {s.score === null && <p className="text-[8px] font-sans text-ink-3">No sessions yet</p>}
                 </div>
               ))}
             </div>
@@ -253,15 +254,15 @@ export default function Analytics() {
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5 text-center animate-fade-up stagger-5">
                 <p className="font-serif text-[2.5rem] leading-none text-foreground">{modules.length}</p>
-                <p className="text-[12px] font-sans text-ink-3 mt-2">modules</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">topics</p>
               </div>
               <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5 text-center animate-fade-up stagger-5">
                 <p className="font-serif text-[2.5rem] leading-none text-foreground">{completedLessons}</p>
-                <p className="text-[12px] font-sans text-ink-3 mt-2">lessons done</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">sessions done</p>
               </div>
               <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5 text-center animate-fade-up stagger-6">
                 <p className="font-serif text-[2.5rem] leading-none text-foreground">{completedModules}</p>
-                <p className="text-[12px] font-sans text-ink-3 mt-2">modules mastered</p>
+                <p className="text-[12px] font-sans text-ink-3 mt-2">topics mastered</p>
               </div>
               <div className="bg-card rounded-[18px] border-[1.5px] border-border p-5 text-center animate-fade-up stagger-6">
                 <p className="font-serif text-[2.5rem] leading-none text-foreground">{progress.total_sessions}</p>
@@ -272,8 +273,8 @@ export default function Analytics() {
             {/* Gap identification */}
             {moduleGaps.length > 0 && (
               <div className="mb-4 animate-fade-up stagger-6">
-                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2">GAP IDENTIFICATION</p>
-                <p className="text-[12px] font-sans text-ink-3 mb-3">These areas need more focus.</p>
+                <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2">WORK ON THESE</p>
+                <p className="text-[12px] font-sans text-ink-3 mb-3">You haven't explained these yet.</p>
                 {moduleGaps.map(mod => {
                   const pct = mod.lesson_count > 0 ? Math.round((mod.completed_lessons / mod.lesson_count) * 100) : 0;
                   return (
@@ -293,7 +294,7 @@ export default function Analytics() {
             )}
 
             {/* Module breakdown */}
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-7">MODULE BREAKDOWN</p>
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-7">BY TOPIC</p>
             {modules.map((mod, idx) => (
               <div key={mod.id} className="bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-3 animate-fade-up" style={{ animationDelay: `${(idx + 7) * 65}ms` }}>
                 <div className="flex items-center justify-between mb-2">
@@ -309,8 +310,8 @@ export default function Analytics() {
             {/* Longest streak */}
             {progress.longest_streak > 0 && (
               <div className="bg-accent-bright/10 rounded-[16px] border-[1.5px] border-accent-bright/30 p-5 mt-4 text-center animate-fade-up stagger-7">
-                <p className="text-[12px] font-sans text-accent-bright font-semibold uppercase tracking-[0.1em] mb-1">LONGEST STREAK</p>
-                <p className="font-serif text-[2rem] text-foreground">{progress.longest_streak} days</p>
+                <p className="text-[12px] font-sans text-accent-bright font-semibold uppercase tracking-[0.1em] mb-1">BEST STREAK</p>
+                <p className="font-serif text-[2rem] text-foreground">{progress.longest_streak} {progress.longest_streak === 1 ? "day" : "days"}</p>
               </div>
             )}
           </>
