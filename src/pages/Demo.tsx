@@ -1045,7 +1045,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
               </motion.div>
             ))}
 
-            {/* Bottom row: Real-World — spacer — Dialogue */}
+            {/* Bottom row: Real-World, spacer, Dialogue */}
             {[features[2], null, features[3]].map((f, idx) => (
               f ? (
                 <motion.div key={f.title}
