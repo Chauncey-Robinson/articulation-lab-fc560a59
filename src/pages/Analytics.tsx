@@ -175,8 +175,9 @@ export default function Analytics() {
               ].map(s => (
                 <div key={s.label} className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center animate-fade-up stagger-3">
                   <p className="text-[16px] mb-1">{s.emoji}</p>
-                  <p className="font-serif text-[1.8rem] leading-none text-foreground">{s.score !== null ? `${s.score}%` : "—"}</p>
+                  <p className="font-serif text-[1.8rem] leading-none text-foreground">{s.score !== null ? `${s.score}%` : "–"}</p>
                   <p className="text-[10px] font-sans text-ink-3 mt-1">{s.label}</p>
+                  {s.score === null && <p className="text-[8px] font-sans text-ink-3">No sessions yet</p>}
                 </div>
               ))}
             </div>
