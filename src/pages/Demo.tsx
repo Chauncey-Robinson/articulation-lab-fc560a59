@@ -654,7 +654,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
               </div>
               <div className="flex items-center gap-2 mb-3">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Module generated</span>
+                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ Topic generated</span>
               </div>
               <p className="font-serif text-[18px]" style={{ color: "hsl(var(--foreground))" }}>GRI Standards</p>
               <p className="font-sans text-[11px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>5 lessons · 12 quiz questions</p>
