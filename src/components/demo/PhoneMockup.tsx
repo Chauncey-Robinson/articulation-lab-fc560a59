@@ -153,7 +153,7 @@ function StateApply() {
       <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Real-World Scenario</span>
       <div className="rounded-[10px] p-3" style={{ background: surface2, borderLeft: `2px solid ${amber}` }}>
         <p className="font-serif text-[10px] italic leading-[1.5]" style={{ color: ink2 }}>
-          "A CFO has two minutes before a board meeting. Explain double materiality in plain English — and why it matters to their bottom line."
+          "A CFO has two minutes before a board meeting. Explain double materiality in plain English. Why does it matter to their bottom line?"
         </p>
       </div>
       <div className="rounded-[10px] border-[1.5px] border-border p-2.5" style={{ background: bg }}>
