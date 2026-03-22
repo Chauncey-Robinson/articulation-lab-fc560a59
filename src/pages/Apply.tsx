@@ -70,7 +70,7 @@ export default function Apply() {
       <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2 animate-fade-up stagger-1">APPLY IN REAL LIFE</p>
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2 animate-fade-up stagger-1">REAL SITUATION</p>
         <h1 className="font-serif text-[1.6rem] text-foreground mb-4 animate-fade-up stagger-1">Here's a real situation.</h1>
 
         {/* Scenario card */}
