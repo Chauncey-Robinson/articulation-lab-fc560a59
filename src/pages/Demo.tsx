@@ -1322,82 +1322,11 @@ function Panel7({ speaking }: { speaking: boolean }) {
           </div>
         </CinematicSection>
 
-        {/* Right side: mockup of meeting transcript */}
-        <CinematicSection className="flex flex-col gap-4">
-          <motion.div custom={0} variants={slideRight}>
-            <HudCard delay={0.1} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <motion.div className="w-2.5 h-2.5 rounded-full"
-                    style={{ background: "hsl(8,50%,52%)", boxShadow: "0 0 8px hsla(8,50%,52%,0.6)" }}
-                    animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
-                  <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: "hsl(8,50%,52%)" }}>
-                    Recording · 14:32
-                  </span>
-                </div>
-                <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  Conference
-                </span>
-              </div>
-              <div className="space-y-2">
-                {[
-                  "We need to prioritise the mobile experience for Q2.",
-                  "The API team confirmed they can support the new endpoints by March.",
-                  "Double materiality is becoming the standard across all frameworks.",
-                ].map((line, i) => (
-                  <motion.p key={i} className="font-sans text-[12px] leading-[1.6]"
-                    style={{ color: i === 2 ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.7)" }}
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 + i * 0.2, duration: 0.4 }}>
-                    {line}
-                    {i === 2 && <motion.span className="inline-block ml-1 w-[2px] h-[14px] align-middle"
-                      style={{ background: "hsl(8,50%,52%)" }}
-                      animate={{ opacity: [1, 0, 1] }} transition={{ duration: 0.8, repeat: Infinity }} />}
-                  </motion.p>
-                ))}
-              </div>
-            </HudCard>
-          </motion.div>
-
-          {/* Post-meeting output */}
-          <motion.div custom={1} variants={slideRight}>
-            <HudCard delay={0.3} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
-                  style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>✦ AI Analysis</span>
-              </div>
-              <p className="font-sans text-[13px] font-semibold mb-2" style={{ color: "hsl(var(--background))" }}>Key Learnings</p>
-              <div className="space-y-1.5">
-                {[
-                  "Mobile-first strategy is critical for Q2 goals",
-                  "API readiness confirmed for new endpoints",
-                  "Double materiality as emerging standard",
-                ].map((l, i) => (
-                  <motion.div key={i} className="flex items-center gap-2"
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.7 + i * 0.1, duration: 0.4 }}>
-                    <motion.span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold shrink-0"
-                      style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))" }}
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}>
-                      {i + 1}
-                    </motion.span>
-                    <span className="font-sans text-[11px]" style={{ color: "rgba(255,255,255,0.6)" }}>{l}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.button className="mt-4 w-full rounded-[10px] py-2.5 font-sans text-[11px] font-semibold"
-                style={{ background: "hsla(32,82%,51%,0.15)", color: "hsl(var(--amber-bright))", border: "1px solid hsla(32,82%,51%,0.3)" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}>
-                📚 Turn into study topic →
-              </motion.button>
-            </HudCard>
-          </motion.div>
+        {/* Right side: phone with meeting screen */}
+        <CinematicSection className="flex flex-col items-center justify-center">
+          <DemoPhoneFrame dark>
+            <PhoneMeetingScreen />
+          </DemoPhoneFrame>
         </CinematicSection>
       </div>
     </section>
