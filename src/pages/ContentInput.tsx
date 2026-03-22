@@ -67,7 +67,7 @@ export default function ContentInput() {
               <textarea
                 value={pasteText}
                 onChange={(e) => setPasteText(e.target.value)}
-                placeholder="Paste anything — a book chapter, article, notes, an email, a podcast summary. We'll find what matters."
+                placeholder="Paste anything. A book chapter, article, notes, an email, a podcast summary. We'll find what matters."
                 className="w-full min-h-[180px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y mb-1"
               />
               {pasteText.length > 0 && (
