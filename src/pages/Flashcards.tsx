@@ -284,7 +284,7 @@ export default function Flashcards() {
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <div className="flex items-center justify-between mb-4">
         <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
-        <span className="text-[13px] font-sans text-ink-3">{remaining} card{remaining !== 1 ? "s" : ""} remaining</span>
+        <span className="text-[13px] font-sans text-ink-3">{remaining} left</span>
       </div>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
