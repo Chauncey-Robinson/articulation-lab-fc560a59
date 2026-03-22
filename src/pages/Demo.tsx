@@ -1,6 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PhoneMockup from "@/components/demo/PhoneMockup";
+import DemoPhoneFrame from "@/components/demo/DemoPhoneFrame";
+import {
+  PhoneUploadScreen,
+  PhoneStudyScreen,
+  PhoneQuizScreen,
+  PhoneFlashcardScreen,
+  PhoneAnalyticsScreen,
+  PhoneMeetingScreen,
+  PhoneExplainScreen,
+  PhoneDialogueScreen,
+} from "@/components/demo/DemoPhoneScreens";
 import { useTTS } from "@/hooks/useSpeech";
 
 const PANEL_COUNT = 11;
