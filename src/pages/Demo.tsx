@@ -923,11 +923,11 @@ function Panel4({ speaking }: { speaking: boolean }) {
 /* PANEL 5 — TEST & PROVE (Iron Man HUD explainer) */
 function Panel5({ speaking }: { speaking: boolean }) {
   const features = [
-    { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to your learning style.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
-    { icon: "🎤", title: "Teach Back", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
+    { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to how you learn.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
+    { icon: "🎤", title: "Explain It", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
     { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
-    { icon: "💬", title: "Dialogue", tag: "AI TUTOR", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
-    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front & back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
+    { icon: "💬", title: "Dialogue", tag: "AI COACH", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
+    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front and back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
   ];
 
   return (
