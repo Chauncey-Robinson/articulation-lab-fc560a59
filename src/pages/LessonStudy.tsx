@@ -32,6 +32,35 @@ export default function LessonStudy() {
     })();
   }, [id]);
 
+  const updateProgress = async () => {
+    if (!user) return;
+    const today = new Date().toISOString().split("T")[0];
+    const { data: existing } = await supabase.from("user_progress").select("*").eq("user_id", user.id).single();
+
+    if (existing) {
+      const lastDate = (existing as any).last_practice_date;
+      let newStreak = (existing as any).current_streak || 0;
+      if (lastDate !== today) {
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+        newStreak = lastDate === yesterday ? newStreak + 1 : 1;
+      }
+      await supabase.from("user_progress").update({
+        total_sessions: ((existing as any).total_sessions || 0) + 1,
+        current_streak: newStreak,
+        longest_streak: Math.max((existing as any).longest_streak || 0, newStreak),
+        last_practice_date: today,
+      } as any).eq("user_id", user.id);
+    } else {
+      await supabase.from("user_progress").insert({
+        user_id: user.id,
+        total_sessions: 1,
+        current_streak: 1,
+        longest_streak: 1,
+        last_practice_date: today,
+      } as any);
+    }
+  };
+
   const markComplete = async () => {
     if (!lesson || !user) return;
     setMarking(true);
@@ -46,6 +75,9 @@ export default function LessonStudy() {
       completed_lessons: completedCount,
       status: completedCount >= totalLessons ? "testing" : "learning",
     } as any).eq("id", lesson.module_id);
+
+    // Update streak & session count
+    await updateProgress();
 
     await refreshModules();
     setMarking(false);
