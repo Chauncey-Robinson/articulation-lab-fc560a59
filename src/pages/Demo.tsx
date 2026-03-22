@@ -406,9 +406,9 @@ function Panel1({ speaking }: { speaking: boolean }) {
             <SpeakingGlow speaking={speaking}>
               <HudCard delay={0.3} style={{ borderLeft: "2px solid hsl(8,50%,52%)" }}>
                 <p className="font-serif text-[16px] italic leading-[1.55]" style={{ color: "hsl(var(--ink-2))" }}>
-                  "I started forgetting the details in the weeks after. When it came to applying it — I couldn't structure my thoughts."
+                  "I started forgetting the details in the weeks after. When it came to applying it, I couldn't structure my thoughts."
                 </p>
-                <p className="font-sans text-[10px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>— ESG Professional, GRI Certification, 2025</p>
+                <p className="font-sans text-[10px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>ESG Professional, GRI Certification, 2025</p>
               </HudCard>
             </SpeakingGlow>
           </motion.div>
