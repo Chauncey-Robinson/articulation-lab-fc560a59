@@ -650,7 +650,7 @@ function Panel3({ speaking }: { speaking: boolean }) {
             <HudCard delay={0.3} style={{ border: "1px solid hsla(32,82%,51%,0.3)" }}>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <HudCallout label="AI generated" side="right" delay={0.6} />
-                <HudCallout label="5 lessons" side="right" delay={0.8} />
+                <HudCallout label="5 sessions" side="right" delay={0.8} />
               </div>
               <div className="flex items-center gap-2 mb-3">
                 <span className="font-sans text-[7px] font-bold uppercase tracking-[0.2em] px-1.5 py-0.5 rounded"
