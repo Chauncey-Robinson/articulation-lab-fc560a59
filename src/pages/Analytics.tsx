@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor } from "@/lib/TutorContext";
-import { useApp } from "@/lib/AppContext";
+
+interface ConceptRow {
+  status: string;
+  next_practice_date: string;
+}
 
 export default function Analytics() {
   const { modules, progress } = useTutor();
