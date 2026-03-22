@@ -16,8 +16,8 @@ function getStatusColor(status: string) {
 function getStatusLabel(status: string) {
   switch (status) {
     case "completed": return "Done";
-    case "testing": return "Testing";
-    case "learning": return "Learning";
+    case "testing": return "Coaching";
+    case "learning": return "In Progress";
     default: return "New";
   }
 }
@@ -27,7 +27,6 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect to onboarding if profile not yet completed or doesn't exist
   useEffect(() => {
     if (!loading && user) {
       if (!profile || !profile.onboarded) {
@@ -36,25 +35,15 @@ export default function Dashboard() {
     }
   }, [loading, profile, user, navigate]);
 
-  // Fetch quiz accuracy for "progress" stat
-  const [quizAccuracy, setQuizAccuracy] = useState<number | null>(null);
   const [meetings, setMeetings] = useState<any[]>([]);
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [quizRes, meetingsRes] = await Promise.all([
-        supabase.from("quiz_attempts").select("is_correct").eq("user_id", user.id),
-        supabase.from("meetings").select("id, title, meeting_type, status, created_at, duration_seconds").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
-      ]);
-      if (quizRes.data && quizRes.data.length > 0) {
-        const correct = quizRes.data.filter((a: any) => a.is_correct).length;
-        setQuizAccuracy(Math.round((correct / quizRes.data.length) * 100));
-      }
+      const meetingsRes = await supabase.from("meetings").select("id, title, meeting_type, status, created_at, duration_seconds").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5);
       if (meetingsRes.data) setMeetings(meetingsRes.data);
     })();
   }, [user]);
 
-  // Get display name from profile, OAuth metadata, or email
   const displayName = profile?.display_name
     || user?.user_metadata?.full_name
     || user?.user_metadata?.name
@@ -72,15 +61,12 @@ export default function Dashboard() {
   const activeModules = modules.filter(m => m.status !== "completed");
   const completedModules = modules.filter(m => m.status === "completed");
 
-  // Check deadlines from localStorage
   const deadlines = JSON.parse(localStorage.getItem("tutor_deadlines") || "[]");
   const upcomingDeadlines = deadlines.filter((d: any) => {
     const diff = Math.ceil((new Date(d.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
     return diff >= 0 && diff <= 7;
   });
 
-  // Compute overall completion %
-  // Cap completed_lessons to lesson_count to prevent >100%
   const totalLessons = modules.reduce((a, m) => a + m.lesson_count, 0);
   const doneLessons = modules.reduce((a, m) => a + Math.min(m.completed_lessons, m.lesson_count), 0);
   const overallPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
@@ -102,9 +88,9 @@ export default function Dashboard() {
         <div className="mb-6 animate-fade-up stagger-1">
           <h1 className="font-serif text-[2rem] text-foreground mb-1">{greeting}</h1>
           {modules.length === 0 ? (
-            <p className="text-[14px] font-sans text-ink-3">Upload something to start learning.</p>
+            <p className="text-[14px] font-sans text-ink-3">Upload something to start.</p>
           ) : (
-            <p className="text-[14px] font-sans text-ink-3">{activeModules.length} active module{activeModules.length !== 1 ? "s" : ""} · {overallPct}% lessons done</p>
+            <p className="text-[14px] font-sans text-ink-3">Keep going. You're close.</p>
           )}
         </div>
 
@@ -130,23 +116,19 @@ export default function Dashboard() {
 
         {/* Stats row */}
         {(progress.total_sessions > 0 || modules.length > 0) && (
-          <div className="grid grid-cols-3 gap-3 mb-6 animate-fade-up stagger-2">
+          <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-2">
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
               <p className="font-serif text-[2rem] leading-none text-foreground">{modules.length}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">modules</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">topics</p>
             </div>
             <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
               <p className="font-serif text-[2rem] leading-none text-foreground">{progress.current_streak}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">streak</p>
-            </div>
-            <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
-              <p className="font-serif text-[2rem] leading-none text-foreground">{quizAccuracy !== null ? `${quizAccuracy}%` : "—"}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">accuracy</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">day streak</p>
             </div>
           </div>
         )}
 
-        {/* Active modules */}
+        {/* Active topics */}
         {activeModules.length > 0 && (
           <div className="mb-6">
             <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">CONTINUE</p>
@@ -160,7 +142,7 @@ export default function Dashboard() {
                     {getStatusLabel(mod.status)}
                   </span>
                   {mod.lesson_count > 0 && (
-                    <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)}/{mod.lesson_count} lessons</span>
+                    <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)}/{mod.lesson_count} sessions</span>
                   )}
                 </div>
                 <h3 className="font-serif text-[18px] text-foreground leading-tight mb-1">{mod.title}</h3>
@@ -174,7 +156,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Completed modules */}
+        {/* Completed topics */}
         {completedModules.length > 0 && (
           <div className="mb-6">
             <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">COMPLETED</p>
@@ -185,7 +167,7 @@ export default function Dashboard() {
                   <span className="text-sage text-[14px]">✓</span>
                   <h3 className="font-serif text-[16px] text-foreground">{mod.title}</h3>
                 </div>
-                <p className="text-[12px] font-sans text-ink-3">{mod.lesson_count} lessons completed</p>
+                <p className="text-[12px] font-sans text-ink-3">{mod.lesson_count} sessions completed</p>
               </button>
             ))}
           </div>
@@ -194,7 +176,7 @@ export default function Dashboard() {
         {/* Recent meetings */}
         {meetings.length > 0 && (
           <div className="mb-6">
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">RECENT MEETINGS</p>
+            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">MEETINGS</p>
             {meetings.map(m => {
               const formatDuration = (s: number) => s >= 60 ? `${Math.floor(s / 60)}m` : `${s}s`;
               return (
@@ -205,7 +187,7 @@ export default function Dashboard() {
                       <span className="text-[14px]">{m.meeting_type === "conference" ? "🎤" : m.meeting_type === "lecture" ? "🎓" : "💼"}</span>
                       <div>
                         <h3 className="text-[13px] font-sans font-medium text-foreground">{m.title}</h3>
-                        <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : "—"}</p>
+                        <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : ""}</p>
                       </div>
                     </div>
                     <span className={`text-[10px] font-sans font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-pill ${m.status === "completed" ? "bg-sage/20 text-sage" : "bg-accent-pale text-accent"}`}>
@@ -222,11 +204,11 @@ export default function Dashboard() {
         <div className="flex gap-3 animate-fade-up stagger-6">
           <Link to="/upload"
             className="flex-1 rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
-            Upload material
+            Start a session
           </Link>
           <Link to="/meeting/record"
             className="flex-1 rounded-pill bg-destructive py-4 text-[13px] font-sans font-semibold text-white hover:opacity-90 transition-all duration-[180ms] text-center block flex items-center justify-center gap-1.5">
-            🎙 Meeting mode
+            🎙 Prep for a meeting
           </Link>
         </div>
 

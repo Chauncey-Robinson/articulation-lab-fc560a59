@@ -4,13 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
 
-const styleRecommendations: Record<string, { primary: string; desc: string; icon: string }> = {
-  visual: { primary: "Flashcards", desc: "Visual review cards match your learning style", icon: "🃏" },
-  auditory: { primary: "Dialogue", desc: "Discussion-based learning fits you best", icon: "💬" },
-  reading: { primary: "Learn", desc: "Deep reading and note-taking is your strength", icon: "📖" },
-  kinesthetic: { primary: "Apply & Teach-Back", desc: "Hands-on practice matches how you learn", icon: "🧪" },
-};
-
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -38,23 +31,22 @@ export default function ModuleView() {
   }
 
   if (!module) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-[14px] font-sans text-ink-3">Module not found.</p></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-[14px] font-sans text-ink-3">Topic not found.</p></div>;
   }
 
   const completedCount = lessons.filter(l => l.completed).length;
   const allCompleted = completedCount === lessons.length && lessons.length > 0;
   const nextLesson = lessons.find(l => !l.completed);
-  const rec = profile?.learning_style ? styleRecommendations[profile.learning_style] : null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
       <button onClick={() => navigate("/dashboard")} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
 
       <div className="max-w-[460px] mx-auto w-full">
-        {/* Module header */}
+        {/* Topic header */}
         <div className="mb-6 animate-fade-up stagger-1">
           <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">
-            {completedCount}/{lessons.length} LESSONS COMPLETE
+            {completedCount} of {lessons.length} done
           </p>
           <h1 className="font-serif text-[1.8rem] text-foreground mb-2">{module.title}</h1>
           <div className="w-full h-1.5 bg-border rounded-pill">
@@ -62,29 +54,20 @@ export default function ModuleView() {
           </div>
         </div>
 
-        {/* Personalized recommendation */}
-        {rec && completedCount > 0 && !allCompleted && (
-          <div className="bg-accent-pale/10 rounded-[14px] border-[1.5px] border-accent/20 px-4 py-3 mb-4 animate-fade-up stagger-2">
-            <p className="text-[12px] font-sans text-ink-2">
-              <span className="text-accent font-semibold">Recommended for you:</span> {rec.icon} {rec.primary} — {rec.desc}
-            </p>
-          </div>
-        )}
-
-        {/* Path selection — Learn or Test */}
+        {/* Path selection */}
         {!allCompleted && nextLesson && (
           <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-3">
             <button onClick={() => navigate(`/study/${nextLesson.id}`)}
               className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-left hover:border-accent hover:translate-y-[-2px] transition-all duration-[180ms]">
               <p className="text-[20px] mb-2">📖</p>
               <p className="text-[13px] font-sans font-semibold text-foreground">Learn</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">Study the next lesson</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">Read it</p>
             </button>
             <button onClick={() => navigate(`/test-config/${module.id}`)}
               className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-left hover:border-accent hover:translate-y-[-2px] transition-all duration-[180ms]">
               <p className="text-[20px] mb-2">🧪</p>
               <p className="text-[13px] font-sans font-semibold text-foreground">Test</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">Quiz, flashcards & more</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-1">Explain it back</p>
             </button>
           </div>
         )}
@@ -92,16 +75,16 @@ export default function ModuleView() {
         {allCompleted && (
           <div className="bg-sage/10 rounded-[16px] border-[1.5px] border-sage/30 p-5 mb-6 text-center animate-fade-up stagger-2">
             <p className="text-[20px] mb-2">🎉</p>
-            <p className="text-[14px] font-sans font-medium text-foreground">All lessons completed!</p>
+            <p className="text-[14px] font-sans font-medium text-foreground">You've finished all the reading.</p>
             <button onClick={() => navigate(`/test-config/${module.id}`)}
               className="mt-3 rounded-pill bg-primary px-6 py-3 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all">
-              Test your knowledge
+              Now explain it back
             </button>
           </div>
         )}
 
-        {/* Lessons list */}
-        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">LESSONS</p>
+        {/* Sessions list */}
+        <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">SESSIONS</p>
         {lessons.map((lesson, idx) => (
           <button key={lesson.id}
             onClick={() => navigate(`/study/${lesson.id}`)}
@@ -124,7 +107,7 @@ export default function ModuleView() {
           <div className="mt-6 flex flex-col gap-3 animate-fade-up stagger-6">
             <button onClick={() => { const l = lessons.find(l => l.completed); if (l) navigate(`/dialogue/${l.id}`); }}
               className="w-full rounded-pill border-[1.5px] border-accent/30 bg-accent-pale/10 py-4 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all flex items-center justify-center gap-2">
-              💬 Ask questions about this material
+              💬 Ask your coach a question
             </button>
           </div>
         )}

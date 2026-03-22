@@ -15,7 +15,6 @@ export default function LessonStudy() {
   const [marking, setMarking] = useState(false);
   const { speak, stop, muted, toggleMute } = useTTS();
 
-  // Auto-read lesson content aloud
   useEffect(() => {
     if (lesson && !muted) {
       speak(`${lesson.title}. ${lesson.key_idea}. ${lesson.content}`);
@@ -76,9 +75,7 @@ export default function LessonStudy() {
       status: completedCount >= totalLessons ? "testing" : "learning",
     } as any).eq("id", lesson.module_id);
 
-    // Update streak & session count
     await updateProgress();
-
     await refreshModules();
     setMarking(false);
     navigate(`/module/${lesson.module_id}`);
@@ -89,7 +86,7 @@ export default function LessonStudy() {
   }
 
   if (!lesson) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-[14px] font-sans text-ink-3">Lesson not found.</p></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-[14px] font-sans text-ink-3">Session not found.</p></div>;
   }
 
   return (
@@ -100,19 +97,19 @@ export default function LessonStudy() {
       </button>
 
       <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        {/* Lesson header */}
+        {/* Session header */}
         <div className="mb-6 animate-fade-up stagger-1">
-          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">MINI-LECTURE</p>
+          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">READ</p>
           <h1 className="font-serif text-[1.8rem] text-foreground mb-2">{lesson.title}</h1>
         </div>
 
         {/* Key idea card */}
         <div className="bg-accent-bright/10 rounded-[16px] border-[1.5px] border-accent-bright/30 p-5 mb-6 animate-fade-up stagger-2">
-          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent-bright mb-2">KEY IDEA</p>
+          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent-bright mb-2">THE MAIN POINT</p>
           <p className="font-serif text-[17px] font-light leading-[1.65] text-foreground">{lesson.key_idea}</p>
         </div>
 
-        {/* Lesson content */}
+        {/* Session content */}
         <div className="bg-card rounded-[18px] border-[1.5px] border-border p-6 mb-6 animate-fade-up stagger-3">
           <div className="font-serif text-[16px] font-light leading-[1.75] text-ink-2 whitespace-pre-wrap">
             {lesson.content}
@@ -124,7 +121,7 @@ export default function LessonStudy() {
           {!lesson.completed ? (
             <button onClick={markComplete} disabled={marking}
               className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40">
-              {marking ? "Saving..." : "Mark as complete"}
+              {marking ? "Saving..." : "Got it. Next."}
             </button>
           ) : (
             <div className="flex items-center justify-center gap-2 py-4">
@@ -136,11 +133,11 @@ export default function LessonStudy() {
           <div className="grid grid-cols-2 gap-3">
             <button onClick={() => navigate(`/dialogue/${lesson.id}`)}
               className="rounded-pill border-[1.5px] border-border bg-card py-3 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              💬 Discuss
+              💬 Talk it through
             </button>
             <button onClick={() => navigate(`/test-config/${lesson.module_id}`)}
               className="rounded-pill border-[1.5px] border-border bg-card py-3 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              🧪 Test me
+              🧪 Explain it back
             </button>
           </div>
         </div>
