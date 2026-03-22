@@ -517,10 +517,10 @@ function Panel2({ speaking }: { speaking: boolean }) {
 
           <div className="mt-10 space-y-4">
             {[
-              { num: "00", title: "Discover your learning style", desc: "A quick assessment finds whether you're visual, auditory, reading, or hands-on — then personalises everything." },
-              { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized modules with a clear key idea per lesson." },
-              { num: "02", title: "A British voice teaches you", desc: "Each lesson is read aloud by Lily. Toggle voice on or off. Then discuss with the AI tutor." },
-              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus teach-back, real-world scenarios, and flashcards." },
+              { num: "00", title: "Tell us how you like to learn", desc: "A quick setup finds your preferences. Then everything adapts to you." },
+              { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized topics with a clear key idea per session." },
+              { num: "02", title: "A voice reads it to you", desc: "Each session is read aloud. Toggle voice on or off. Then discuss with your AI coach." },
+              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus explain-it-back, real-world scenarios, and flashcards." },
             ].map((c, i) => (
               <SpeakingGlow speaking={speaking}>
                 <motion.div key={c.num} custom={i + 3} variants={slideRight}
