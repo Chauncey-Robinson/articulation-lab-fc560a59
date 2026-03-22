@@ -1519,7 +1519,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
   ] as const;
 
   return (
-    <section id="panel-6" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
+    <section id="panel-8" className="min-h-screen snap-start flex items-center relative overflow-hidden" style={{ background: "hsl(var(--background))" }}>
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: `linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
