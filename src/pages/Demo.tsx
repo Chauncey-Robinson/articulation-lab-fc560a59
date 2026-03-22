@@ -838,7 +838,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
 
       <div className="mx-auto w-full max-w-[1200px] px-8 relative z-10">
         {/* Header */}
-        <CinematicSection className="text-center mb-16">
+        <CinematicSection className="text-center mb-12">
           <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center gap-3 mb-5">
             <motion.div className="w-2 h-2 rounded-full"
               style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.6)" }}
@@ -869,126 +869,46 @@ function Panel5({ speaking }: { speaking: boolean }) {
           </motion.p>
         </CinematicSection>
 
-        {/* HUD Feature Cards — positioned like a technical diagram */}
-        <div className="relative mx-auto" style={{ maxWidth: 1000, minHeight: 420 }}>
-          {/* Connecting lines from center */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <motion.div
-              className="w-3 h-3 rounded-full"
-              style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 20px hsla(32,82%,51%,0.5)" }}
-              animate={{ scale: [1, 1.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </div>
-
-          {/* Grid layout for the 5 cards */}
-          <div className="grid grid-cols-3 gap-4" style={{ gridTemplateRows: "auto auto" }}>
-            {/* Top row: Quiz, center title, Explain It */}
-            {[features[0], features[4], features[1]].map((f, idx) => (
-              <motion.div key={f.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: idx * 0.15, ease }}>
-                <SpeakingGlow speaking={speaking} delay={idx * 0.4}>
-                <HudCard delay={idx * 0.1}>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
-                      style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
-                      {f.tag}
-                    </span>
-                    <HudCallout label="" side="right" delay={0} />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <motion.span className="text-[28px]"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: idx * 0.3 }}>
-                      {f.icon}
-                    </motion.span>
-                    <div>
-                      <p className="font-sans text-[15px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
-                    </div>
-                  </div>
-                  <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>
-                    {f.desc}
-                  </p>
-                  {/* Mini data readout */}
-                  <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                    <motion.div className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }} />
-                    <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>
-                      Active · AI powered
-                    </span>
-                  </div>
-                </HudCard>
-                </SpeakingGlow>
-              </motion.div>
-            ))}
-
-            {/* Bottom row: Real-World, spacer, Dialogue */}
-            {[features[2], null, features[3]].map((f, idx) => (
-              f ? (
-                <motion.div key={f.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, delay: (idx + 3) * 0.15, ease }}>
-                  <SpeakingGlow speaking={speaking} delay={(idx + 3) * 0.3}>
-                  <HudCard delay={(idx + 3) * 0.1}>
-                    <div className="flex items-center gap-2 mb-3">
+        {/* Feature cards + phones showing quiz, explain, dialogue */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-start max-w-[1100px] mx-auto">
+          {/* Left: feature list */}
+          <CinematicSection className="space-y-3">
+            {features.map((f, i) => (
+              <motion.div key={f.title} custom={i} variants={slideLeft}>
+                <SpeakingGlow speaking={speaking} delay={i * 0.3}>
+                  <HudCard delay={i * 0.1}>
+                    <div className="flex items-center gap-2 mb-2">
                       <span className="font-sans text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded"
                         style={{ background: "hsla(32,82%,51%,0.12)", color: "hsl(var(--amber-bright))" }}>
                         {f.tag}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <motion.span className="text-[28px]"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 3, repeat: Infinity, delay: idx * 0.4 }}>
-                        {f.icon}
-                      </motion.span>
+                      <span className="text-[24px]">{f.icon}</span>
                       <div>
-                        <p className="font-sans text-[15px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                        <p className="font-sans text-[14px] font-bold" style={{ color: "hsl(var(--foreground))" }}>{f.title}</p>
+                        <p className="font-sans text-[10px] mt-0.5 leading-[1.4]" style={{ color: "hsl(var(--ink-3))" }}>{f.desc}</p>
                       </div>
                     </div>
-                    <p className="font-sans text-[11px] mt-2 leading-[1.5]" style={{ color: "hsl(var(--ink-3))" }}>
-                      {f.desc}
-                    </p>
-                    <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
-                      <motion.div className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: "hsl(var(--sage))", boxShadow: "0 0 4px hsl(var(--sage))" }}
-                        animate={{ opacity: [1, 0.3, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }} />
-                      <span className="font-sans text-[8px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--muted-foreground))" }}>
-                        Active · AI powered
-                      </span>
-                    </div>
                   </HudCard>
-                  </SpeakingGlow>
-                </motion.div>
-              ) : (
-                <div key="spacer" className="flex items-center justify-center">
-                  <motion.div className="flex flex-col items-center gap-2"
-                    animate={{ opacity: [0.3, 0.7, 0.3] }}
-                    transition={{ duration: 3, repeat: Infinity }}>
-                    <svg width="60" height="60" viewBox="0 0 60 60">
-                      <motion.circle cx="30" cy="30" r="25" fill="none" stroke="hsla(32,82%,51%,0.2)" strokeWidth="1"
-                        strokeDasharray="4 4"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                        style={{ transformOrigin: "center" }} />
-                      <circle cx="30" cy="30" r="4" fill="hsla(32,82%,51%,0.3)" />
-                    </svg>
-                    <span className="font-sans text-[8px] uppercase tracking-[0.2em]" style={{ color: "hsl(var(--border))" }}>
-                      Neural core
-                    </span>
-                  </motion.div>
-                </div>
-              )
+                </SpeakingGlow>
+              </motion.div>
             ))}
-          </div>
+          </CinematicSection>
+
+          {/* Center: Phone showing quiz */}
+          <CinematicSection className="flex flex-col items-center justify-center">
+            <DemoPhoneFrame>
+              <PhoneQuizScreen />
+            </DemoPhoneFrame>
+          </CinematicSection>
+
+          {/* Right: Second phone showing Explain It */}
+          <CinematicSection className="hidden lg:flex flex-col items-center justify-center">
+            <DemoPhoneFrame>
+              <PhoneExplainScreen />
+            </DemoPhoneFrame>
+          </CinematicSection>
         </div>
       </div>
     </section>
