@@ -201,14 +201,10 @@ export default function Dashboard() {
         )}
 
         {/* Upload CTA */}
-        <div className="flex gap-3 animate-fade-up stagger-6">
+        <div className="animate-fade-up stagger-6">
           <Link to="/upload"
-            className="flex-1 rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
+            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
             Start a session
-          </Link>
-          <Link to="/meeting/record"
-            className="flex-1 rounded-pill bg-destructive py-4 text-[13px] font-sans font-semibold text-white hover:opacity-90 transition-all duration-[180ms] text-center block flex items-center justify-center gap-1.5">
-            🎙 Prep for a meeting
           </Link>
         </div>
 
