@@ -168,7 +168,7 @@ export default function Upload() {
                 method === m.key ? "border-accent bg-accent-pale/20" :
                 "border-border bg-card hover:border-accent"
               }`}>
-              <p className="text-[18px] mb-1">{m.emoji}</p>
+              <m.icon className="w-5 h-5 mb-1 text-ink-3" />
               <p className="text-[13px] font-sans font-semibold text-foreground">{m.label}</p>
               {m.desc && <p className="text-[11px] font-sans text-ink-3 mt-1 leading-[1.4]">{m.desc}</p>}
             </button>
