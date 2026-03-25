@@ -79,7 +79,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-6">
           <div>
             {progress.current_streak > 0 && (
-              <span className="text-[13px] font-sans font-medium text-foreground">🔥 {progress.current_streak}</span>
+              <span className="text-[13px] font-sans font-medium text-foreground flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-accent-bright" /> {progress.current_streak}</span>
             )}
           </div>
           <button onClick={signOut} className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Sign out</button>
