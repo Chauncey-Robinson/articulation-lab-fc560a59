@@ -124,7 +124,7 @@ export default function Onboarding() {
                     presentations.includes(opt.key) ? "border-accent bg-accent-pale/20" : "border-border bg-card hover:border-accent"
                   }`}>
                   <div className="flex items-center gap-3">
-                    <span className="text-[20px]">{opt.emoji}</span>
+                    <span className="text-[14px] font-sans text-ink-3">●</span>
                     <p className="text-[14px] font-sans font-medium text-foreground">{opt.label}</p>
                   </div>
                 </button>

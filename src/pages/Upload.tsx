@@ -216,7 +216,7 @@ export default function Upload() {
               <div className="rounded-[16px] border-[1.5px] border-border bg-card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <span className="text-[20px]">📄</span>
+                    <FileText className="w-5 h-5 text-ink-3" />
                     <div>
                       <p className="text-[13px] font-sans font-medium text-foreground truncate max-w-[200px]">{fileName}</p>
                       {fileProcessing ? (

@@ -185,7 +185,7 @@ export default function Dashboard() {
                   className="w-full text-left bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-2 hover:border-accent transition-all duration-[180ms]">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px]">{m.meeting_type === "conference" ? "🎤" : m.meeting_type === "lecture" ? "🎓" : "💼"}</span>
+                      {m.meeting_type === "conference" ? <Mic className="w-4 h-4 text-ink-3" /> : m.meeting_type === "lecture" ? <GraduationCap className="w-4 h-4 text-ink-3" /> : <Briefcase className="w-4 h-4 text-ink-3" />}
                       <div>
                         <h3 className="text-[13px] font-sans font-medium text-foreground">{m.title}</h3>
                         <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : ""}</p>
