@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 
-const professions = ["Student", "Engineer", "Manager", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Teacher", "Other"];
+const professions = ["Executive / CEO", "Founder / Owner", "Manager", "Engineer", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Student", "Teacher", "Other"];
 const interestOptions = ["Business", "Technology", "Science", "Health", "Finance", "Leadership", "Psychology", "Law", "Design", "Marketing"];
 const presentationOptions = [
   { key: "text", emoji: "📝", label: "Written" },
