@@ -6,9 +6,9 @@ import { useAuth } from "@/hooks/useAuth";
 const professions = ["Executive / CEO", "Founder / Owner", "Manager", "Engineer", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Student", "Teacher", "Other"];
 const interestOptions = ["Business", "Technology", "Science", "Health", "Finance", "Leadership", "Psychology", "Law", "Design", "Marketing"];
 const presentationOptions = [
-  { key: "text", emoji: "📝", label: "Written" },
-  { key: "infographics", emoji: "📊", label: "Visual" },
-  { key: "podcast", emoji: "🎧", label: "Audio" },
+  { key: "text", label: "Written" },
+  { key: "infographics", label: "Visual" },
+  { key: "podcast", label: "Audio" },
 ];
 
 export default function Onboarding() {
