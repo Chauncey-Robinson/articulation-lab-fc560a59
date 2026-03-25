@@ -1,6 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useApp } from "@/lib/AppContext";
 import { useAuth } from "@/hooks/useAuth";
+import { Flame } from "lucide-react";
 
 const navTabs = [
   { path: "/home", label: "Home" },
