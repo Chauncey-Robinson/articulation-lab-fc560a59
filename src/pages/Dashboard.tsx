@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Flame, CheckCircle, Mic, GraduationCap, Briefcase } from "lucide-react";
+import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus } from "lucide-react";
 
 function getStatusColor(status: string) {
   switch (status) {
