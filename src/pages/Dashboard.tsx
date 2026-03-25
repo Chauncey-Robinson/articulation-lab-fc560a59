@@ -165,7 +165,7 @@ export default function Dashboard() {
               <button key={mod.id} onClick={() => navigate(`/module/${mod.id}`)}
                 className="w-full text-left bg-card rounded-[18px] border-[1.5px] border-border p-5 mb-3 hover:border-accent transition-all duration-[180ms] opacity-70">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sage text-[14px]">✓</span>
+                  <CheckCircle className="w-4 h-4 text-sage" />
                   <h3 className="font-serif text-[16px] text-foreground">{mod.title}</h3>
                 </div>
                 <p className="text-[12px] font-sans text-ink-3">{mod.lesson_count} sessions completed</p>
