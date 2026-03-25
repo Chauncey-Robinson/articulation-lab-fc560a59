@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Flame, CheckCircle, Mic, GraduationCap, Briefcase } from "lucide-react";
+import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus } from "lucide-react";
 
 function getStatusColor(status: string) {
   switch (status) {
@@ -85,15 +85,62 @@ export default function Dashboard() {
           <button onClick={signOut} className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Sign out</button>
         </div>
 
-        {/* Greeting */}
+        {/* Greeting + contextual nudge */}
         <div className="mb-6 animate-fade-up stagger-1">
           <h1 className="font-serif text-[2rem] text-foreground mb-1">{greeting}</h1>
           {modules.length === 0 ? (
             <p className="text-[14px] font-sans text-ink-3">Upload something to start.</p>
+          ) : activeModules.length > 0 ? (
+            <p className="text-[14px] font-sans text-ink-3">
+              You were working on <span className="text-foreground font-medium">{activeModules[0].title}</span>. Pick up where you left off?
+            </p>
           ) : (
-            <p className="text-[14px] font-sans text-ink-3">Keep going. You're close.</p>
+            <p className="text-[14px] font-sans text-ink-3">All topics complete. Add something new or review what you know.</p>
           )}
         </div>
+
+        {/* Smart suggestion chips */}
+        {modules.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto pb-1 mb-6 animate-fade-up stagger-2 scrollbar-hide">
+            {activeModules.length > 0 && (
+              <button
+                onClick={() => navigate(`/module/${activeModules[0].id}`)}
+                className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+              >
+                <Zap className="w-3.5 h-3.5 text-accent-bright" />
+                <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Continue {activeModules[0].title.length > 20 ? activeModules[0].title.slice(0, 20) + "..." : activeModules[0].title}</span>
+              </button>
+            )}
+            {completedModules.length > 0 && (
+              <button
+                onClick={() => navigate(`/module/${completedModules[0].id}`)}
+                className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-ink-3" />
+                <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Review a past topic</span>
+              </button>
+            )}
+            {activeModules.some(m => m.completed_lessons > 0) && (
+              <button
+                onClick={() => {
+                  const mod = activeModules.find(m => m.completed_lessons > 0);
+                  if (mod) navigate(`/test-config/${mod.id}`);
+                }}
+                className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+              >
+                <Brain className="w-3.5 h-3.5 text-accent" />
+                <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Coach me on my weakest area</span>
+              </button>
+            )}
+            <button
+              onClick={() => navigate("/upload")}
+              className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+            >
+              <Plus className="w-3.5 h-3.5 text-ink-3" />
+              <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Add new material</span>
+            </button>
+          </div>
+        )}
 
         {/* Deadline alerts */}
         {upcomingDeadlines.length > 0 && (
