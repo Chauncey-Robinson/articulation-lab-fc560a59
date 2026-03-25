@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 
-const professions = ["Student", "Engineer", "Manager", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Teacher", "Other"];
+const professions = ["Executive / CEO", "Founder / Owner", "Manager", "Engineer", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Student", "Teacher", "Other"];
 const interestOptions = ["Business", "Technology", "Science", "Health", "Finance", "Leadership", "Psychology", "Law", "Design", "Marketing"];
 const presentationOptions = [
-  { key: "text", emoji: "📝", label: "Written" },
-  { key: "infographics", emoji: "📊", label: "Visual" },
-  { key: "podcast", emoji: "🎧", label: "Audio" },
+  { key: "text", label: "Written" },
+  { key: "infographics", label: "Visual" },
+  { key: "podcast", label: "Audio" },
 ];
 
 export default function Onboarding() {
@@ -124,7 +124,7 @@ export default function Onboarding() {
                     presentations.includes(opt.key) ? "border-accent bg-accent-pale/20" : "border-border bg-card hover:border-accent"
                   }`}>
                   <div className="flex items-center gap-3">
-                    <span className="text-[20px]">{opt.emoji}</span>
+                    <span className="text-[14px] font-sans text-ink-3">●</span>
                     <p className="text-[14px] font-sans font-medium text-foreground">{opt.label}</p>
                   </div>
                 </button>

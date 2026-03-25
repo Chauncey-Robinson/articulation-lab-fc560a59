@@ -5,12 +5,13 @@ import { useTutor } from "@/lib/TutorContext";
 import { supabase } from "@/integrations/supabase/client";
 import { generateLessons } from "@/lib/tutor-ai";
 import MicButton from "@/components/MicButton";
+import { FileText, Link as LinkIcon, Mic, Type } from "lucide-react";
 
 const inputMethods = [
-  { key: "text", emoji: "📝", label: "Paste text" },
-  { key: "file", emoji: "📄", label: "Upload file", desc: "PDF or document" },
-  { key: "url", emoji: "🔗", label: "Paste a link" },
-  { key: "record", emoji: "🎙️", label: "Record audio", desc: "Something you heard at a talk or meeting" },
+  { key: "text", icon: Type, label: "Paste text" },
+  { key: "file", icon: FileText, label: "Upload file", desc: "PDF or document" },
+  { key: "url", icon: LinkIcon, label: "Paste a link" },
+  { key: "record", icon: Mic, label: "Record audio", desc: "Something you heard at a talk or meeting" },
 ];
 
 const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md,.csv,.json,.xml,.rtf";
@@ -167,7 +168,7 @@ export default function Upload() {
                 method === m.key ? "border-accent bg-accent-pale/20" :
                 "border-border bg-card hover:border-accent"
               }`}>
-              <p className="text-[18px] mb-1">{m.emoji}</p>
+              <m.icon className="w-5 h-5 mb-1 text-ink-3" />
               <p className="text-[13px] font-sans font-semibold text-foreground">{m.label}</p>
               {m.desc && <p className="text-[11px] font-sans text-ink-3 mt-1 leading-[1.4]">{m.desc}</p>}
             </button>
@@ -207,7 +208,7 @@ export default function Upload() {
                 disabled={loading || fileProcessing}
                 className="w-full rounded-[16px] border-[2px] border-dashed border-border bg-card hover:border-accent hover:bg-accent-pale/10 transition-all duration-[180ms] p-8 flex flex-col items-center gap-3"
               >
-                <span className="text-[32px]">📄</span>
+                <FileText className="w-8 h-8 text-ink-3" />
                 <p className="text-[14px] font-sans font-medium text-foreground">Tap to choose a file</p>
                 <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT, Markdown · Max 20 MB</p>
               </button>
@@ -215,7 +216,7 @@ export default function Upload() {
               <div className="rounded-[16px] border-[1.5px] border-border bg-card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <span className="text-[20px]">📄</span>
+                    <FileText className="w-5 h-5 text-ink-3" />
                     <div>
                       <p className="text-[13px] font-sans font-medium text-foreground truncate max-w-[200px]">{fileName}</p>
                       {fileProcessing ? (

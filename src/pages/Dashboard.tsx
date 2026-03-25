@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { Flame, CheckCircle, Mic, GraduationCap, Briefcase } from "lucide-react";
 
 function getStatusColor(status: string) {
   switch (status) {
@@ -78,7 +79,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-6">
           <div>
             {progress.current_streak > 0 && (
-              <span className="text-[13px] font-sans font-medium text-foreground">🔥 {progress.current_streak}</span>
+              <span className="text-[13px] font-sans font-medium text-foreground flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-accent-bright" /> {progress.current_streak}</span>
             )}
           </div>
           <button onClick={signOut} className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Sign out</button>
@@ -164,7 +165,7 @@ export default function Dashboard() {
               <button key={mod.id} onClick={() => navigate(`/module/${mod.id}`)}
                 className="w-full text-left bg-card rounded-[18px] border-[1.5px] border-border p-5 mb-3 hover:border-accent transition-all duration-[180ms] opacity-70">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sage text-[14px]">✓</span>
+                  <CheckCircle className="w-4 h-4 text-sage" />
                   <h3 className="font-serif text-[16px] text-foreground">{mod.title}</h3>
                 </div>
                 <p className="text-[12px] font-sans text-ink-3">{mod.lesson_count} sessions completed</p>
@@ -184,7 +185,7 @@ export default function Dashboard() {
                   className="w-full text-left bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-2 hover:border-accent transition-all duration-[180ms]">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px]">{m.meeting_type === "conference" ? "🎤" : m.meeting_type === "lecture" ? "🎓" : "💼"}</span>
+                      {m.meeting_type === "conference" ? <Mic className="w-4 h-4 text-ink-3" /> : m.meeting_type === "lecture" ? <GraduationCap className="w-4 h-4 text-ink-3" /> : <Briefcase className="w-4 h-4 text-ink-3" />}
                       <div>
                         <h3 className="text-[13px] font-sans font-medium text-foreground">{m.title}</h3>
                         <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : ""}</p>
@@ -201,14 +202,10 @@ export default function Dashboard() {
         )}
 
         {/* Upload CTA */}
-        <div className="flex gap-3 animate-fade-up stagger-6">
+        <div className="animate-fade-up stagger-6">
           <Link to="/upload"
-            className="flex-1 rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
+            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
             Start a session
-          </Link>
-          <Link to="/meeting/record"
-            className="flex-1 rounded-pill bg-destructive py-4 text-[13px] font-sans font-semibold text-white hover:opacity-90 transition-all duration-[180ms] text-center block flex items-center justify-center gap-1.5">
-            🎙 Prep for a meeting
           </Link>
         </div>
 
