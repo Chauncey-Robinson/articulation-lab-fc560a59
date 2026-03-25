@@ -208,7 +208,7 @@ export default function Upload() {
                 disabled={loading || fileProcessing}
                 className="w-full rounded-[16px] border-[2px] border-dashed border-border bg-card hover:border-accent hover:bg-accent-pale/10 transition-all duration-[180ms] p-8 flex flex-col items-center gap-3"
               >
-                <span className="text-[32px]">📄</span>
+                <FileText className="w-8 h-8 text-ink-3" />
                 <p className="text-[14px] font-sans font-medium text-foreground">Tap to choose a file</p>
                 <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT, Markdown · Max 20 MB</p>
               </button>
