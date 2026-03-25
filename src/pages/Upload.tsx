@@ -5,12 +5,13 @@ import { useTutor } from "@/lib/TutorContext";
 import { supabase } from "@/integrations/supabase/client";
 import { generateLessons } from "@/lib/tutor-ai";
 import MicButton from "@/components/MicButton";
+import { FileText, Link as LinkIcon, Mic, Type } from "lucide-react";
 
 const inputMethods = [
-  { key: "text", emoji: "📝", label: "Paste text" },
-  { key: "file", emoji: "📄", label: "Upload file", desc: "PDF or document" },
-  { key: "url", emoji: "🔗", label: "Paste a link" },
-  { key: "record", emoji: "🎙️", label: "Record audio", desc: "Something you heard at a talk or meeting" },
+  { key: "text", icon: Type, label: "Paste text" },
+  { key: "file", icon: FileText, label: "Upload file", desc: "PDF or document" },
+  { key: "url", icon: LinkIcon, label: "Paste a link" },
+  { key: "record", icon: Mic, label: "Record audio", desc: "Something you heard at a talk or meeting" },
 ];
 
 const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md,.csv,.json,.xml,.rtf";
