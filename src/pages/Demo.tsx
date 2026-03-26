@@ -808,10 +808,10 @@ function Panel4({ speaking }: { speaking: boolean }) {
 function Panel5({ speaking }: { speaking: boolean }) {
   const features = [
     { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to how you learn.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
-    { icon: "🎤", title: "Explain It", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
+    { icon: "🎤", title: "Explain It", tag: "LIVE FEEDBACK", desc: "Explain the concept in your own words. Lily scores clarity, depth, and example use in real time.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
     { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
-    { icon: "💬", title: "Dialogue", tag: "AI COACH", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
-    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front and back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
+    { icon: "💬", title: "Dialogue", tag: "AI COACH", desc: "Live conversation with Lily. Challenge, question, go deeper. Smart chips guide you.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
+    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front and back. Spaced repetition with difficulty tracking.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
   ];
 
   return (
