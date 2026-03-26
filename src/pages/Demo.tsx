@@ -325,7 +325,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
             <SpeakingGlow speaking={speaking}>
               <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
                 style={{ color: "rgba(255,255,255,0.5)" }}>
-                Upload what you're studying. The AI breaks it down and teaches it back to you.
+                Upload what you're studying. Your AI coach breaks it down and teaches it back to you.
                 Then you prove you own it.
               </motion.p>
             </SpeakingGlow>
