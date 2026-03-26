@@ -750,8 +750,8 @@ function Panel4({ speaking }: { speaking: boolean }) {
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif text-[clamp(36px,4.5vw,54px)] font-normal leading-[1.05]"
             style={{ letterSpacing: "-1px", color: "hsl(var(--foreground))" }}>
-            A voice that{" "}
-            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>teaches.</span>
+            Meet{" "}
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>Lily.</span>
           </motion.h2>
 
           <motion.p custom={2} variants={fadeUp}
