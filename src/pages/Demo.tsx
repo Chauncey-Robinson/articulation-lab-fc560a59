@@ -11,22 +11,24 @@ import {
   PhoneMeetingScreen,
   PhoneExplainScreen,
   PhoneDialogueScreen,
+  PhoneDashboardScreen,
+  PhoneApplyScreen,
 } from "@/components/demo/DemoPhoneScreens";
 import { useTTS } from "@/hooks/useSpeech";
 
 const PANEL_COUNT = 11;
 
 const panelNarrations = [
-  "You know more than you can explain. Upload what you're studying. The AI breaks it down. Then you prove you own it.",
+  "You know more than you can explain. Upload what you're studying. Your AI coach breaks it down. Then you prove you own it.",
   "87 percent of professionals said the same thing. They studied. They finished. Then someone asked and nothing came out.",
-  "Think of it as a gym for your knowledge. Upload anything. It personalises to how you learn. Then you prove it five ways.",
-  "Paste text, upload a PDF, drop in your notes. The AI pulls out the key ideas and builds your topics.",
-  "Every session is read aloud. Toggle it on or off. Then discuss with the coach or speak your answers back.",
-  "Quizzes start easy with multiple choice, then true or false, then open-ended. All adapting to your style. Plus explain-it-back, scenarios, dialogue, and flashcards.",
-  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with. It brings those back at exactly the right time.",
-  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type. You always know exactly where you stand.",
-  "Nobody else combines voice sessions, progressive quizzes, and five coaching modes. This is genuinely unique.",
-  "And here's something no one else does. Meeting mode. Walk into any conference, lecture, or meeting. Hit record. The AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study topic. All inside the same app.",
+  "Think of it as a gym for your knowledge. Upload anything. Your coach personalises everything to how you learn. Then you prove it five ways.",
+  "Paste text, upload a PDF, drop in your notes. The AI pulls out the key ideas and builds your topics. Smart suggestions help you go deeper on what matters.",
+  "Every session is read aloud by Lily, your AI coach. Toggle voice on or off. Then discuss with her or speak your answers back.",
+  "Five coaching modes that adapt to you. Quizzes that progress from easy to hard. Explain-it-back with live feedback. Real-world scenarios. Dialogue. And smart flashcards.",
+  "Flashcards that remember what you struggle with. You rate difficulty, track accuracy, and the app brings back hard cards at exactly the right time.",
+  "Everything feeds into your analytics. Streak tracking, concept mastery stages, daily focus nudges, and accuracy across every coaching mode. You always know exactly where you stand.",
+  "Nobody else combines voice coaching, progressive quizzes, and five coaching modes. This is genuinely unique.",
+  "Meeting mode. Walk into any conference, lecture, or meeting. Hit record. The AI transcribes everything live. Then it pulls out key learnings, action items, and turns it into a study topic.",
   "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -266,7 +268,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
     <section
       ref={ref}
       id="panel-0"
-      className="min-h-screen snap-start flex items-center relative overflow-hidden"
+      className="min-h-screen snap-start flex items-center relative overflow-hidden lens-flare"
       style={{ background: "hsl(var(--foreground))" }}
     >
       {/* Dramatic gradient orbs */}
@@ -296,7 +298,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
               <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
               <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em]"
                 style={{ color: "hsl(var(--amber-bright))" }}>
-                A new kind of coaching tool · 2025
+                Your AI coach for professional knowledge · 2025
               </span>
             </motion.div>
 
@@ -323,7 +325,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
             <SpeakingGlow speaking={speaking}>
               <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
                 style={{ color: "rgba(255,255,255,0.5)" }}>
-                Upload what you're studying. The AI breaks it down and teaches it back to you.
+                Upload what you're studying. Your AI coach breaks it down and teaches it back to you.
                 Then you prove you own it.
               </motion.p>
             </SpeakingGlow>
@@ -530,8 +532,8 @@ function Panel2({ speaking }: { speaking: boolean }) {
             {[
               { num: "00", title: "Tell us how you like to learn", desc: "A quick setup finds your preferences. Then everything adapts to you." },
               { num: "01", title: "Upload anything", desc: "Paste text, upload PDFs, or drop notes. AI breaks it into bite-sized topics with a clear key idea per session." },
-              { num: "02", title: "A voice reads it to you", desc: "Each session is read aloud. Toggle voice on or off. Then discuss with your AI coach." },
-              { num: "03", title: "Prove you own it", desc: "Quizzes progress from multiple choice to open-ended. Plus explain-it-back, real-world scenarios, and flashcards." },
+              { num: "02", title: "Lily reads it to you", desc: "Your AI coach reads each session aloud. Toggle voice on or off. Then discuss with her or speak your answers back." },
+              { num: "03", title: "Prove you own it", desc: "Quizzes, explain-it-back with live feedback, real-world scenarios, dialogue, and smart flashcards. Five ways to prove mastery." },
             ].map((c, i) => (
               <SpeakingGlow speaking={speaking}>
                 <motion.div key={c.num} custom={i + 3} variants={slideRight}
@@ -741,29 +743,29 @@ function Panel4({ speaking }: { speaking: boolean }) {
             <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]"
               style={{ color: "hsl(var(--amber-bright))" }}>
-              System · Voice Engine
+              System · AI Coach
             </span>
           </motion.div>
 
           <motion.h2 custom={1} variants={fadeUp}
             className="font-serif text-[clamp(36px,4.5vw,54px)] font-normal leading-[1.05]"
             style={{ letterSpacing: "-1px", color: "hsl(var(--foreground))" }}>
-            A voice that{" "}
-            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>teaches.</span>
+            Meet{" "}
+            <span className="italic" style={{ color: "hsl(var(--amber-bright))" }}>Lily.</span>
           </motion.h2>
 
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-6"
             style={{ color: "hsl(var(--ink-3))" }}>
-            Each session is read aloud by a natural AI voice. Toggle voice on or off anytime. Then discuss with the coach and speak it back.
+            Lily is your AI coach. She reads every session aloud with a natural voice. Ask her questions. Challenge ideas. She adapts to you in real time.
           </motion.p>
 
           {/* HUD feature callouts */}
           <div className="mt-10 space-y-3">
             {[
-              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Toggle on or off from any screen." },
-              { tag: "AI TUTOR", icon: "🤖", title: "Live dialogue", desc: "Ask questions. Challenge ideas. The tutor adapts in real time." },
-              { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
+              { tag: "VOICE OUTPUT", icon: "🔊", title: "Lily reads every session", desc: "Natural ElevenLabs voice. Toggle on or off from any screen." },
+              { tag: "AI COACH", icon: "🤖", title: "Live dialogue with Lily", desc: "Ask questions. Challenge ideas. She adapts and pushes you deeper." },
+              { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. Lily listens, evaluates, and responds with live feedback." },
             ].map((f, i) => (
               <motion.div key={f.tag} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.5}>
@@ -806,10 +808,10 @@ function Panel4({ speaking }: { speaking: boolean }) {
 function Panel5({ speaking }: { speaking: boolean }) {
   const features = [
     { icon: "📝", title: "Quiz", tag: "PROGRESSIVE", desc: "Starts with multiple choice, then true/false, then open-ended. Adapts to how you learn.", position: { top: "5%", left: "2%" }, lineAngle: 25 },
-    { icon: "🎤", title: "Explain It", tag: "VOICE INPUT", desc: "Explain the concept in your own words. AI scores your fluency.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
+    { icon: "🎤", title: "Explain It", tag: "LIVE FEEDBACK", desc: "Explain the concept in your own words. Lily scores clarity, depth, and example use in real time.", position: { top: "5%", right: "2%" }, lineAngle: -25 },
     { icon: "🌍", title: "Real-World", tag: "SCENARIO", desc: "A real situation. A time limit. Prove you can apply it under pressure.", position: { bottom: "8%", left: "2%" }, lineAngle: -20 },
-    { icon: "💬", title: "Dialogue", tag: "AI COACH", desc: "Live conversation with the AI. Challenge, question, go deeper.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
-    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front and back. Spaced repetition keeps it fresh.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
+    { icon: "💬", title: "Dialogue", tag: "AI COACH", desc: "Live conversation with Lily. Challenge, question, go deeper. Smart chips guide you.", position: { bottom: "8%", right: "2%" }, lineAngle: 20 },
+    { icon: "🃏", title: "Flashcards", tag: "SPACED REP", desc: "Voice reads front and back. Spaced repetition with difficulty tracking.", position: { top: "50%", left: "50%", transform: "translate(-50%,-50%)" } as any, lineAngle: 0 },
   ];
 
   return (
@@ -847,7 +849,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
             <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]"
               style={{ color: "hsl(var(--amber-bright))" }}>
-              System · Assessment Modes
+              System · Coaching Modes
             </span>
             <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
             <motion.div className="w-2 h-2 rounded-full"
@@ -1078,8 +1080,8 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
           <div className="mt-8 space-y-3">
             {[
               { icon: "🔥", title: "Streak tracking", desc: "Visualise your daily consistency with a 7-day heatmap" },
-              { icon: "📈", title: "Knowledge retention", desc: "Average score across quizzes, teach-back, and apply modes" },
-              { icon: "🧱", title: "Concept stages", desc: "See every concept as Practicing, Getting There, or Solid" },
+              { icon: "📈", title: "Knowledge retention", desc: "Average score across quizzes, explain-it-back, and scenario modes" },
+              { icon: "🎯", title: "Daily focus nudge", desc: "Each day, Lily suggests what to review based on your weakest areas" },
               { icon: "📅", title: "Repetition schedule", desc: "A bar chart of what's due today, tomorrow, and this week" },
             ].map((s, i) => (
               <motion.div key={s.title} custom={i + 3} variants={slideLeft}>
@@ -1120,14 +1122,17 @@ function Panel6({ speaking }: { speaking: boolean }) {
     ["Personalised to how you learn", true, false, false],
     ["PDF and document upload", true, false, true],
     ["Voice reads sessions aloud", true, false, false],
-    ["Voice toggle on every screen", true, false, false],
+    ["Smart suggestion chips", true, false, false],
+    ["AI coach persona (Lily)", true, false, false],
     ["Progressive quiz difficulty", true, false, false],
     ["AI dialogue / conversation", true, false, true],
-    ["Explain-it-back evaluation", true, false, false],
+    ["Explain-it-back with live feedback", true, false, false],
     ["Real-world scenario practice", true, false, false],
-    ["Flashcards with voice", true, false, false],
+    ["Daily focus nudges", true, false, false],
+    ["Flashcards with spaced repetition", true, false, false],
     ["Fluency score (not just recall)", true, false, false],
     ["Live meeting transcription", true, false, false],
+    ["Ask anything across topics", true, false, false],
   ] as const;
 
   return (
@@ -1227,7 +1232,7 @@ function Panel6({ speaking }: { speaking: boolean }) {
             <HudCallout label="Unique features" side="left" delay={0.5} />
           </div>
           <div className="absolute -right-[110px] top-[50%] hidden lg:block">
-            <HudCallout label={`${rows.length - 2} exclusives`} side="right" delay={0.7} />
+            <HudCallout label={`${rows.length - 3} exclusives`} side="right" delay={0.7} />
           </div>
         </motion.div>
       </div>
@@ -1579,6 +1584,20 @@ export default function Demo() {
         @keyframes ctaGlow {
           0%, 100% { box-shadow: 0 0 40px hsla(32,82%,51%,0.25); }
           50% { box-shadow: 0 0 70px hsla(32,82%,51%,0.4); }
+        }
+        @keyframes lensFlare {
+          0% { transform: translateX(-120%) rotate(-10deg); opacity: 0; }
+          15% { opacity: 0.06; }
+          50% { opacity: 0.03; }
+          100% { transform: translateX(120%) rotate(10deg); opacity: 0; }
+        }
+        .lens-flare::after {
+          content: '';
+          position: absolute;
+          top: 0; left: -50%; right: -50%; bottom: 0;
+          background: linear-gradient(105deg, transparent 40%, hsla(32,82%,51%,0.08) 45%, hsla(32,82%,51%,0.12) 50%, hsla(32,82%,51%,0.08) 55%, transparent 60%);
+          animation: lensFlare 12s ease-in-out infinite;
+          pointer-events: none;
         }
       `}</style>
       <SideNav active={active} />

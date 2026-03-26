@@ -15,7 +15,9 @@ export function PhoneUploadScreen() {
       <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: ink3 }}>Upload</span>
       <p className="font-serif text-[14px]" style={{ color: ink }}>What are you learning?</p>
       <div className="rounded-[10px] border-[1.5px] border-dashed p-4 text-center" style={{ borderColor: border, background: surface2 }}>
-        <span className="text-[18px]">📄</span>
+        <div className="w-6 h-6 mx-auto mb-1 rounded-[6px] flex items-center justify-center" style={{ background: "hsla(32,82%,51%,0.12)" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={amber} strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+        </div>
         <p className="font-sans text-[8px] mt-1" style={{ color: ink3 }}>Paste it, link it, or drop in a file.</p>
       </div>
       <div className="rounded-[10px] p-2.5" style={{ background: surface2, borderLeft: `2px solid ${amber}` }}>
@@ -30,13 +32,16 @@ export function PhoneUploadScreen() {
   );
 }
 
-/* ─── Study / Lesson Screen ─── */
+/* ─── Study / Lesson Screen with Suggestion Chips ─── */
 export function PhoneStudyScreen() {
   return (
     <div className="p-4 flex flex-col gap-2.5">
       <div className="flex justify-between items-center">
         <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Session 1 of 5</span>
-        <span className="font-sans text-[8px] px-2 py-0.5 rounded-full" style={{ background: "hsla(32,82%,51%,0.12)", color: amber }}>🔊 Reading aloud</span>
+        <span className="font-sans text-[8px] px-2 py-0.5 rounded-full" style={{ background: "hsla(32,82%,51%,0.12)", color: amber }}>
+          <svg className="inline w-2.5 h-2.5 mr-0.5 -mt-px" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          Reading aloud
+        </span>
       </div>
       <p className="font-serif text-[14px]" style={{ color: ink }}>Double Materiality</p>
       <p className="font-serif text-[9px] font-light leading-[1.6]" style={{ color: ink3 }}>
@@ -48,12 +53,21 @@ export function PhoneStudyScreen() {
           "Two-way mirror: the world's impact on you, and your impact on the world."
         </p>
       </div>
+      {/* Smart suggestion chips */}
+      <div className="flex flex-wrap gap-1">
+        {["Give me an example", "Why does this matter?", "Quiz me on this"].map(chip => (
+          <span key={chip} className="rounded-full px-2 py-0.5 font-sans text-[7px]"
+            style={{ background: "hsla(32,82%,51%,0.1)", color: amber, border: "1px solid hsla(32,82%,51%,0.25)" }}>
+            {chip}
+          </span>
+        ))}
+      </div>
       <div className="flex gap-2">
         <div className="flex-1 rounded-pill py-1.5 text-center font-sans text-[8px] font-semibold text-white" style={{ background: ink }}>
-          Talk it through 💬
+          Talk it through
         </div>
         <div className="flex-1 rounded-pill py-1.5 text-center font-sans text-[8px] font-semibold text-white" style={{ background: amber }}>
-          Explain It 📝
+          Explain It
         </div>
       </div>
     </div>
@@ -64,7 +78,7 @@ export function PhoneStudyScreen() {
 export function PhoneQuizScreen() {
   return (
     <div className="p-4 flex flex-col gap-2">
-      <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Quiz · 2 of 5</span>
+      <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Coach Mode · 2 of 5</span>
       <p className="font-serif text-[12px]" style={{ color: ink }}>
         Which type of materiality focuses on how a company affects society?
       </p>
@@ -81,7 +95,12 @@ export function PhoneQuizScreen() {
           {i === 1 && <span style={{ color: sage }}>✓ </span>}{opt}
         </div>
       ))}
-      <p className="font-sans text-[7px]" style={{ color: sage }}>🔊 "Correct! Impact materiality looks outward…"</p>
+      <div className="rounded-[8px] p-1.5" style={{ background: "hsla(140,22%,45%,0.06)", border: "1px solid hsla(140,22%,45%,0.15)" }}>
+        <p className="font-sans text-[7px]" style={{ color: sage }}>
+          <svg className="inline w-2.5 h-2.5 mr-0.5 -mt-px" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          "Correct! Impact materiality looks outward at how the company affects the world."
+        </p>
+      </div>
     </div>
   );
 }
@@ -101,9 +120,10 @@ export function PhoneFlashcardScreen() {
           Two-way mirror: the world's impact on you, and your impact on the world.
         </p>
       </div>
-      <div className="w-full rounded-[8px] overflow-hidden" style={{ height: 60, background: surface2 }}>
-        <div className="flex items-center justify-center h-full">
-          <span className="font-sans text-[7px]" style={{ color: ink3 }}>🎨 AI illustration</span>
+      <div className="w-full rounded-[8px] overflow-hidden flex items-center justify-center" style={{ height: 50, background: surface2 }}>
+        <div className="flex items-center gap-1">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={ink3} strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span className="font-sans text-[7px]" style={{ color: ink3 }}>AI illustration</span>
         </div>
       </div>
       <div className="flex gap-4">
@@ -144,6 +164,11 @@ export function PhoneAnalyticsScreen() {
           </div>
         ))}
       </div>
+      {/* Daily nudge */}
+      <div className="rounded-[8px] p-2" style={{ background: "hsla(32,82%,51%,0.08)", border: "1px solid hsla(32,82%,51%,0.15)" }}>
+        <p className="font-sans text-[7px] font-semibold" style={{ color: amber }}>Today's focus</p>
+        <p className="font-sans text-[7px] mt-0.5" style={{ color: ink3 }}>GRI Standards Session 4 is due. You got 60% last time.</p>
+      </div>
       {/* Mini bars */}
       <div>
         <p className="font-sans text-[7px] uppercase tracking-[0.12em] mb-1" style={{ color: ink3 }}>By topic</p>
@@ -170,7 +195,7 @@ export function PhoneMeetingScreen() {
   return (
     <div className="p-4 flex flex-col gap-2.5">
       <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: "hsl(var(--destructive))" }}>
-        Prep for a meeting
+        Meeting Mode
       </span>
       <p className="font-serif text-[14px]" style={{ color: ink }}>Recording</p>
       <div className="flex items-center gap-2">
@@ -194,13 +219,13 @@ export function PhoneMeetingScreen() {
         <p className="font-sans text-[7px]" style={{ color: ink3 }}>2. API readiness confirmed</p>
       </div>
       <div className="rounded-pill py-1.5 text-center font-sans text-[8px] font-semibold" style={{ background: "hsla(32,82%,51%,0.15)", color: amber, border: "1px solid hsla(32,82%,51%,0.3)" }}>
-        📚 Turn into study topic →
+        Turn into study topic →
       </div>
     </div>
   );
 }
 
-/* ─── Explain It (Teach Back) Screen ─── */
+/* ─── Explain It Screen with Real-time Feedback ─── */
 export function PhoneExplainScreen() {
   return (
     <div className="p-4 flex flex-col gap-2.5">
@@ -212,12 +237,29 @@ export function PhoneExplainScreen() {
       </div>
       <div className="rounded-[8px] border-[1.5px] p-2" style={{ borderColor: border, background: bg }}>
         <p className="font-sans text-[8px]" style={{ color: ink3 }}>
-          Explain it. Pretend your friend has never heard of this.
+          "It means looking at things from two directions…"
         </p>
+      </div>
+      {/* Real-time feedback meters */}
+      <div className="rounded-[8px] p-2" style={{ background: surface2 }}>
+        <p className="font-sans text-[7px] font-semibold mb-1.5" style={{ color: ink3 }}>Live feedback</p>
+        {[
+          { label: "Clarity", pct: 72, color: amber },
+          { label: "Depth", pct: 45, color: "hsl(var(--destructive))" },
+          { label: "Example use", pct: 30, color: "hsl(var(--destructive))" },
+        ].map(m => (
+          <div key={m.label} className="flex items-center gap-1.5 mb-1">
+            <span className="font-sans text-[6px] w-[42px]" style={{ color: ink3 }}>{m.label}</span>
+            <div className="flex-1 h-[3px] rounded-full" style={{ background: "hsl(var(--border))" }}>
+              <div className="h-full rounded-full" style={{ width: `${m.pct}%`, background: m.color }} />
+            </div>
+            <span className="font-sans text-[6px]" style={{ color: ink3 }}>{m.pct}%</span>
+          </div>
+        ))}
       </div>
       <div className="flex gap-2">
         <div className="flex-1 rounded-pill py-1.5 text-center font-sans text-[8px] font-semibold" style={{ background: surface2, color: ink3 }}>
-          🎙 Say it instead
+          Say it instead
         </div>
         <div className="flex-1 rounded-pill py-1.5 text-center font-sans text-[8px] font-semibold text-white" style={{ background: amber }}>
           Get feedback
@@ -227,15 +269,25 @@ export function PhoneExplainScreen() {
   );
 }
 
-/* ─── Dialogue Screen ─── */
+/* ─── Dialogue Screen with Coach Persona ─── */
 export function PhoneDialogueScreen() {
   return (
     <div className="p-4 flex flex-col gap-2">
-      <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Discuss</span>
+      <div className="flex items-center justify-between">
+        <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Discuss</span>
+        <div className="flex items-center gap-1">
+          <div className="w-3.5 h-3.5 rounded-full" style={{ background: "hsla(32,82%,51%,0.2)", border: "1px solid hsla(32,82%,51%,0.4)" }}>
+            <div className="w-full h-full rounded-full flex items-center justify-center">
+              <span style={{ fontSize: 6, color: amber }}>L</span>
+            </div>
+          </div>
+          <span className="font-sans text-[7px] font-semibold" style={{ color: amber }}>Lily</span>
+        </div>
+      </div>
       <div className="space-y-1.5">
         <div className="rounded-[8px] p-2" style={{ background: surface2 }}>
           <p className="font-sans text-[8px] leading-[1.5]" style={{ color: ink3 }}>
-            🎙 "Can you explain double materiality to someone who only cares about financial risk?"
+            "Can you explain double materiality to someone who only cares about financial risk?"
           </p>
         </div>
         <div className="rounded-[8px] p-2 ml-3" style={{ background: "hsla(32,82%,51%,0.08)" }}>
@@ -245,15 +297,90 @@ export function PhoneDialogueScreen() {
         </div>
         <div className="rounded-[8px] p-2" style={{ background: surface2 }}>
           <p className="font-sans text-[8px] leading-[1.5]" style={{ color: ink3 }}>
-            🎙 "Good start. Now push deeper."
+            "Good start. Now push deeper. What's the impact side?"
           </p>
         </div>
       </div>
+      {/* Suggestion chips */}
+      <div className="flex flex-wrap gap-1">
+        {["Give me a hint", "Try a different angle"].map(chip => (
+          <span key={chip} className="rounded-full px-2 py-0.5 font-sans text-[6px]"
+            style={{ background: "hsla(32,82%,51%,0.1)", color: amber, border: "1px solid hsla(32,82%,51%,0.25)" }}>
+            {chip}
+          </span>
+        ))}
+      </div>
       <div className="flex items-center gap-1.5 rounded-[6px] border-[1.5px] p-1.5" style={{ borderColor: border, background: bg }}>
         <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: amber }}>
-          <span className="text-[7px] text-white">🎤</span>
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
         </div>
         <span className="font-sans text-[7px] italic" style={{ color: ink3 }}>Tap to speak…</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Dashboard with Daily Nudge ─── */
+export function PhoneDashboardScreen() {
+  return (
+    <div className="p-4 flex flex-col gap-2.5">
+      <p className="font-serif text-[14px]" style={{ color: ink }}>Good morning.</p>
+      {/* Daily nudge card */}
+      <div className="rounded-[10px] p-2.5" style={{ background: "hsla(32,82%,51%,0.08)", border: "1px solid hsla(32,82%,51%,0.2)" }}>
+        <div className="flex items-center gap-1.5 mb-1">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={amber} strokeWidth="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+          <span className="font-sans text-[7px] font-semibold" style={{ color: amber }}>Today's focus</span>
+        </div>
+        <p className="font-sans text-[8px]" style={{ color: ink3 }}>Session 4 of GRI Standards is due. You scored 60% last time. Let's improve that.</p>
+        <div className="mt-1.5 rounded-pill py-1 text-center font-sans text-[7px] font-semibold" style={{ background: amber, color: "white" }}>
+          Start session →
+        </div>
+      </div>
+      {/* Topics */}
+      {[
+        { title: "GRI Standards", sessions: "5 sessions", progress: 60 },
+        { title: "Atomic Habits", sessions: "4 sessions", progress: 100 },
+      ].map(m => (
+        <div key={m.title} className="rounded-[10px] border-[1.5px] p-2.5" style={{ borderColor: border, background: bg }}>
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="font-serif text-[11px]" style={{ color: ink }}>{m.title}</p>
+              <p className="font-sans text-[7px]" style={{ color: ink3 }}>{m.sessions}</p>
+            </div>
+            <span className="font-sans text-[9px] font-semibold" style={{ color: m.progress === 100 ? sage : amber }}>{m.progress}%</span>
+          </div>
+          <div className="mt-1.5 h-[3px] rounded-full" style={{ background: surface2 }}>
+            <div className="h-full rounded-full" style={{ width: `${m.progress}%`, background: m.progress === 100 ? sage : amber }} />
+          </div>
+        </div>
+      ))}
+      {/* Ask anything */}
+      <div className="rounded-[8px] border-[1.5px] p-2 flex items-center gap-2" style={{ borderColor: border, background: surface2 }}>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={ink3} strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span className="font-sans text-[7px] italic" style={{ color: ink3 }}>Ask anything about your topics…</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Apply / Scenario Screen ─── */
+export function PhoneApplyScreen() {
+  return (
+    <div className="p-4 flex flex-col gap-2.5">
+      <span className="font-sans text-[8px] uppercase tracking-[0.14em]" style={{ color: amber }}>Real-World Scenario</span>
+      <div className="rounded-[10px] p-3" style={{ background: surface2, borderLeft: `2px solid ${amber}` }}>
+        <p className="font-serif text-[10px] italic leading-[1.5]" style={{ color: ink3 }}>
+          "A CFO has two minutes before a board meeting. Explain double materiality in plain English. Why does it matter to their bottom line?"
+        </p>
+      </div>
+      <div className="rounded-[10px] border-[1.5px] p-2.5" style={{ borderColor: border, background: bg }}>
+        <p className="font-sans text-[9px] leading-[1.5]" style={{ color: ink3 }}>
+          Your answer: "Think of it as looking through a window both ways…"
+        </p>
+      </div>
+      <div className="rounded-[10px] p-2" style={{ background: "hsla(140,22%,45%,0.08)", border: "1px solid hsla(140,22%,45%,0.2)" }}>
+        <p className="font-sans text-[8px] font-semibold" style={{ color: sage }}>Score: 8/10</p>
+        <p className="font-sans text-[8px] mt-0.5" style={{ color: ink3 }}>Clear analogy. Add a concrete example next time.</p>
       </div>
     </div>
   );
