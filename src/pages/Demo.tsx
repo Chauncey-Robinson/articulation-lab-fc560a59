@@ -849,7 +849,7 @@ function Panel5({ speaking }: { speaking: boolean }) {
             <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.25em]"
               style={{ color: "hsl(var(--amber-bright))" }}>
-              System · Assessment Modes
+              System · Coaching Modes
             </span>
             <div className="w-10 h-[1px]" style={{ background: "hsla(32,82%,51%,0.5)" }} />
             <motion.div className="w-2 h-2 rounded-full"
