@@ -83,26 +83,26 @@ function NarrationBadge({ speaking }: { speaking: boolean }) {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-pill px-4 py-2"
+      className="fixed top-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-pill px-4 py-2"
       style={{
-        background: "hsla(32,82%,51%,0.12)",
-        border: "1px solid hsla(32,82%,51%,0.3)",
-        backdropFilter: "blur(12px)",
-        boxShadow: "0 0 30px hsla(32,82%,51%,0.15)",
+        background: "hsla(0,0%,0%,0.6)",
+        border: "1px solid hsla(32,82%,51%,0.4)",
+        backdropFilter: "blur(16px)",
+        boxShadow: "0 0 40px hsla(32,82%,51%,0.2), 0 8px 32px rgba(0,0,0,0.3)",
       }}
     >
       <div className="flex items-center gap-[2px] h-3">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 7 }).map((_, i) => (
           <motion.div key={i} className="w-[2px] rounded-full"
             style={{ background: "hsl(var(--amber-bright))" }}
-            animate={{ height: [3, 8 + Math.random() * 6, 3] }}
-            transition={{ duration: 0.4 + i * 0.1, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ height: [2, 10 + Math.random() * 6, 2] }}
+            transition={{ duration: 0.3 + i * 0.08, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
       </div>
-      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]"
+      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em]"
         style={{ color: "hsl(var(--amber-bright))" }}>
-        Listening
+        Lily is speaking
       </span>
     </motion.div>
   );
@@ -192,13 +192,17 @@ function FloatingParticles() {
 function ProgressBar({ active }: { active: number }) {
   const pct = ((active + 1) / PANEL_COUNT) * 100;
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-[3px] z-50" style={{ background: "hsl(var(--muted))" }}>
+    <div className="fixed bottom-0 left-0 right-0 h-[2px] z-50" style={{ background: "transparent" }}>
       <motion.div
-        className="h-full"
+        className="h-full relative"
         style={{ background: "hsl(var(--amber-bright))" }}
         animate={{ width: `${pct}%` }}
         transition={{ duration: 0.6, ease }}
-      />
+      >
+        {/* Glowing tip */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
+          style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.8), 0 0 30px hsla(32,82%,51%,0.4)" }} />
+      </motion.div>
     </div>
   );
 }
@@ -249,6 +253,55 @@ function FluencyBar({ label, pct, color, animate }: { label: string; pct: number
         />
       </div>
       <span className="font-sans text-[10px] w-8" style={{ color: "hsl(var(--muted-foreground))" }}>{pct}%</span>
+    </div>
+  );
+}
+
+/* ─── Chapter Card — cinematic interstitial between sections ─── */
+function ChapterCard({ number, title }: { number: string; title: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+
+  return (
+    <div ref={ref} className="h-[40vh] snap-start flex items-center justify-center relative overflow-hidden"
+      style={{ background: "hsl(var(--foreground))" }}>
+      {/* Horizontal scan line */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          className="absolute top-1/2 left-0 w-full h-[1px]"
+          style={{ background: "linear-gradient(to right, transparent, hsla(32,82%,51%,0.3), transparent)" }}
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 1.2, ease }}
+        />
+      </div>
+      <div className="text-center relative z-10">
+        <motion.span
+          className="font-sans text-[11px] font-bold uppercase tracking-[0.4em] block mb-4"
+          style={{ color: "hsl(var(--amber-bright))" }}
+          initial={{ opacity: 0, letterSpacing: "0.8em" }}
+          animate={inView ? { opacity: 1, letterSpacing: "0.4em" } : {}}
+          transition={{ duration: 1.5, ease }}
+        >
+          Chapter {number}
+        </motion.span>
+        <motion.h3
+          className="font-serif text-[clamp(32px,4vw,52px)] italic"
+          style={{ color: "hsl(var(--background))" }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ duration: 1.2, delay: 0.3, ease }}
+        >
+          {title}
+        </motion.h3>
+        <motion.div
+          className="mx-auto mt-6"
+          style={{ width: 40, height: 1, background: "hsla(32,82%,51%,0.4)" }}
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.6, ease }}
+        />
+      </div>
     </div>
   );
 }
@@ -308,37 +361,68 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
               className="font-serif font-normal leading-[0.92]"
               style={{ fontSize: "clamp(52px,6vw,92px)", letterSpacing: "-3px", color: "hsl(var(--background))" }}
             >
-              You know more
-              <br />
-              than you can
-              <br />
-              <motion.span
-                className="italic"
-                style={{ color: "hsl(var(--amber-bright))" }}
-                animate={{ opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                explain.
+              <motion.span className="block overflow-hidden">
+                <motion.span className="block"
+                  initial={{ y: "120%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}>
+                  You know more
+                </motion.span>
+              </motion.span>
+              <motion.span className="block overflow-hidden">
+                <motion.span className="block"
+                  initial={{ y: "120%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}>
+                  than you can
+                </motion.span>
+              </motion.span>
+              <motion.span className="block overflow-hidden">
+                <motion.span
+                  className="italic block"
+                  style={{ color: "hsl(var(--amber-bright))" }}
+                  initial={{ y: "120%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
+                >
+                  <motion.span
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                  >
+                    explain.
+                  </motion.span>
+                </motion.span>
               </motion.span>
             </motion.h1>
 
             <SpeakingGlow speaking={speaking}>
               <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
-                style={{ color: "rgba(255,255,255,0.5)" }}>
+                style={{ color: "rgba(255,255,255,0.5)" }}
+                initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 1.4, delay: 1 }}
+              >
                 Upload what you're studying. Your AI coach breaks it down and teaches it back to you.
                 Then you prove you own it.
               </motion.p>
             </SpeakingGlow>
 
-            <motion.div custom={3} variants={fadeUp} className="flex items-center gap-5 mt-12">
-              <button onClick={() => scrollTo(1)}
+            <motion.div custom={3} variants={fadeUp} className="flex items-center gap-5 mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.4 }}
+            >
+              <motion.button onClick={() => scrollTo(1)}
                 className="rounded-pill px-10 py-4 font-sans text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-1"
                 style={{
                   background: "hsl(var(--amber-bright))",
                   boxShadow: "0 0 60px hsla(32,82%,51%,0.3), 0 4px 20px hsla(32,82%,51%,0.2)",
-                }}>
+                }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 100px hsla(32,82%,51%,0.5), 0 8px 40px hsla(32,82%,51%,0.3)" }}
+                whileTap={{ scale: 0.97 }}
+              >
                 See how it works →
-              </button>
+              </motion.button>
               <button onClick={() => scrollTo(8)}
                 className="font-sans text-[13px] transition-colors duration-300"
                 style={{ color: "rgba(255,255,255,0.35)" }}>
@@ -1599,13 +1683,65 @@ export default function Demo() {
           animation: lensFlare 12s ease-in-out infinite;
           pointer-events: none;
         }
+        @keyframes vignettePulse {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 0.85; }
+        }
+        @keyframes lightLeak {
+          0% { opacity: 0; transform: translateX(-100%) skewX(-15deg); }
+          20% { opacity: 0.12; }
+          80% { opacity: 0.05; }
+          100% { opacity: 0; transform: translateX(200%) skewX(-15deg); }
+        }
+        @keyframes cinematicZoom {
+          0% { transform: scale(1.05); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes filmFlicker {
+          0%, 100% { opacity: 0.03; }
+          50% { opacity: 0.06; }
+          73% { opacity: 0.02; }
+        }
+        @keyframes horizontalScan {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
       `}</style>
+
+      {/* Cinematic letterbox bars */}
+      <div className="fixed top-0 left-0 right-0 z-40 pointer-events-none" style={{ height: 28, background: "linear-gradient(to bottom, rgba(0,0,0,0.85), transparent)" }} />
+      <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none" style={{ height: 28, background: "linear-gradient(to top, rgba(0,0,0,0.85), transparent)" }} />
+
+      {/* Global vignette overlay */}
+      <div className="fixed inset-0 z-30 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 70% 60% at center, transparent 50%, rgba(0,0,0,0.35) 100%)",
+          animation: "vignettePulse 8s ease-in-out infinite",
+        }} />
+
+      {/* Ambient light leak */}
+      <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden">
+        <div style={{
+          position: "absolute", top: "10%", left: 0, width: "40%", height: "80%",
+          background: "linear-gradient(105deg, transparent, hsla(32,82%,51%,0.06), hsla(32,82%,51%,0.1), transparent)",
+          animation: "lightLeak 18s ease-in-out infinite",
+        }} />
+      </div>
+
+      {/* Film grain overlay */}
+      <div className="fixed inset-0 z-30 pointer-events-none"
+        style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          animation: "filmFlicker 3s linear infinite",
+          mixBlendMode: "overlay",
+        }} />
+
       <SideNav active={active} />
       <ProgressBar active={active} />
       {/* Voice toggle */}
       <button onClick={toggleMute}
-        className="fixed top-6 left-6 z-50 flex items-center gap-2 rounded-pill px-3 py-1.5 transition-all duration-300 hover:scale-105"
-        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+        className="fixed top-10 left-6 z-50 flex items-center gap-2 rounded-pill px-3 py-1.5 transition-all duration-300 hover:scale-105"
+        style={{ background: "hsla(var(--muted), 0.9)", border: "1px solid hsl(var(--border))", backdropFilter: "blur(8px)" }}>
         <span className="text-[14px]">{muted ? "🔇" : "🔊"}</span>
         <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--ink-3))" }}>
           {muted ? "Unmute" : "Narrating"}
@@ -1613,14 +1749,23 @@ export default function Demo() {
       </button>
       <NarrationBadge speaking={speaking} />
       <Panel0 scrollTo={scrollTo} speaking={speaking && active === 0} />
+      <ChapterCard number="01" title="The Problem" />
       <Panel1 speaking={speaking && active === 1} />
+      <ChapterCard number="02" title="The Solution" />
       <Panel2 speaking={speaking && active === 2} />
+      <ChapterCard number="03" title="Upload" />
       <Panel3 speaking={speaking && active === 3} />
+      <ChapterCard number="04" title="Learn" />
       <Panel4 speaking={speaking && active === 4} />
+      <ChapterCard number="05" title="Prove It" />
       <Panel5 speaking={speaking && active === 5} />
+      <ChapterCard number="06" title="Flashcards" />
       <PanelFlashcards speaking={speaking && active === 6} />
+      <ChapterCard number="07" title="Analytics" />
       <PanelAnalytics speaking={speaking && active === 7} />
+      <ChapterCard number="08" title="The Edge" />
       <Panel6 speaking={speaking && active === 8} />
+      <ChapterCard number="09" title="Meeting Mode" />
       <Panel7 speaking={speaking && active === 9} />
       <Panel8 scrollTo={scrollTo} speaking={speaking && active === 10} />
     </div>
