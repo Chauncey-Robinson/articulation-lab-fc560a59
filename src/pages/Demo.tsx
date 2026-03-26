@@ -743,7 +743,7 @@ function Panel4({ speaking }: { speaking: boolean }) {
             <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.2em]"
               style={{ color: "hsl(var(--amber-bright))" }}>
-              System · Voice Engine
+              System · AI Coach
             </span>
           </motion.div>
 
