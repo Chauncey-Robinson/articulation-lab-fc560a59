@@ -298,7 +298,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
               <div className="w-10 h-[1px]" style={{ background: "hsl(var(--amber-bright))" }} />
               <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em]"
                 style={{ color: "hsl(var(--amber-bright))" }}>
-                A new kind of coaching tool · 2025
+                Your AI coach for professional knowledge · 2025
               </span>
             </motion.div>
 
