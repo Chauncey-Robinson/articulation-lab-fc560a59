@@ -11,6 +11,8 @@ import {
   PhoneMeetingScreen,
   PhoneExplainScreen,
   PhoneDialogueScreen,
+  PhoneDashboardScreen,
+  PhoneApplyScreen,
 } from "@/components/demo/DemoPhoneScreens";
 import { useTTS } from "@/hooks/useSpeech";
 
