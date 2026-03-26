@@ -1122,14 +1122,17 @@ function Panel6({ speaking }: { speaking: boolean }) {
     ["Personalised to how you learn", true, false, false],
     ["PDF and document upload", true, false, true],
     ["Voice reads sessions aloud", true, false, false],
-    ["Voice toggle on every screen", true, false, false],
+    ["Smart suggestion chips", true, false, false],
+    ["AI coach persona (Lily)", true, false, false],
     ["Progressive quiz difficulty", true, false, false],
     ["AI dialogue / conversation", true, false, true],
-    ["Explain-it-back evaluation", true, false, false],
+    ["Explain-it-back with live feedback", true, false, false],
     ["Real-world scenario practice", true, false, false],
-    ["Flashcards with voice", true, false, false],
+    ["Daily focus nudges", true, false, false],
+    ["Flashcards with spaced repetition", true, false, false],
     ["Fluency score (not just recall)", true, false, false],
     ["Live meeting transcription", true, false, false],
+    ["Ask anything across topics", true, false, false],
   ] as const;
 
   return (
