@@ -1585,6 +1585,20 @@ export default function Demo() {
           0%, 100% { box-shadow: 0 0 40px hsla(32,82%,51%,0.25); }
           50% { box-shadow: 0 0 70px hsla(32,82%,51%,0.4); }
         }
+        @keyframes lensFlare {
+          0% { transform: translateX(-120%) rotate(-10deg); opacity: 0; }
+          15% { opacity: 0.06; }
+          50% { opacity: 0.03; }
+          100% { transform: translateX(120%) rotate(10deg); opacity: 0; }
+        }
+        .lens-flare::after {
+          content: '';
+          position: absolute;
+          top: 0; left: -50%; right: -50%; bottom: 0;
+          background: linear-gradient(105deg, transparent 40%, hsla(32,82%,51%,0.08) 45%, hsla(32,82%,51%,0.12) 50%, hsla(32,82%,51%,0.08) 55%, transparent 60%);
+          animation: lensFlare 12s ease-in-out infinite;
+          pointer-events: none;
+        }
       `}</style>
       <SideNav active={active} />
       <ProgressBar active={active} />
