@@ -1599,13 +1599,65 @@ export default function Demo() {
           animation: lensFlare 12s ease-in-out infinite;
           pointer-events: none;
         }
+        @keyframes vignettePulse {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 0.85; }
+        }
+        @keyframes lightLeak {
+          0% { opacity: 0; transform: translateX(-100%) skewX(-15deg); }
+          20% { opacity: 0.12; }
+          80% { opacity: 0.05; }
+          100% { opacity: 0; transform: translateX(200%) skewX(-15deg); }
+        }
+        @keyframes cinematicZoom {
+          0% { transform: scale(1.05); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes filmFlicker {
+          0%, 100% { opacity: 0.03; }
+          50% { opacity: 0.06; }
+          73% { opacity: 0.02; }
+        }
+        @keyframes horizontalScan {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
       `}</style>
+
+      {/* Cinematic letterbox bars */}
+      <div className="fixed top-0 left-0 right-0 z-40 pointer-events-none" style={{ height: 28, background: "linear-gradient(to bottom, rgba(0,0,0,0.85), transparent)" }} />
+      <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none" style={{ height: 28, background: "linear-gradient(to top, rgba(0,0,0,0.85), transparent)" }} />
+
+      {/* Global vignette overlay */}
+      <div className="fixed inset-0 z-30 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 70% 60% at center, transparent 50%, rgba(0,0,0,0.35) 100%)",
+          animation: "vignettePulse 8s ease-in-out infinite",
+        }} />
+
+      {/* Ambient light leak */}
+      <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden">
+        <div style={{
+          position: "absolute", top: "10%", left: 0, width: "40%", height: "80%",
+          background: "linear-gradient(105deg, transparent, hsla(32,82%,51%,0.06), hsla(32,82%,51%,0.1), transparent)",
+          animation: "lightLeak 18s ease-in-out infinite",
+        }} />
+      </div>
+
+      {/* Film grain overlay */}
+      <div className="fixed inset-0 z-30 pointer-events-none"
+        style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          animation: "filmFlicker 3s linear infinite",
+          mixBlendMode: "overlay",
+        }} />
+
       <SideNav active={active} />
       <ProgressBar active={active} />
       {/* Voice toggle */}
       <button onClick={toggleMute}
-        className="fixed top-6 left-6 z-50 flex items-center gap-2 rounded-pill px-3 py-1.5 transition-all duration-300 hover:scale-105"
-        style={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))" }}>
+        className="fixed top-10 left-6 z-50 flex items-center gap-2 rounded-pill px-3 py-1.5 transition-all duration-300 hover:scale-105"
+        style={{ background: "hsla(var(--muted), 0.9)", border: "1px solid hsl(var(--border))", backdropFilter: "blur(8px)" }}>
         <span className="text-[14px]">{muted ? "🔇" : "🔊"}</span>
         <span className="font-sans text-[9px] uppercase tracking-[0.15em]" style={{ color: "hsl(var(--ink-3))" }}>
           {muted ? "Unmute" : "Narrating"}
@@ -1613,14 +1665,23 @@ export default function Demo() {
       </button>
       <NarrationBadge speaking={speaking} />
       <Panel0 scrollTo={scrollTo} speaking={speaking && active === 0} />
+      <ChapterCard number="01" title="The Problem" />
       <Panel1 speaking={speaking && active === 1} />
+      <ChapterCard number="02" title="The Solution" />
       <Panel2 speaking={speaking && active === 2} />
+      <ChapterCard number="03" title="Upload" />
       <Panel3 speaking={speaking && active === 3} />
+      <ChapterCard number="04" title="Learn" />
       <Panel4 speaking={speaking && active === 4} />
+      <ChapterCard number="05" title="Prove It" />
       <Panel5 speaking={speaking && active === 5} />
+      <ChapterCard number="06" title="Flashcards" />
       <PanelFlashcards speaking={speaking && active === 6} />
+      <ChapterCard number="07" title="Analytics" />
       <PanelAnalytics speaking={speaking && active === 7} />
+      <ChapterCard number="08" title="The Edge" />
       <Panel6 speaking={speaking && active === 8} />
+      <ChapterCard number="09" title="Meeting Mode" />
       <Panel7 speaking={speaking && active === 9} />
       <Panel8 scrollTo={scrollTo} speaking={speaking && active === 10} />
     </div>
