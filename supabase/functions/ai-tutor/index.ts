@@ -250,6 +250,7 @@ serve(async (req) => {
     const requestBody: Record<string, unknown> = {
       model: "google/gemini-2.5-flash",
       max_tokens: config.maxTokens,
+      reasoning: { effort: "medium" },
     };
 
     if (config.type === "dialogue") {
