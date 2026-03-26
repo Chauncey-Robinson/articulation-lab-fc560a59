@@ -192,13 +192,17 @@ function FloatingParticles() {
 function ProgressBar({ active }: { active: number }) {
   const pct = ((active + 1) / PANEL_COUNT) * 100;
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-[3px] z-50" style={{ background: "hsl(var(--muted))" }}>
+    <div className="fixed bottom-0 left-0 right-0 h-[2px] z-50" style={{ background: "transparent" }}>
       <motion.div
-        className="h-full"
+        className="h-full relative"
         style={{ background: "hsl(var(--amber-bright))" }}
         animate={{ width: `${pct}%` }}
         transition={{ duration: 0.6, ease }}
-      />
+      >
+        {/* Glowing tip */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
+          style={{ background: "hsl(var(--amber-bright))", boxShadow: "0 0 12px hsla(32,82%,51%,0.8), 0 0 30px hsla(32,82%,51%,0.4)" }} />
+      </motion.div>
     </div>
   );
 }
