@@ -268,7 +268,7 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
     <section
       ref={ref}
       id="panel-0"
-      className="min-h-screen snap-start flex items-center relative overflow-hidden"
+      className="min-h-screen snap-start flex items-center relative overflow-hidden lens-flare"
       style={{ background: "hsl(var(--foreground))" }}
     >
       {/* Dramatic gradient orbs */}
