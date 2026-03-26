@@ -1080,8 +1080,8 @@ function PanelAnalytics({ speaking }: { speaking: boolean }) {
           <div className="mt-8 space-y-3">
             {[
               { icon: "🔥", title: "Streak tracking", desc: "Visualise your daily consistency with a 7-day heatmap" },
-              { icon: "📈", title: "Knowledge retention", desc: "Average score across quizzes, teach-back, and apply modes" },
-              { icon: "🧱", title: "Concept stages", desc: "See every concept as Practicing, Getting There, or Solid" },
+              { icon: "📈", title: "Knowledge retention", desc: "Average score across quizzes, explain-it-back, and scenario modes" },
+              { icon: "🎯", title: "Daily focus nudge", desc: "Each day, Lily suggests what to review based on your weakest areas" },
               { icon: "📅", title: "Repetition schedule", desc: "A bar chart of what's due today, tomorrow, and this week" },
             ].map((s, i) => (
               <motion.div key={s.title} custom={i + 3} variants={slideLeft}>
