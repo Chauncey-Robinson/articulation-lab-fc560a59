@@ -357,37 +357,68 @@ function Panel0({ scrollTo, speaking }: { scrollTo: (n: number) => void; speakin
               className="font-serif font-normal leading-[0.92]"
               style={{ fontSize: "clamp(52px,6vw,92px)", letterSpacing: "-3px", color: "hsl(var(--background))" }}
             >
-              You know more
-              <br />
-              than you can
-              <br />
-              <motion.span
-                className="italic"
-                style={{ color: "hsl(var(--amber-bright))" }}
-                animate={{ opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                explain.
+              <motion.span className="block overflow-hidden">
+                <motion.span className="block"
+                  initial={{ y: "120%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}>
+                  You know more
+                </motion.span>
+              </motion.span>
+              <motion.span className="block overflow-hidden">
+                <motion.span className="block"
+                  initial={{ y: "120%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}>
+                  than you can
+                </motion.span>
+              </motion.span>
+              <motion.span className="block overflow-hidden">
+                <motion.span
+                  className="italic block"
+                  style={{ color: "hsl(var(--amber-bright))" }}
+                  initial={{ y: "120%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
+                >
+                  <motion.span
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                  >
+                    explain.
+                  </motion.span>
+                </motion.span>
               </motion.span>
             </motion.h1>
 
             <SpeakingGlow speaking={speaking}>
               <motion.p custom={2} variants={fadeUp} className="font-serif text-[22px] font-light leading-[1.6] mt-8 max-w-[480px]"
-                style={{ color: "rgba(255,255,255,0.5)" }}>
+                style={{ color: "rgba(255,255,255,0.5)" }}
+                initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 1.4, delay: 1 }}
+              >
                 Upload what you're studying. Your AI coach breaks it down and teaches it back to you.
                 Then you prove you own it.
               </motion.p>
             </SpeakingGlow>
 
-            <motion.div custom={3} variants={fadeUp} className="flex items-center gap-5 mt-12">
-              <button onClick={() => scrollTo(1)}
+            <motion.div custom={3} variants={fadeUp} className="flex items-center gap-5 mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.4 }}
+            >
+              <motion.button onClick={() => scrollTo(1)}
                 className="rounded-pill px-10 py-4 font-sans text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-1"
                 style={{
                   background: "hsl(var(--amber-bright))",
                   boxShadow: "0 0 60px hsla(32,82%,51%,0.3), 0 4px 20px hsla(32,82%,51%,0.2)",
-                }}>
+                }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 100px hsla(32,82%,51%,0.5), 0 8px 40px hsla(32,82%,51%,0.3)" }}
+                whileTap={{ scale: 0.97 }}
+              >
                 See how it works →
-              </button>
+              </motion.button>
               <button onClick={() => scrollTo(8)}
                 className="font-sans text-[13px] transition-colors duration-300"
                 style={{ color: "rgba(255,255,255,0.35)" }}>
