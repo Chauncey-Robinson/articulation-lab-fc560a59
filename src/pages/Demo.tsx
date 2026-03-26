@@ -253,6 +253,55 @@ function FluencyBar({ label, pct, color, animate }: { label: string; pct: number
   );
 }
 
+/* ─── Chapter Card — cinematic interstitial between sections ─── */
+function ChapterCard({ number, title }: { number: string; title: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+
+  return (
+    <div ref={ref} className="h-[40vh] snap-start flex items-center justify-center relative overflow-hidden"
+      style={{ background: "hsl(var(--foreground))" }}>
+      {/* Horizontal scan line */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          className="absolute top-1/2 left-0 w-full h-[1px]"
+          style={{ background: "linear-gradient(to right, transparent, hsla(32,82%,51%,0.3), transparent)" }}
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 1.2, ease }}
+        />
+      </div>
+      <div className="text-center relative z-10">
+        <motion.span
+          className="font-sans text-[11px] font-bold uppercase tracking-[0.4em] block mb-4"
+          style={{ color: "hsl(var(--amber-bright))" }}
+          initial={{ opacity: 0, letterSpacing: "0.8em" }}
+          animate={inView ? { opacity: 1, letterSpacing: "0.4em" } : {}}
+          transition={{ duration: 1.5, ease }}
+        >
+          Chapter {number}
+        </motion.span>
+        <motion.h3
+          className="font-serif text-[clamp(32px,4vw,52px)] italic"
+          style={{ color: "hsl(var(--background))" }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ duration: 1.2, delay: 0.3, ease }}
+        >
+          {title}
+        </motion.h3>
+        <motion.div
+          className="mx-auto mt-6"
+          style={{ width: 40, height: 1, background: "hsla(32,82%,51%,0.4)" }}
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.6, ease }}
+        />
+      </div>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════
    PANELS
    ═══════════════════════════════════════════ */
