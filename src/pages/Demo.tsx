@@ -83,26 +83,26 @@ function NarrationBadge({ speaking }: { speaking: boolean }) {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-pill px-4 py-2"
+      className="fixed top-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-pill px-4 py-2"
       style={{
-        background: "hsla(32,82%,51%,0.12)",
-        border: "1px solid hsla(32,82%,51%,0.3)",
-        backdropFilter: "blur(12px)",
-        boxShadow: "0 0 30px hsla(32,82%,51%,0.15)",
+        background: "hsla(0,0%,0%,0.6)",
+        border: "1px solid hsla(32,82%,51%,0.4)",
+        backdropFilter: "blur(16px)",
+        boxShadow: "0 0 40px hsla(32,82%,51%,0.2), 0 8px 32px rgba(0,0,0,0.3)",
       }}
     >
       <div className="flex items-center gap-[2px] h-3">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 7 }).map((_, i) => (
           <motion.div key={i} className="w-[2px] rounded-full"
             style={{ background: "hsl(var(--amber-bright))" }}
-            animate={{ height: [3, 8 + Math.random() * 6, 3] }}
-            transition={{ duration: 0.4 + i * 0.1, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ height: [2, 10 + Math.random() * 6, 2] }}
+            transition={{ duration: 0.3 + i * 0.08, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
       </div>
-      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.15em]"
+      <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em]"
         style={{ color: "hsl(var(--amber-bright))" }}>
-        Listening
+        Lily is speaking
       </span>
     </motion.div>
   );
