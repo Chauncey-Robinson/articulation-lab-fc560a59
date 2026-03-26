@@ -17,16 +17,16 @@ import { useTTS } from "@/hooks/useSpeech";
 const PANEL_COUNT = 11;
 
 const panelNarrations = [
-  "You know more than you can explain. Upload what you're studying. The AI breaks it down. Then you prove you own it.",
+  "You know more than you can explain. Upload what you're studying. Your AI coach breaks it down. Then you prove you own it.",
   "87 percent of professionals said the same thing. They studied. They finished. Then someone asked and nothing came out.",
-  "Think of it as a gym for your knowledge. Upload anything. It personalises to how you learn. Then you prove it five ways.",
-  "Paste text, upload a PDF, drop in your notes. The AI pulls out the key ideas and builds your topics.",
-  "Every session is read aloud. Toggle it on or off. Then discuss with the coach or speak your answers back.",
-  "Quizzes start easy with multiple choice, then true or false, then open-ended. All adapting to your style. Plus explain-it-back, scenarios, dialogue, and flashcards.",
-  "Flashcards aren't just about flipping cards. You rate difficulty, track your accuracy, and the app remembers what you struggle with. It brings those back at exactly the right time.",
-  "And all of this feeds into your analytics. Streak tracking, concept mastery stages, a repetition schedule, accuracy across every test type. You always know exactly where you stand.",
-  "Nobody else combines voice sessions, progressive quizzes, and five coaching modes. This is genuinely unique.",
-  "And here's something no one else does. Meeting mode. Walk into any conference, lecture, or meeting. Hit record. The AI transcribes everything live. When it's done, it pulls out key learnings, action items, and can turn the whole thing into a study topic. All inside the same app.",
+  "Think of it as a gym for your knowledge. Upload anything. Your coach personalises everything to how you learn. Then you prove it five ways.",
+  "Paste text, upload a PDF, drop in your notes. The AI pulls out the key ideas and builds your topics. Smart suggestions help you go deeper on what matters.",
+  "Every session is read aloud by Lily, your AI coach. Toggle voice on or off. Then discuss with her or speak your answers back.",
+  "Five coaching modes that adapt to you. Quizzes that progress from easy to hard. Explain-it-back with live feedback. Real-world scenarios. Dialogue. And smart flashcards.",
+  "Flashcards that remember what you struggle with. You rate difficulty, track accuracy, and the app brings back hard cards at exactly the right time.",
+  "Everything feeds into your analytics. Streak tracking, concept mastery stages, daily focus nudges, and accuracy across every coaching mode. You always know exactly where you stand.",
+  "Nobody else combines voice coaching, progressive quizzes, and five coaching modes. This is genuinely unique.",
+  "Meeting mode. Walk into any conference, lecture, or meeting. Hit record. The AI transcribes everything live. Then it pulls out key learnings, action items, and turns it into a study topic.",
   "That's it. Upload, learn, prove it. Own the room.",
 ];
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
