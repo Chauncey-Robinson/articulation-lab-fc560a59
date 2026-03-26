@@ -757,7 +757,7 @@ function Panel4({ speaking }: { speaking: boolean }) {
           <motion.p custom={2} variants={fadeUp}
             className="font-serif text-[18px] font-light leading-[1.6] mt-6"
             style={{ color: "hsl(var(--ink-3))" }}>
-            Each session is read aloud by a natural AI voice. Toggle voice on or off anytime. Then discuss with the coach and speak it back.
+            Lily is your AI coach. She reads every session aloud with a natural voice. Ask her questions. Challenge ideas. She adapts to you in real time.
           </motion.p>
 
           {/* HUD feature callouts */}
