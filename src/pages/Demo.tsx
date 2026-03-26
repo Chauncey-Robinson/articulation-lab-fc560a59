@@ -763,9 +763,9 @@ function Panel4({ speaking }: { speaking: boolean }) {
           {/* HUD feature callouts */}
           <div className="mt-10 space-y-3">
             {[
-              { tag: "VOICE OUTPUT", icon: "🔊", title: "AI reads every lesson", desc: "Natural ElevenLabs TTS. Toggle on or off from any screen." },
-              { tag: "AI TUTOR", icon: "🤖", title: "Live dialogue", desc: "Ask questions. Challenge ideas. The tutor adapts in real time." },
-              { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. The AI listens, evaluates, responds." },
+              { tag: "VOICE OUTPUT", icon: "🔊", title: "Lily reads every session", desc: "Natural ElevenLabs voice. Toggle on or off from any screen." },
+              { tag: "AI COACH", icon: "🤖", title: "Live dialogue with Lily", desc: "Ask questions. Challenge ideas. She adapts and pushes you deeper." },
+              { tag: "VOICE INPUT", icon: "🎤", title: "Speak back", desc: "Use your mic to explain. Lily listens, evaluates, and responds with live feedback." },
             ].map((f, i) => (
               <motion.div key={f.tag} custom={i + 3} variants={slideLeft}>
                 <SpeakingGlow speaking={speaking} delay={i * 0.5}>
