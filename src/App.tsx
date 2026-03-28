@@ -20,6 +20,7 @@ import LearnConfig from "@/pages/LearnConfig";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
+import Pricing from "@/pages/Pricing";
 import MeetingRecord from "@/pages/MeetingRecord";
 import MeetingReview from "@/pages/MeetingReview";
 import { TutorProvider } from "@/lib/TutorContext";
@@ -50,6 +51,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/demo" element={<Demo />} />
+              <Route path="/pricing" element={<Pricing />} />
 
               <Route path="/*" element={
                 <IPhoneFrame>
