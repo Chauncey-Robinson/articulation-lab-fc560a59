@@ -290,11 +290,11 @@ serve(async (req) => {
 
     if (!response.ok) {
       const status = response.status;
-      if (status === 429) return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (status === 402) return new Response(JSON.stringify({ error: "AI usage limit reached." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (status === 429) return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly.", limited: true }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (status === 402) return new Response(JSON.stringify({ error: "AI usage limit reached. Please add credits in Settings → Workspace → Usage.", limited: true }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const t = await response.text();
       console.error("AI gateway error:", status, t);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const data = await response.json();
