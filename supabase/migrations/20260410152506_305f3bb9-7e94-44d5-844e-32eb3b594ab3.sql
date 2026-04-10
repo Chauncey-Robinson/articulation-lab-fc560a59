@@ -1,0 +1,1 @@
+UPDATE profiles SET onboarded = true, display_name = 'Demo' WHERE user_id = 'b9cb57ba-741c-41c9-835f-e0fde557ecaf'
