@@ -21,7 +21,6 @@ import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Demo from "@/pages/Demo";
 import Pricing from "@/pages/Pricing";
-import Screenshots from "@/pages/Screenshots";
 import MeetingRecord from "@/pages/MeetingRecord";
 import MeetingReview from "@/pages/MeetingReview";
 import { TutorProvider } from "@/lib/TutorContext";
@@ -53,7 +52,6 @@ const App = () => (
             <Routes>
               <Route path="/demo" element={<Demo />} />
               <Route path="/pricing" element={<Pricing />} />
-              <Route path="/screenshots" element={<Screenshots />} />
 
               <Route path="/*" element={
                 <IPhoneFrame>
