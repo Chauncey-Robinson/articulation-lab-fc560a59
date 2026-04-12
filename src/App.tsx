@@ -23,6 +23,7 @@ import Demo from "@/pages/Demo";
 import Pricing from "@/pages/Pricing";
 import MeetingRecord from "@/pages/MeetingRecord";
 import MeetingReview from "@/pages/MeetingReview";
+
 import { TutorProvider } from "@/lib/TutorContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import IPhoneFrame from "@/components/IPhoneFrame";
@@ -52,6 +53,7 @@ const App = () => (
             <Routes>
               <Route path="/demo" element={<Demo />} />
               <Route path="/pricing" element={<Pricing />} />
+              
 
               <Route path="/*" element={
                 <IPhoneFrame>
