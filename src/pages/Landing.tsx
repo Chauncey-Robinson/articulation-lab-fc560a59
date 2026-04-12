@@ -16,6 +16,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <p className="font-serif text-[1.1rem] tracking-[0.15em] uppercase text-foreground/60 mb-6 animate-fade-up stagger-1">Fluency</p>
         <h1 className="font-serif text-[2.4rem] leading-[1.1] tracking-[-1px] text-foreground mb-4 animate-fade-up stagger-1">
           Learn anything.<br />Own it forever.
         </h1>
