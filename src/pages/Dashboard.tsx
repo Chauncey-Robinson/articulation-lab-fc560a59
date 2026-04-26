@@ -7,9 +7,9 @@ import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCc
 
 function getStatusColor(status: string) {
   switch (status) {
-    case "completed": return "bg-sage text-white";
-    case "testing": return "bg-accent-pale text-accent";
-    case "learning": return "bg-accent-bright/20 text-accent-bright";
+    case "completed": return "bg-sage/15 text-sage";
+    case "testing": return "bg-surface-2 text-foreground";
+    case "learning": return "bg-surface-2 text-foreground";
     default: return "bg-surface-2 text-ink-3";
   }
 }
@@ -73,48 +73,50 @@ export default function Dashboard() {
   const overallPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-24">
-      <div className="max-w-[460px] mx-auto w-full">
+    <div className="min-h-screen bg-background flex flex-col px-8 pt-10 pb-32">
+      <div className="max-w-[520px] mx-auto w-full">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-20">
           <div>
             {progress.current_streak > 0 && (
-              <span className="text-[13px] font-sans font-medium text-foreground flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-accent-bright" /> {progress.current_streak}</span>
+              <span className="text-[13px] font-sans font-medium text-foreground flex items-center gap-1.5">
+                <Flame className="w-3.5 h-3.5 text-foreground" /> {progress.current_streak}
+              </span>
             )}
           </div>
           <button onClick={signOut} className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Sign out</button>
         </div>
 
-        {/* Greeting + contextual nudge */}
-        <div className="mb-6 animate-fade-up stagger-1">
-          <h1 className="font-serif text-[2rem] text-foreground mb-1">{greeting}</h1>
+        {/* Greeting + contextual nudge — significant whitespace above */}
+        <div className="mb-12 animate-fade-up stagger-1">
+          <h1 className="font-serif text-[2.75rem] leading-[1.1] text-foreground mb-3 tracking-tight">{greeting}</h1>
           {modules.length === 0 ? (
-            <p className="text-[14px] font-sans text-ink-3">Upload something to start.</p>
+            <p className="text-[15px] font-sans text-ink-3 leading-[1.6]">Upload something to start.</p>
           ) : activeModules.length > 0 ? (
-            <p className="text-[14px] font-sans text-ink-3">
+            <p className="text-[15px] font-sans text-ink-3 leading-[1.6]">
               You were working on <span className="text-foreground font-medium">{activeModules[0].title}</span>. Pick up where you left off?
             </p>
           ) : (
-            <p className="text-[14px] font-sans text-ink-3">All topics complete. Add something new or review what you know.</p>
+            <p className="text-[15px] font-sans text-ink-3 leading-[1.6]">All topics complete. Add something new or review what you know.</p>
           )}
         </div>
 
         {/* Smart suggestion chips */}
         {modules.length > 0 && (
-          <div className="flex gap-2 overflow-x-auto pb-1 mb-6 animate-fade-up stagger-2 scrollbar-hide">
+          <div className="flex gap-2.5 overflow-x-auto pb-1 mb-10 animate-fade-up stagger-2 scrollbar-hide -mx-2 px-2">
             {activeModules.length > 0 && (
               <button
                 onClick={() => navigate(`/module/${activeModules[0].id}`)}
-                className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+                className="flex-shrink-0 flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 hover:bg-surface-3 transition-all duration-[180ms]"
               >
-                <Zap className="w-3.5 h-3.5 text-accent-bright" />
+                <Zap className="w-3.5 h-3.5 text-foreground" />
                 <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Continue {activeModules[0].title.length > 20 ? activeModules[0].title.slice(0, 20) + "..." : activeModules[0].title}</span>
               </button>
             )}
             {completedModules.length > 0 && (
               <button
                 onClick={() => navigate(`/module/${completedModules[0].id}`)}
-                className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+                className="flex-shrink-0 flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 hover:bg-surface-3 transition-all duration-[180ms]"
               >
                 <RotateCcw className="w-3.5 h-3.5 text-ink-3" />
                 <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Review a past topic</span>
@@ -126,15 +128,15 @@ export default function Dashboard() {
                   const mod = activeModules.find(m => m.completed_lessons > 0);
                   if (mod) navigate(`/test-config/${mod.id}`);
                 }}
-                className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+                className="flex-shrink-0 flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 hover:bg-surface-3 transition-all duration-[180ms]"
               >
-                <Brain className="w-3.5 h-3.5 text-accent" />
+                <Brain className="w-3.5 h-3.5 text-foreground" />
                 <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Coach me on my weakest area</span>
               </button>
             )}
             <button
               onClick={() => navigate("/upload")}
-              className="flex-shrink-0 flex items-center gap-2 rounded-pill border-[1.5px] border-border bg-card px-4 py-2.5 hover:border-accent transition-all duration-[180ms]"
+              className="flex-shrink-0 flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 hover:bg-surface-3 transition-all duration-[180ms]"
             >
               <Plus className="w-3.5 h-3.5 text-ink-3" />
               <span className="text-[12px] font-sans font-medium text-foreground whitespace-nowrap">Add new material</span>
@@ -142,18 +144,18 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Deadline alerts */}
+        {/* Deadline alerts — borderless tinted tile */}
         {upcomingDeadlines.length > 0 && (
-          <div className="mb-4 animate-fade-up stagger-2">
+          <div className="mb-8 animate-fade-up stagger-2 space-y-3">
             {upcomingDeadlines.map((d: any) => {
               const diff = Math.ceil((new Date(d.date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
               return (
-                <div key={d.moduleId} className="bg-accent-bright/10 border-[1.5px] border-accent-bright/30 rounded-[14px] px-4 py-3 mb-2 flex items-center justify-between">
+                <div key={d.moduleId} className="bg-surface-2 rounded-[28px] px-7 py-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[12px] font-sans font-medium text-foreground">{d.moduleTitle}</p>
-                    <p className="text-[11px] font-sans text-accent-bright">{diff === 0 ? "Due today!" : diff === 1 ? "Due tomorrow" : `${diff} days left`}</p>
+                    <p className="text-[13px] font-sans font-medium text-foreground">{d.moduleTitle}</p>
+                    <p className="text-[12px] font-sans text-ink-3 mt-1">{diff === 0 ? "Due today" : diff === 1 ? "Due tomorrow" : `${diff} days left`}</p>
                   </div>
-                  <button onClick={() => navigate(`/module/${d.moduleId}`)} className="text-[11px] font-sans font-medium text-accent hover:text-foreground transition-colors">
+                  <button onClick={() => navigate(`/module/${d.moduleId}`)} className="text-[12px] font-sans font-medium text-foreground hover:opacity-70 transition-opacity">
                     Go →
                   </button>
                 </div>
@@ -162,105 +164,117 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Stats row */}
+        {/* Stats — clean borderless tiles */}
         {(progress.total_sessions > 0 || modules.length > 0) && (
-          <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-2">
-            <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
-              <p className="font-serif text-[2rem] leading-none text-foreground">{modules.length}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">topics</p>
+          <div className="grid grid-cols-2 gap-4 mb-12 animate-fade-up stagger-2">
+            <div className="bg-surface-1 rounded-[28px] px-7 py-8">
+              <p className="font-serif text-[2.75rem] leading-none text-foreground tracking-tight">{modules.length}</p>
+              <p className="text-[12px] font-sans text-ink-3 mt-3 tracking-wide">Topics</p>
             </div>
-            <div className="bg-card rounded-[16px] border-[1.5px] border-border p-4 text-center">
-              <p className="font-serif text-[2rem] leading-none text-foreground">{progress.current_streak}</p>
-              <p className="text-[11px] font-sans text-ink-3 mt-1">day streak</p>
+            <div className="bg-surface-1 rounded-[28px] px-7 py-8">
+              <p className="font-serif text-[2.75rem] leading-none text-foreground tracking-tight">{progress.current_streak}</p>
+              <p className="text-[12px] font-sans text-ink-3 mt-3 tracking-wide">Day streak</p>
             </div>
           </div>
         )}
 
-        {/* Active topics */}
+        {/* Active topics — borderless tiles with fill-effect progress */}
         {activeModules.length > 0 && (
-          <div className="mb-6">
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3 animate-fade-up stagger-3">CONTINUE</p>
-            {activeModules.map((mod, idx) => (
-              <button key={mod.id}
-                onClick={() => navigate(`/module/${mod.id}`)}
-                className={`w-full text-left bg-card rounded-[18px] border-[1.5px] border-border p-5 mb-3 hover:border-accent hover:translate-y-[-2px] hover:shadow-card-hover transition-all duration-[180ms] animate-fade-up`}
-                style={{ animationDelay: `${(idx + 3) * 65}ms` }}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className={`text-[10px] font-sans font-semibold uppercase tracking-[0.1em] px-2.5 py-0.5 rounded-pill ${getStatusColor(mod.status)}`}>
-                    {getStatusLabel(mod.status)}
-                  </span>
-                  {mod.lesson_count > 0 && (
-                    <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)}/{mod.lesson_count} sessions</span>
-                  )}
-                </div>
-                <h3 className="font-serif text-[18px] text-foreground leading-tight mb-1">{mod.title}</h3>
-                {mod.lesson_count > 0 && (
-                  <div className="w-full h-1 bg-border rounded-pill mt-3">
-                    <div className="h-full bg-accent rounded-pill transition-all duration-300" style={{ width: `${Math.min((mod.completed_lessons / mod.lesson_count) * 100, 100)}%` }} />
-                  </div>
-                )}
-              </button>
-            ))}
+          <div className="mb-12">
+            <p className="text-[10px] font-sans font-medium uppercase tracking-[0.18em] text-ink-3 mb-5 animate-fade-up stagger-3">Continue</p>
+            <div className="space-y-4">
+              {activeModules.map((mod, idx) => {
+                const pct = mod.lesson_count > 0 ? Math.min((mod.completed_lessons / mod.lesson_count) * 100, 100) : 0;
+                return (
+                  <button key={mod.id}
+                    onClick={() => navigate(`/module/${mod.id}`)}
+                    className="relative w-full text-left rounded-[28px] p-7 hover:-translate-y-0.5 hover:shadow-tile-hover transition-all duration-[220ms] animate-fade-up overflow-hidden bg-surface-1"
+                    style={{ animationDelay: `${(idx + 3) * 80}ms` }}>
+                    {/* Fill-effect progress: surface-2 wash that fills as user completes */}
+                    <div
+                      className="absolute inset-0 bg-surface-2 transition-all duration-500 ease-out"
+                      style={{ width: `${pct}%` }}
+                      aria-hidden="true"
+                    />
+                    <div className="relative">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`text-[10px] font-sans font-medium uppercase tracking-[0.16em] px-3 py-1 rounded-pill ${getStatusColor(mod.status)}`}>
+                          {getStatusLabel(mod.status)}
+                        </span>
+                        {mod.lesson_count > 0 && (
+                          <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)} / {mod.lesson_count}</span>
+                        )}
+                      </div>
+                      <h3 className="font-serif text-[22px] leading-[1.2] text-foreground tracking-tight">{mod.title}</h3>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
         {/* Completed topics */}
         {completedModules.length > 0 && (
-          <div className="mb-6">
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">COMPLETED</p>
-            {completedModules.map(mod => (
-              <button key={mod.id} onClick={() => navigate(`/module/${mod.id}`)}
-                className="w-full text-left bg-card rounded-[18px] border-[1.5px] border-border p-5 mb-3 hover:border-accent transition-all duration-[180ms] opacity-70">
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle className="w-4 h-4 text-sage" />
-                  <h3 className="font-serif text-[16px] text-foreground">{mod.title}</h3>
-                </div>
-                <p className="text-[12px] font-sans text-ink-3">{mod.lesson_count} sessions completed</p>
-              </button>
-            ))}
+          <div className="mb-12">
+            <p className="text-[10px] font-sans font-medium uppercase tracking-[0.18em] text-ink-3 mb-5">Completed</p>
+            <div className="space-y-3">
+              {completedModules.map(mod => (
+                <button key={mod.id} onClick={() => navigate(`/module/${mod.id}`)}
+                  className="w-full text-left rounded-[28px] p-6 bg-surface-1 hover:bg-surface-2 transition-all duration-[180ms] opacity-75 hover:opacity-100">
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <CheckCircle className="w-4 h-4 text-sage" />
+                    <h3 className="font-serif text-[18px] text-foreground tracking-tight">{mod.title}</h3>
+                  </div>
+                  <p className="text-[12px] font-sans text-ink-3 ml-6">{mod.lesson_count} sessions completed</p>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
         {/* Recent meetings */}
         {meetings.length > 0 && (
-          <div className="mb-6">
-            <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-3">MEETINGS</p>
-            {meetings.map(m => {
-              const formatDuration = (s: number) => s >= 60 ? `${Math.floor(s / 60)}m` : `${s}s`;
-              return (
-                <button key={m.id} onClick={() => navigate(`/meeting/${m.id}`)}
-                  className="w-full text-left bg-card rounded-[16px] border-[1.5px] border-border p-4 mb-2 hover:border-accent transition-all duration-[180ms]">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {m.meeting_type === "conference" ? <Mic className="w-4 h-4 text-ink-3" /> : m.meeting_type === "lecture" ? <GraduationCap className="w-4 h-4 text-ink-3" /> : <Briefcase className="w-4 h-4 text-ink-3" />}
-                      <div>
-                        <h3 className="text-[13px] font-sans font-medium text-foreground">{m.title}</h3>
-                        <p className="text-[11px] font-sans text-ink-3">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : ""}</p>
+          <div className="mb-12">
+            <p className="text-[10px] font-sans font-medium uppercase tracking-[0.18em] text-ink-3 mb-5">Meetings</p>
+            <div className="space-y-3">
+              {meetings.map(m => {
+                const formatDuration = (s: number) => s >= 60 ? `${Math.floor(s / 60)}m` : `${s}s`;
+                return (
+                  <button key={m.id} onClick={() => navigate(`/meeting/${m.id}`)}
+                    className="w-full text-left rounded-[28px] p-5 bg-surface-1 hover:bg-surface-2 transition-all duration-[180ms]">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {m.meeting_type === "conference" ? <Mic className="w-4 h-4 text-ink-3" /> : m.meeting_type === "lecture" ? <GraduationCap className="w-4 h-4 text-ink-3" /> : <Briefcase className="w-4 h-4 text-ink-3" />}
+                        <div>
+                          <h3 className="text-[14px] font-sans font-medium text-foreground">{m.title}</h3>
+                          <p className="text-[11px] font-sans text-ink-3 mt-0.5">{new Date(m.created_at).toLocaleDateString()} · {m.duration_seconds ? formatDuration(m.duration_seconds) : ""}</p>
+                        </div>
                       </div>
+                      <span className={`text-[10px] font-sans font-medium uppercase tracking-[0.14em] px-2.5 py-1 rounded-pill ${m.status === "completed" ? "bg-sage/15 text-sage" : "bg-surface-2 text-foreground"}`}>
+                        {m.status === "completed" ? "Done" : m.status}
+                      </span>
                     </div>
-                    <span className={`text-[10px] font-sans font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-pill ${m.status === "completed" ? "bg-sage/20 text-sage" : "bg-accent-pale text-accent"}`}>
-                      {m.status === "completed" ? "Done" : m.status}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
-        {/* Upload CTA */}
+        {/* Oversized pill CTA */}
         <div className="animate-fade-up stagger-6">
           <Link to="/upload"
-            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
+            className="w-full rounded-pill bg-primary py-6 text-[15px] font-sans font-semibold text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all duration-[200ms] text-center block tracking-wide">
             Start a session
           </Link>
         </div>
 
         {/* Bottom nav */}
-        <div className="flex justify-center gap-6 mt-4">
-          <Link to="/analytics" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
-          <Link to="/deadlines" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
-          <Link to="/settings" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Settings</Link>
+        <div className="flex justify-center gap-8 mt-10">
+          <Link to="/analytics" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
+          <Link to="/deadlines" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
+          <Link to="/settings" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Settings</Link>
         </div>
       </div>
     </div>

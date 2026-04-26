@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["Cormorant Garamond", "Georgia", "serif"],
-        sans: ["Instrument Sans", "system-ui", "sans-serif"],
+        serif: ["Playfair Display", "Cormorant Garamond", "Georgia", "serif"],
+        sans: ["Inter", "Instrument Sans", "system-ui", "sans-serif"],
+        display: ["Playfair Display", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -59,6 +60,12 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          tint: "hsl(var(--card-tint))",
+        },
+        surface: {
+          1: "hsl(var(--surface-1))",
+          2: "hsl(var(--surface-2))",
+          3: "hsl(var(--surface-3))",
         },
         "ai-card": {
           DEFAULT: "hsl(var(--ai-card))",
@@ -86,14 +93,17 @@ export default {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-        pill: "100px",
+        md: "calc(var(--radius) - 8px)",
+        sm: "calc(var(--radius) - 16px)",
+        squircle: "28px",
+        pill: "999px",
       },
       boxShadow: {
-        "card-hover": "0 8px 24px rgba(17,16,9,0.08)",
-        "phone": "0 32px 64px rgba(17,16,9,0.14), 0 2px 8px rgba(17,16,9,0.06)",
-        "modal": "0 24px 48px rgba(17,16,9,0.18)",
+        "tile": "0 1px 2px rgba(20,24,40,0.03), 0 8px 24px -12px rgba(20,24,40,0.06)",
+        "tile-hover": "0 2px 4px rgba(20,24,40,0.04), 0 16px 40px -16px rgba(20,24,40,0.10)",
+        "card-hover": "0 16px 40px -16px rgba(20,24,40,0.12)",
+        "phone": "0 32px 64px rgba(20,24,40,0.14), 0 2px 8px rgba(20,24,40,0.06)",
+        "modal": "0 24px 48px rgba(20,24,40,0.18)",
       },
     },
   },

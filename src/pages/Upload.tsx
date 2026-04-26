@@ -148,52 +148,53 @@ export default function Upload() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10">
-      <div className="flex items-center justify-between mb-6">
-        <button onClick={() => navigate(-1)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
+    <div className="min-h-screen bg-background flex flex-col px-8 pt-6 pb-14">
+      <div className="flex items-center justify-between mb-10">
+        <button onClick={() => navigate(-1)} className="text-[18px] font-sans text-ink-3 hover:text-foreground transition-colors">←</button>
       </div>
 
-      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        <h1 className="font-serif text-[2rem] text-foreground mb-2 animate-fade-up stagger-1">What are you learning?</h1>
-        <p className="text-[14px] font-sans text-ink-3 mb-6 animate-fade-up stagger-2">
+      <div className="max-w-[560px] mx-auto w-full flex-1 flex flex-col">
+        <h1 className="font-serif text-[2.5rem] leading-[1.1] text-foreground mb-3 tracking-tight animate-fade-up stagger-1">What are you learning?</h1>
+        <p className="text-[15px] font-sans text-ink-3 mb-10 leading-[1.6] animate-fade-up stagger-2">
           Paste it, link it, or drop in a file.
         </p>
 
-        {/* Input method selector */}
-        <div className="grid grid-cols-2 gap-3 mb-6 animate-fade-up stagger-3">
+        {/* Input method selector — borderless tinted tiles */}
+        <div className="grid grid-cols-2 gap-3 mb-10 animate-fade-up stagger-3">
           {inputMethods.map(m => (
             <button key={m.key}
               onClick={() => setMethod(m.key)}
-              className={`rounded-[16px] border-[1.5px] p-4 text-left transition-all duration-[180ms] ${
-                method === m.key ? "border-accent bg-accent-pale/20" :
-                "border-border bg-card hover:border-accent"
+              className={`rounded-[28px] p-6 text-left transition-all duration-[180ms] ${
+                method === m.key ? "bg-primary text-primary-foreground" :
+                "bg-surface-1 text-foreground hover:bg-surface-2"
               }`}>
-              <m.icon className="w-5 h-5 mb-1 text-ink-3" />
-              <p className="text-[13px] font-sans font-semibold text-foreground">{m.label}</p>
-              {m.desc && <p className="text-[11px] font-sans text-ink-3 mt-1 leading-[1.4]">{m.desc}</p>}
+              <m.icon className={`w-5 h-5 mb-3 ${method === m.key ? "text-primary-foreground" : "text-ink-3"}`} />
+              <p className={`text-[14px] font-sans font-medium ${method === m.key ? "text-primary-foreground" : "text-foreground"}`}>{m.label}</p>
+              {m.desc && <p className={`text-[12px] font-sans mt-1 leading-[1.5] ${method === m.key ? "text-primary-foreground/70" : "text-ink-3"}`}>{m.desc}</p>}
             </button>
           ))}
         </div>
 
-        {/* Text input */}
+        {/* Text input — invisible, edge-to-edge "blank paper" feel */}
         {method === "text" && (
-          <div className="animate-fade-up stagger-4">
+          <div className="animate-fade-up stagger-4 mb-4">
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Paste anything here. Even one paragraph is enough to start."
-              className="w-full min-h-[180px] rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] resize-y mb-1"
+              placeholder="Start typing. Even one paragraph is enough."
+              className="w-full min-h-[260px] bg-transparent border-0 outline-none focus:ring-0 px-0 py-4 font-serif text-[20px] leading-[1.6] text-foreground placeholder:text-ink-3 placeholder:italic placeholder:font-light resize-none caret-foreground"
               disabled={loading}
+              autoFocus
             />
             {content.length > 0 && (
-              <p className="text-[11px] font-sans text-ink-3 text-right mb-2">{content.length} characters</p>
+              <p className="text-[11px] font-sans text-ink-3 mt-2 tracking-wide">{content.length} characters</p>
             )}
           </div>
         )}
 
         {/* File upload */}
         {method === "file" && (
-          <div className="animate-fade-up stagger-4">
+          <div className="animate-fade-up stagger-4 mb-4">
             <input
               ref={fileInputRef}
               type="file"
@@ -206,25 +207,25 @@ export default function Upload() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={loading || fileProcessing}
-                className="w-full rounded-[16px] border-[2px] border-dashed border-border bg-card hover:border-accent hover:bg-accent-pale/10 transition-all duration-[180ms] p-8 flex flex-col items-center gap-3"
+                className="w-full rounded-[28px] bg-surface-1 hover:bg-surface-2 transition-all duration-[180ms] p-12 flex flex-col items-center gap-4"
               >
-                <FileText className="w-8 h-8 text-ink-3" />
-                <p className="text-[14px] font-sans font-medium text-foreground">Tap to choose a file</p>
+                <FileText className="w-10 h-10 text-ink-3" strokeWidth={1.25} />
+                <p className="text-[15px] font-sans font-medium text-foreground">Choose a file</p>
                 <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT, Markdown · Max 20 MB</p>
               </button>
             ) : (
-              <div className="rounded-[16px] border-[1.5px] border-border bg-card p-5">
-                <div className="flex items-center justify-between mb-3">
+              <div className="rounded-[28px] bg-surface-1 p-7">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <FileText className="w-5 h-5 text-ink-3" />
                     <div>
-                      <p className="text-[13px] font-sans font-medium text-foreground truncate max-w-[200px]">{fileName}</p>
+                      <p className="text-[14px] font-sans font-medium text-foreground truncate max-w-[220px]">{fileName}</p>
                       {fileProcessing ? (
-                        <p className="text-[11px] font-sans text-accent">Extracting text...</p>
+                        <p className="text-[11px] font-sans text-ink-3 mt-0.5">Extracting text...</p>
                       ) : content.length > 0 ? (
-                        <p className="text-[11px] font-sans text-sage">{content.length.toLocaleString()} characters extracted</p>
+                        <p className="text-[11px] font-sans text-sage mt-0.5">{content.length.toLocaleString()} characters extracted</p>
                       ) : (
-                        <p className="text-[11px] font-sans text-destructive">No text extracted</p>
+                        <p className="text-[11px] font-sans text-destructive mt-0.5">No text extracted</p>
                       )}
                     </div>
                   </div>
@@ -237,54 +238,56 @@ export default function Upload() {
                 </div>
 
                 {content.length > 0 && (
-                  <div className="bg-surface-2 rounded-[12px] p-4 max-h-[120px] overflow-y-auto">
-                    <p className="text-[12px] font-sans text-ink-2 leading-[1.6] whitespace-pre-wrap">{content.slice(0, 500)}{content.length > 500 ? "..." : ""}</p>
+                  <div className="bg-surface-2 rounded-[20px] p-5 max-h-[140px] overflow-y-auto">
+                    <p className="text-[13px] font-serif text-ink-2 leading-[1.7] whitespace-pre-wrap">{content.slice(0, 500)}{content.length > 500 ? "..." : ""}</p>
                   </div>
                 )}
 
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-[12px] font-sans text-accent hover:text-foreground transition-colors mt-3"
+                  className="text-[12px] font-sans text-foreground hover:opacity-70 transition-opacity mt-4"
                 >
-                  Choose different file
+                  Choose different file →
                 </button>
               </div>
             )}
 
             {fileProcessing && (
-              <div className="flex items-center gap-3 mt-3">
-                <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+              <div className="flex items-center gap-3 mt-4">
+                <div className="w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
                 <p className="text-[13px] font-sans text-ink-3">Reading file contents...</p>
               </div>
             )}
           </div>
         )}
 
-        {/* URL input */}
+        {/* URL input — invisible style */}
         {method === "url" && (
-          <div className="animate-fade-up stagger-4">
+          <div className="animate-fade-up stagger-4 mb-4">
             <input
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com/article"
-              className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-4 text-[15px] font-sans text-foreground placeholder:text-ink-3 placeholder:italic focus:outline-none focus:border-accent-bright transition-colors duration-[180ms] mb-3"
+              className="w-full bg-transparent border-0 outline-none focus:ring-0 px-0 py-4 font-serif text-[20px] leading-[1.6] text-foreground placeholder:text-ink-3 placeholder:italic placeholder:font-light caret-foreground"
               disabled={loading}
+              autoFocus
             />
+            <div className="h-px bg-surface-3 mt-1" />
           </div>
         )}
 
         {/* Record audio */}
         {method === "record" && (
-          <div className="animate-fade-up stagger-4">
-            <div className="bg-card rounded-[16px] border-[1.5px] border-border p-5 mb-4 text-center">
-              <p className="text-[14px] font-sans text-ink-3 mb-4">Record a lecture, talk, or any audio content.</p>
+          <div className="animate-fade-up stagger-4 mb-4">
+            <div className="bg-surface-1 rounded-[28px] p-8 text-center">
+              <p className="text-[14px] font-sans text-ink-3 mb-6 leading-[1.6]">Record a lecture, talk, or any audio content.</p>
               <MicButton onTranscript={(t) => setContent(prev => prev ? prev + " " + t : t)} />
               {content.length > 0 && (
-                <div className="mt-4 text-left">
-                  <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-ink-3 mb-2">TRANSCRIPTION</p>
-                  <p className="text-[13px] font-sans text-ink-2 leading-[1.6] max-h-[120px] overflow-y-auto">{content}</p>
-                  <p className="text-[11px] font-sans text-ink-3 text-right mt-1">{content.length} characters</p>
+                <div className="mt-6 text-left">
+                  <p className="text-[10px] font-sans font-medium uppercase tracking-[0.18em] text-ink-3 mb-3">Transcription</p>
+                  <p className="text-[14px] font-serif text-ink-2 leading-[1.7] max-h-[140px] overflow-y-auto">{content}</p>
+                  <p className="text-[11px] font-sans text-ink-3 text-right mt-2">{content.length} characters</p>
                 </div>
               )}
             </div>
@@ -292,26 +295,26 @@ export default function Upload() {
         )}
 
         {error && (
-          <div className="rounded-[12px] px-5 py-3 mb-4 text-[13px] font-sans bg-block-low border border-destructive/20 text-destructive animate-fade-up">
+          <div className="rounded-[20px] px-6 py-4 mb-4 text-[13px] font-sans bg-destructive/10 text-destructive animate-fade-up">
             {error}
           </div>
         )}
 
         {loading && status && (
           <div className="flex items-center gap-3 mb-4 animate-fade-up">
-            <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
             <p className="text-[13px] font-sans text-ink-3">{status}</p>
           </div>
         )}
 
-        <div className="mt-auto animate-fade-up stagger-5">
+        <div className="mt-auto pt-8 animate-fade-up stagger-5">
           <button
             onClick={handleUpload}
             disabled={!isValid || loading || fileProcessing}
-            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed">
+            className="w-full rounded-pill bg-primary py-6 text-[15px] font-sans font-semibold text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all duration-[200ms] disabled:opacity-30 disabled:cursor-not-allowed tracking-wide">
             {loading ? "Processing..." : "Start coaching session"}
           </button>
-          <p className="text-[12px] font-sans text-ink-3 text-center mt-3">
+          <p className="text-[12px] font-sans text-ink-3 text-center mt-4 leading-[1.6]">
             AI will split this into 3–5 sessions you can study and explain back.
           </p>
         </div>
