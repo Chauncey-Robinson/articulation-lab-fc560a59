@@ -48,8 +48,8 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <nav className="border-t border-border bg-background px-6 pb-safe">
-        <div className="mx-auto flex max-w-[460px] items-center justify-around py-3">
+      <nav className="bg-background px-6 pb-safe">
+        <div className="mx-auto flex max-w-[460px] items-center justify-around py-4">
           {navTabs.map((tab) => (
             <Link
               key={tab.path}
