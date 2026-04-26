@@ -90,41 +90,45 @@ export default function LessonStudy() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 pt-4 pb-10 relative">
-      <button onClick={() => navigate(`/module/${lesson.module_id}`)} className="text-[15px] font-sans text-ink-3 hover:text-foreground transition-colors mb-6 self-start">←</button>
-      <button onClick={toggleMute} className="absolute top-4 right-6 text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">
-        {muted ? "🔇 Unmute" : "🔊 Mute"}
+    <div className="min-h-screen bg-background flex flex-col px-8 pt-6 pb-14 relative">
+      <button onClick={() => navigate(`/module/${lesson.module_id}`)} className="text-[18px] font-sans text-ink-3 hover:text-foreground transition-colors mb-10 self-start">←</button>
+      <button onClick={toggleMute} className="absolute top-6 right-8 text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">
+        {muted ? "Unmute" : "Mute"}
       </button>
 
-      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
+      <div className="max-w-[600px] mx-auto w-full flex-1 flex flex-col">
         {/* Session header */}
-        <div className="mb-6 animate-fade-up stagger-1">
-          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent mb-2">READ</p>
-          <h1 className="font-serif text-[1.8rem] text-foreground mb-2">{lesson.title}</h1>
+        <div className="mb-12 animate-fade-up stagger-1">
+          <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-4">Read</p>
+          <h1 className="font-serif text-[2.25rem] leading-[1.15] text-foreground tracking-tight">{lesson.title}</h1>
         </div>
 
-        {/* Key idea card */}
-        <div className="bg-accent-bright/10 rounded-[16px] border-[1.5px] border-accent-bright/30 p-5 mb-6 animate-fade-up stagger-2">
-          <p className="text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-accent-bright mb-2">THE MAIN POINT</p>
-          <p className="font-serif text-[17px] font-light leading-[1.65] text-foreground">{lesson.key_idea}</p>
-        </div>
+        {/* Main Point — pull-quote, the visual centerpiece */}
+        <figure className="mb-14 animate-fade-up stagger-2">
+          <div className="border-l-2 border-foreground/80 pl-8 py-2">
+            <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-4">The Main Point</p>
+            <blockquote className="font-serif italic text-[28px] leading-[1.3] text-foreground tracking-tight">
+              &ldquo;{lesson.key_idea}&rdquo;
+            </blockquote>
+          </div>
+        </figure>
 
-        {/* Session content */}
-        <div className="bg-card rounded-[18px] border-[1.5px] border-border p-6 mb-6 animate-fade-up stagger-3">
-          <div className="font-serif text-[16px] font-light leading-[1.75] text-ink-2 whitespace-pre-wrap">
+        {/* Session content — borderless, generous reading width */}
+        <article className="mb-14 animate-fade-up stagger-3">
+          <div className="font-serif text-[18px] leading-[1.75] text-ink-2 whitespace-pre-wrap">
             {lesson.content}
           </div>
-        </div>
+        </article>
 
         {/* Actions */}
-        <div className="mt-auto flex flex-col gap-3 animate-fade-up stagger-4">
+        <div className="mt-auto pt-8 flex flex-col gap-4 animate-fade-up stagger-4">
           {!lesson.completed ? (
             <button onClick={markComplete} disabled={marking}
-              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40">
+              className="w-full rounded-pill bg-primary py-6 text-[15px] font-sans font-semibold text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all duration-[200ms] disabled:opacity-30 tracking-wide">
               {marking ? "Saving..." : "Got it. Next."}
             </button>
           ) : (
-            <div className="flex items-center justify-center gap-2 py-4">
+            <div className="flex items-center justify-center gap-2 py-6">
               <span className="text-sage">✓</span>
               <p className="text-[13px] font-sans text-sage font-medium">Completed</p>
             </div>
@@ -132,12 +136,12 @@ export default function LessonStudy() {
 
           <div className="grid grid-cols-2 gap-3">
             <button onClick={() => navigate(`/dialogue/${lesson.id}`)}
-              className="rounded-pill border-[1.5px] border-border bg-card py-3 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              💬 Talk it through
+              className="rounded-pill bg-surface-1 py-4 text-[13px] font-sans font-medium text-foreground hover:bg-surface-2 transition-all">
+              Talk it through
             </button>
             <button onClick={() => navigate(`/test-config/${lesson.module_id}`)}
-              className="rounded-pill border-[1.5px] border-border bg-card py-3 text-[13px] font-sans font-medium text-foreground hover:border-accent transition-all">
-              🧪 Explain it back
+              className="rounded-pill bg-surface-1 py-4 text-[13px] font-sans font-medium text-foreground hover:bg-surface-2 transition-all">
+              Explain it back
             </button>
           </div>
         </div>
