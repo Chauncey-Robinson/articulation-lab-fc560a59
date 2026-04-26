@@ -262,19 +262,19 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Upload CTA */}
+        {/* Oversized pill CTA */}
         <div className="animate-fade-up stagger-6">
           <Link to="/upload"
-            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] text-center block">
+            className="w-full rounded-pill bg-primary py-6 text-[15px] font-sans font-semibold text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all duration-[200ms] text-center block tracking-wide">
             Start a session
           </Link>
         </div>
 
         {/* Bottom nav */}
-        <div className="flex justify-center gap-6 mt-4">
-          <Link to="/analytics" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
-          <Link to="/deadlines" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
-          <Link to="/settings" className="text-[13px] font-sans text-ink-3 hover:text-foreground transition-colors">Settings</Link>
+        <div className="flex justify-center gap-8 mt-10">
+          <Link to="/analytics" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
+          <Link to="/deadlines" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
+          <Link to="/settings" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Settings</Link>
         </div>
       </div>
     </div>
