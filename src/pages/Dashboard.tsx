@@ -323,13 +323,14 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* Bottom nav */}
+        {/* Secondary text links — primary nav lives in BottomNav */}
         <div className="flex justify-center gap-8 mt-10">
-          <Link to="/analytics" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Progress</Link>
           <Link to="/deadlines" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Deadlines</Link>
           <Link to="/settings" className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Settings</Link>
         </div>
       </div>
+
+      <BottomNav />
     </div>
   );
 }
