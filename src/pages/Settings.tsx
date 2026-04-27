@@ -198,3 +198,21 @@ function Chip({ label, selected, onClick }: { label: string; selected: boolean; 
     </button>
   );
 }
+
+function NotifRow({ title, copy, on, onToggle }: { title: string; copy: string; on: boolean; onToggle: () => void }) {
+  return (
+    <div className="bg-surface-1 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+      <div className="min-w-0">
+        <p className="text-[13px] font-sans font-medium text-foreground">{title}</p>
+        <p className="text-[12px] font-sans italic text-ink-3 mt-1 leading-[1.5]">"{copy}"</p>
+      </div>
+      <button
+        onClick={onToggle}
+        aria-label={`Toggle ${title}`}
+        className={`shrink-0 relative w-10 h-[22px] rounded-pill transition-colors ${on ? "bg-foreground" : "bg-surface-3"}`}
+      >
+        <span className={`absolute top-0.5 w-[18px] h-[18px] rounded-full bg-background transition-all ${on ? "left-[20px]" : "left-0.5"}`} />
+      </button>
+    </div>
+  );
+}
