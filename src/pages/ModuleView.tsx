@@ -51,6 +51,38 @@ export default function ModuleView() {
     if (target) navigate(`/dialogue/${target.id}`, { state: { initialQuestion: coachQuery } });
   };
 
+  const requestRefresher = async () => {
+    if (refresherLoading || refresher) return;
+    setRefresherLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("topic-extras", {
+        body: { type: "refresher", title: module.title, source: module.source_content },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setRefresher({ summary: data.summary, questions: data.questions });
+    } catch (e: any) {
+      toast({ title: "Couldn't load refresher", description: e?.message || "Try again shortly.", variant: "destructive" });
+    } finally {
+      setRefresherLoading(false);
+    }
+  };
+
+  // Auto-load curated reading when topic is fully completed
+  useEffect(() => {
+    if (!allCompleted || books || booksLoading || !module) return;
+    setBooksLoading(true);
+    supabase.functions
+      .invoke("topic-extras", { body: { type: "books", title: module.title } })
+      .then(({ data, error }) => {
+        if (error || data?.error) return;
+        if (Array.isArray(data?.books)) setBooks(data.books);
+      })
+      .finally(() => setBooksLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allCompleted, module?.id]);
+
+
   return (
     <div className="min-h-screen bg-background flex flex-col px-8 pt-6 pb-40">
       <button
