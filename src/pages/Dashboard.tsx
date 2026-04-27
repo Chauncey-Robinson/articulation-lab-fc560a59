@@ -198,17 +198,36 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Stats — clean borderless tiles */}
+        {/* Stats — Topics tile + Growth Score ring tile (sophisticated, not arcade) */}
         {(progress.total_sessions > 0 || modules.length > 0) && (
           <div className="grid grid-cols-2 gap-4 mb-12 animate-fade-up stagger-2">
             <div className="bg-surface-1 rounded-[28px] px-7 py-8">
               <p className="font-serif text-[2.75rem] leading-none text-foreground tracking-tight">{modules.length}</p>
               <p className="text-[12px] font-sans text-ink-3 mt-3 tracking-wide">Topics</p>
             </div>
-            <div className="bg-surface-1 rounded-[28px] px-7 py-8">
-              <p className="font-serif text-[2.75rem] leading-none text-foreground tracking-tight">{progress.current_streak}</p>
-              <p className="text-[12px] font-sans text-ink-3 mt-3 tracking-wide">Day streak</p>
-            </div>
+            <button
+              onClick={() => navigate("/growth")}
+              className="bg-surface-1 rounded-[28px] px-6 py-6 flex items-center gap-4 text-left hover:bg-surface-2 transition-colors"
+            >
+              <div className="relative w-[68px] h-[68px] shrink-0">
+                <svg viewBox="0 0 72 72" className="w-full h-full -rotate-90">
+                  <circle cx="36" cy="36" r={ringR} fill="none" stroke="hsl(var(--surface-3))" strokeWidth="2.5" />
+                  <circle
+                    cx="36" cy="36" r={ringR} fill="none"
+                    stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinecap="round"
+                    strokeDasharray={ringC} strokeDashoffset={ringOffset}
+                    style={{ transition: "stroke-dashoffset 700ms cubic-bezier(0.22, 1, 0.36, 1)" }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="font-serif text-[15px] text-foreground tabular-nums">{growthScore}</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-[12px] font-sans text-ink-3 tracking-wide">Growth Score</p>
+                <p className="text-[11px] font-sans text-ink-3 mt-0.5">{progress.current_streak}-day streak</p>
+              </div>
+            </button>
           </div>
         )}
 
