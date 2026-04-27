@@ -111,7 +111,34 @@ export default function Settings() {
         </Section>
 
         {/* Voice & Sound */}
-        <Section title="SOUND" delay={3}>
+        {/* Notifications hub — encouraging professional copy */}
+        <Section title="NOTIFICATIONS" delay={3}>
+          <p className="text-[12px] font-sans text-ink-3 mb-4 leading-[1.55]">
+            Quiet, professional nudges. We'll never push noise.
+          </p>
+          <div className="space-y-3">
+            <NotifRow
+              title="Daily 5-minute recall"
+              copy="Ready for your 5-minute recall?"
+              on={notifPrefs.daily}
+              onToggle={() => toggleNotif("daily")}
+            />
+            <NotifRow
+              title="Spaced repetition reminders"
+              copy="A concept is ready for its next pass."
+              on={notifPrefs.recall}
+              onToggle={() => toggleNotif("recall")}
+            />
+            <NotifRow
+              title="Weekly growth digest"
+              copy="A short note on what you've sharpened this week."
+              on={notifPrefs.weekly}
+              onToggle={() => toggleNotif("weekly")}
+            />
+          </div>
+        </Section>
+
+        <Section title="SOUND" delay={4}>
           <div className="flex items-center justify-between bg-card rounded-[14px] border-[1.5px] border-border px-4 py-4">
             <div>
               <p className="text-[13px] font-sans font-medium text-foreground">Sound effects & voice</p>
