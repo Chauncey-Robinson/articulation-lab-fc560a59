@@ -22,6 +22,13 @@ export default function Settings() {
     try { return JSON.parse(localStorage.getItem("tutor_presentation_prefs") || '["text"]'); } catch { return ["text"]; }
   });
   const [muted, setMuted] = useState(() => localStorage.getItem("tutor_muted") === "true");
+  const [notifPrefs, setNotifPrefs] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("notif_prefs") || '{"daily":true,"recall":true,"weekly":false}');
+    } catch {
+      return { daily: true, recall: true, weekly: false };
+    }
+  });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -48,9 +55,14 @@ export default function Settings() {
     await saveProfile({ profession, interests });
     localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
     localStorage.setItem("tutor_muted", String(muted));
+    localStorage.setItem("notif_prefs", JSON.stringify(notifPrefs));
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const toggleNotif = (key: "daily" | "recall" | "weekly") => {
+    setNotifPrefs((p: any) => ({ ...p, [key]: !p[key] }));
   };
 
   return (
