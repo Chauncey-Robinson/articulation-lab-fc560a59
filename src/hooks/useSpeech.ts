@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 // ── ElevenLabs Text-to-Speech ──
 
@@ -24,6 +25,13 @@ export function useTTS() {
 
       try {
         setSpeaking(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        const accessToken = session?.access_token;
+        if (!accessToken) {
+          console.warn("TTS skipped: user not authenticated");
+          setSpeaking(false);
+          return;
+        }
         const response = await fetch(
           `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
           {
@@ -31,7 +39,7 @@ export function useTTS() {
             headers: {
               "Content-Type": "application/json",
               apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-              Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+              Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({ text }),
             signal: controller.signal,
