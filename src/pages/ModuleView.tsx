@@ -32,6 +32,23 @@ export default function ModuleView() {
     })();
   }, [user, id]);
 
+  const completedCount = lessons.filter(l => l.completed).length;
+  const allCompleted = lessons.length > 0 && completedCount === lessons.length;
+
+  // Auto-load curated reading when topic is fully completed
+  useEffect(() => {
+    if (!allCompleted || books || booksLoading || !module) return;
+    setBooksLoading(true);
+    supabase.functions
+      .invoke("topic-extras", { body: { type: "books", title: module.title } })
+      .then(({ data, error }) => {
+        if (error || data?.error) return;
+        if (Array.isArray(data?.books)) setBooks(data.books);
+      })
+      .finally(() => setBooksLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allCompleted, module?.id]);
+
   if (loading) {
     return <div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-foreground/20 border-t-foreground/80 rounded-full animate-spin" /></div>;
   }
@@ -40,8 +57,6 @@ export default function ModuleView() {
     return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-[14px] font-sans text-ink-3">Topic not found.</p></div>;
   }
 
-  const completedCount = lessons.filter(l => l.completed).length;
-  const allCompleted = completedCount === lessons.length && lessons.length > 0;
   const nextLesson = lessons.find(l => !l.completed);
   const pct = lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0;
 
@@ -67,20 +82,6 @@ export default function ModuleView() {
       setRefresherLoading(false);
     }
   };
-
-  // Auto-load curated reading when topic is fully completed
-  useEffect(() => {
-    if (!allCompleted || books || booksLoading || !module) return;
-    setBooksLoading(true);
-    supabase.functions
-      .invoke("topic-extras", { body: { type: "books", title: module.title } })
-      .then(({ data, error }) => {
-        if (error || data?.error) return;
-        if (Array.isArray(data?.books)) setBooks(data.books);
-      })
-      .finally(() => setBooksLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCompleted, module?.id]);
 
 
   return (
