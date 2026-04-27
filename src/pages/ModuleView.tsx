@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Sparkles, Check, MessageCircle, ArrowUp } from "lucide-react";
+import { ArrowLeft, BookOpen, Sparkles, Check, MessageCircle, ArrowUp, RefreshCw, BookMarked } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
+import { toast } from "@/hooks/use-toast";
 
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,10 @@ export default function ModuleView() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
   const [coachQuery, setCoachQuery] = useState("");
+  const [refresher, setRefresher] = useState<{ summary: string; questions: string[] } | null>(null);
+  const [refresherLoading, setRefresherLoading] = useState(false);
+  const [books, setBooks] = useState<{ title: string; author: string; why: string }[] | null>(null);
+  const [booksLoading, setBooksLoading] = useState(false);
 
   useEffect(() => {
     if (!user || !id) return;
@@ -27,6 +32,23 @@ export default function ModuleView() {
     })();
   }, [user, id]);
 
+  const completedCount = lessons.filter(l => l.completed).length;
+  const allCompleted = lessons.length > 0 && completedCount === lessons.length;
+
+  // Auto-load curated reading when topic is fully completed
+  useEffect(() => {
+    if (!allCompleted || books || booksLoading || !module) return;
+    setBooksLoading(true);
+    supabase.functions
+      .invoke("topic-extras", { body: { type: "books", title: module.title } })
+      .then(({ data, error }) => {
+        if (error || data?.error) return;
+        if (Array.isArray(data?.books)) setBooks(data.books);
+      })
+      .finally(() => setBooksLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allCompleted, module?.id]);
+
   if (loading) {
     return <div className="min-h-screen bg-background flex items-center justify-center"><div className="w-6 h-6 border-2 border-foreground/20 border-t-foreground/80 rounded-full animate-spin" /></div>;
   }
@@ -35,8 +57,6 @@ export default function ModuleView() {
     return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-[14px] font-sans text-ink-3">Topic not found.</p></div>;
   }
 
-  const completedCount = lessons.filter(l => l.completed).length;
-  const allCompleted = completedCount === lessons.length && lessons.length > 0;
   const nextLesson = lessons.find(l => !l.completed);
   const pct = lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0;
 
@@ -45,6 +65,24 @@ export default function ModuleView() {
     const target = nextLesson || lessons.find(l => l.completed);
     if (target) navigate(`/dialogue/${target.id}`, { state: { initialQuestion: coachQuery } });
   };
+
+  const requestRefresher = async () => {
+    if (refresherLoading || refresher) return;
+    setRefresherLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("topic-extras", {
+        body: { type: "refresher", title: module.title, source: module.source_content },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setRefresher({ summary: data.summary, questions: data.questions });
+    } catch (e: any) {
+      toast({ title: "Couldn't load refresher", description: e?.message || "Try again shortly.", variant: "destructive" });
+    } finally {
+      setRefresherLoading(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-8 pt-6 pb-40">
@@ -92,15 +130,89 @@ export default function ModuleView() {
         )}
 
         {allCompleted && (
-          <div className="bg-[hsl(var(--surface-1))] rounded-[32px] p-8 mb-10 text-center animate-fade-up stagger-2 shadow-feather">
-            <p className="font-serif text-[20px] text-foreground tracking-tight mb-2">You've finished all the reading.</p>
-            <button
-              onClick={() => navigate(`/test-config/${module.id}`)}
-              className="mt-4 rounded-pill bg-primary px-7 py-3.5 text-[13px] font-sans font-medium text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all tracking-wide"
-            >
-              Now explain it back
-            </button>
-          </div>
+          <>
+            <div className="bg-[hsl(var(--surface-1))] rounded-[32px] p-8 mb-6 text-center animate-fade-up stagger-2 shadow-feather">
+              <p className="font-serif text-[20px] text-foreground tracking-tight mb-2">You've finished all the reading.</p>
+              <button
+                onClick={() => navigate(`/test-config/${module.id}`)}
+                className="mt-4 rounded-pill bg-primary px-7 py-3.5 text-[13px] font-sans font-medium text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all tracking-wide"
+              >
+                Now explain it back
+              </button>
+            </div>
+
+            {/* Request Refresher — glass button to mirror coach bar */}
+            <div className="mb-10 animate-fade-up stagger-3">
+              {!refresher ? (
+                <button
+                  onClick={requestRefresher}
+                  disabled={refresherLoading}
+                  className="glass w-full rounded-pill px-6 py-4 flex items-center justify-center gap-3 text-[13px] font-sans font-medium text-foreground hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${refresherLoading ? "animate-spin" : ""}`} strokeWidth={1.5} />
+                  {refresherLoading ? "Curating your refresher…" : "Request Refresher"}
+                </button>
+              ) : (
+                <div className="bg-[hsl(var(--surface-1))] rounded-[28px] p-7 shadow-feather">
+                  <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-3">Refresher</p>
+                  <p className="font-serif italic text-[17px] leading-[1.55] text-foreground mb-5 tracking-tight">
+                    {refresher.summary}
+                  </p>
+                  <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-3">Deep Recall · 3 questions</p>
+                  <ol className="space-y-3">
+                    {refresher.questions.map((q, i) => (
+                      <li key={i} className="flex gap-3">
+                        <span className="font-serif text-[14px] text-ink-3 tabular-nums">{i + 1}</span>
+                        <span className="text-[14px] font-sans text-foreground leading-[1.55]">{q}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+            </div>
+
+            {/* Curated Reading — high-end horizontal book carousel */}
+            {(books || booksLoading) && (
+              <div className="mb-12 animate-fade-up stagger-4">
+                <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-4">Curated Reading</p>
+                <p className="text-[13px] font-sans text-ink-3 leading-[1.6] mb-5">
+                  Three books to deepen your fluency on this topic.
+                </p>
+                <div className="-mx-8 px-8 overflow-x-auto scrollbar-hide">
+                  <div className="flex gap-5 pb-2">
+                    {booksLoading && !books
+                      ? Array.from({ length: 3 }).map((_, i) => (
+                          <div key={i} className="w-[150px] shrink-0">
+                            <div className="w-[150px] h-[210px] bg-surface-2 rounded-[14px] animate-pulse" />
+                          </div>
+                        ))
+                      : books?.map((b, i) => (
+                          <div key={i} className="w-[150px] shrink-0">
+                            <div
+                              className="w-[150px] h-[210px] rounded-[14px] p-5 flex flex-col justify-between shadow-feather"
+                              style={{
+                                background: `linear-gradient(155deg, hsl(${(i * 47 + 30) % 360}, 18%, 22%) 0%, hsl(${(i * 47 + 50) % 360}, 22%, 14%) 100%)`,
+                              }}
+                            >
+                              <div className="w-full h-[1px] bg-white/15" />
+                              <div>
+                                <p className="font-serif italic text-[15px] leading-[1.15] text-white tracking-tight">
+                                  {b.title}
+                                </p>
+                                <p className="text-[9px] font-sans uppercase tracking-[0.22em] text-white/55 mt-2">
+                                  {b.author}
+                                </p>
+                              </div>
+                              <div className="w-full h-[1px] bg-white/15" />
+                            </div>
+                            <p className="text-[11px] font-sans text-ink-3 leading-[1.45] mt-3 italic">{b.why}</p>
+                          </div>
+                        ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Sessions list — borderless, monochromatic */}

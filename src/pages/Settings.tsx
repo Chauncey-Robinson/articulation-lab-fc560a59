@@ -22,6 +22,13 @@ export default function Settings() {
     try { return JSON.parse(localStorage.getItem("tutor_presentation_prefs") || '["text"]'); } catch { return ["text"]; }
   });
   const [muted, setMuted] = useState(() => localStorage.getItem("tutor_muted") === "true");
+  const [notifPrefs, setNotifPrefs] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("notif_prefs") || '{"daily":true,"recall":true,"weekly":false}');
+    } catch {
+      return { daily: true, recall: true, weekly: false };
+    }
+  });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -48,9 +55,14 @@ export default function Settings() {
     await saveProfile({ profession, interests });
     localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
     localStorage.setItem("tutor_muted", String(muted));
+    localStorage.setItem("notif_prefs", JSON.stringify(notifPrefs));
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const toggleNotif = (key: "daily" | "recall" | "weekly") => {
+    setNotifPrefs((p: any) => ({ ...p, [key]: !p[key] }));
   };
 
   return (
@@ -99,7 +111,34 @@ export default function Settings() {
         </Section>
 
         {/* Voice & Sound */}
-        <Section title="SOUND" delay={3}>
+        {/* Notifications hub — encouraging professional copy */}
+        <Section title="NOTIFICATIONS" delay={3}>
+          <p className="text-[12px] font-sans text-ink-3 mb-4 leading-[1.55]">
+            Quiet, professional nudges. We'll never push noise.
+          </p>
+          <div className="space-y-3">
+            <NotifRow
+              title="Daily 5-minute recall"
+              copy="Ready for your 5-minute recall?"
+              on={notifPrefs.daily}
+              onToggle={() => toggleNotif("daily")}
+            />
+            <NotifRow
+              title="Spaced repetition reminders"
+              copy="A concept is ready for its next pass."
+              on={notifPrefs.recall}
+              onToggle={() => toggleNotif("recall")}
+            />
+            <NotifRow
+              title="Weekly growth digest"
+              copy="A short note on what you've sharpened this week."
+              on={notifPrefs.weekly}
+              onToggle={() => toggleNotif("weekly")}
+            />
+          </div>
+        </Section>
+
+        <Section title="SOUND" delay={4}>
           <div className="flex items-center justify-between bg-card rounded-[14px] border-[1.5px] border-border px-4 py-4">
             <div>
               <p className="text-[13px] font-sans font-medium text-foreground">Sound effects & voice</p>
@@ -157,5 +196,23 @@ function Chip({ label, selected, onClick }: { label: string; selected: boolean; 
       }`}>
       {label}
     </button>
+  );
+}
+
+function NotifRow({ title, copy, on, onToggle }: { title: string; copy: string; on: boolean; onToggle: () => void }) {
+  return (
+    <div className="bg-surface-1 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+      <div className="min-w-0">
+        <p className="text-[13px] font-sans font-medium text-foreground">{title}</p>
+        <p className="text-[12px] font-sans italic text-ink-3 mt-1 leading-[1.5]">"{copy}"</p>
+      </div>
+      <button
+        onClick={onToggle}
+        aria-label={`Toggle ${title}`}
+        className={`shrink-0 relative w-10 h-[22px] rounded-pill transition-colors ${on ? "bg-foreground" : "bg-surface-3"}`}
+      >
+        <span className={`absolute top-0.5 w-[18px] h-[18px] rounded-full bg-background transition-all ${on ? "left-[20px]" : "left-0.5"}`} />
+      </button>
+    </div>
   );
 }

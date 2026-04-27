@@ -23,6 +23,8 @@ import Demo from "@/pages/Demo";
 import Pricing from "@/pages/Pricing";
 import MeetingRecord from "@/pages/MeetingRecord";
 import MeetingReview from "@/pages/MeetingReview";
+import LibraryHub from "@/pages/LibraryHub";
+import Growth from "@/pages/Growth";
 
 
 import { TutorProvider } from "@/lib/TutorContext";
@@ -78,6 +80,8 @@ const App = () => (
                     <Route path="/deadlines" element={<RequireAuth><Deadlines /></RequireAuth>} />
                     <Route path="/meeting/record" element={<RequireAuth><MeetingRecord /></RequireAuth>} />
                     <Route path="/meeting/:id" element={<RequireAuth><MeetingReview /></RequireAuth>} />
+                    <Route path="/library" element={<RequireAuth><LibraryHub /></RequireAuth>} />
+                    <Route path="/growth" element={<RequireAuth><Growth /></RequireAuth>} />
                     <Route path="/analytics" element={<RequireAuth><Analytics /></RequireAuth>} />
                     <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
 
