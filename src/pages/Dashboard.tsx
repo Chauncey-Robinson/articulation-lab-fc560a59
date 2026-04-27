@@ -73,8 +73,29 @@ export default function Dashboard() {
   const doneLessons = modules.reduce((a, m) => a + Math.min(m.completed_lessons, m.lesson_count), 0);
   const overallPct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
 
+  // Daily learning goal — persisted locally
+  const today = new Date().toISOString().split("T")[0];
+  const [dailyGoalOn, setDailyGoalOn] = useState<boolean>(() => localStorage.getItem("daily_goal_on") !== "false");
+  useEffect(() => { localStorage.setItem("daily_goal_on", String(dailyGoalOn)); }, [dailyGoalOn]);
+  const practisedToday = progress.last_practice_date === today;
+  // Subtle background tint when goal is on and not yet met
+  const headerTintClass = dailyGoalOn
+    ? practisedToday
+      ? "bg-[hsl(150,18%,94%)]" // soft sage wash when goal hit
+      : "bg-[hsl(33,22%,96%)]" // gentle paper warmth when pending
+    : "";
+
+  // Growth Score (mirrors /growth)
+  const totalLessonsAll = modules.reduce((a, m) => a + m.lesson_count, 0);
+  const doneLessonsAll = modules.reduce((a, m) => a + Math.min(m.completed_lessons, m.lesson_count), 0);
+  const growthScore = doneLessonsAll * 8 + progress.total_sessions * 4 + progress.current_streak * 6;
+  const ringR = 30;
+  const ringC = 2 * Math.PI * ringR;
+  const ringPct = Math.min(growthScore / 500, 1);
+  const ringOffset = ringC * (1 - ringPct);
+
   return (
-    <div className="min-h-screen bg-background flex flex-col px-8 pt-10 pb-32">
+    <div className="min-h-screen bg-background flex flex-col px-8 pt-10 pb-40">
       <div className="max-w-[520px] mx-auto w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-20">
@@ -88,8 +109,8 @@ export default function Dashboard() {
           <button onClick={signOut} className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors">Sign out</button>
         </div>
 
-        {/* Greeting + contextual nudge — significant whitespace above */}
-        <div className="mb-12 animate-fade-up stagger-1">
+        {/* Greeting + contextual nudge — header tints subtly based on daily goal */}
+        <div className={`mb-10 -mx-4 px-4 py-6 rounded-[28px] transition-colors duration-500 animate-fade-up stagger-1 ${headerTintClass}`}>
           <h1 className="font-serif text-[2.75rem] leading-[1.1] text-foreground mb-3 tracking-tight">{greeting}</h1>
           {modules.length === 0 ? (
             <p className="text-[15px] font-sans text-ink-3 leading-[1.6]">Upload something to start.</p>
@@ -100,6 +121,18 @@ export default function Dashboard() {
           ) : (
             <p className="text-[15px] font-sans text-ink-3 leading-[1.6]">All topics complete. Add something new or review what you know.</p>
           )}
+
+          {/* Daily goal toggle */}
+          <button
+            onClick={() => setDailyGoalOn((v) => !v)}
+            className="mt-5 inline-flex items-center gap-2.5 text-[11px] font-sans text-ink-3 hover:text-foreground transition-colors"
+          >
+            <Target className="w-3.5 h-3.5" strokeWidth={1.5} />
+            <span>Daily goal {dailyGoalOn ? "on" : "off"}{dailyGoalOn && practisedToday ? " · met today" : ""}</span>
+            <span className={`relative inline-block w-8 h-[18px] rounded-pill transition-colors ${dailyGoalOn ? "bg-foreground" : "bg-surface-3"}`}>
+              <span className={`absolute top-0.5 w-[14px] h-[14px] rounded-full bg-background transition-all ${dailyGoalOn ? "left-[16px]" : "left-0.5"}`} />
+            </span>
+          </button>
         </div>
 
         {/* Smart suggestion chips */}
