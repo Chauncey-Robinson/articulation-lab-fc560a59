@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Sparkles, Check, MessageCircle, ArrowUp } from "lucide-react";
+import { ArrowLeft, BookOpen, Sparkles, Check, MessageCircle, ArrowUp, RefreshCw, BookMarked } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
+import { toast } from "@/hooks/use-toast";
 
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,10 @@ export default function ModuleView() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
   const [coachQuery, setCoachQuery] = useState("");
+  const [refresher, setRefresher] = useState<{ summary: string; questions: string[] } | null>(null);
+  const [refresherLoading, setRefresherLoading] = useState(false);
+  const [books, setBooks] = useState<{ title: string; author: string; why: string }[] | null>(null);
+  const [booksLoading, setBooksLoading] = useState(false);
 
   useEffect(() => {
     if (!user || !id) return;
