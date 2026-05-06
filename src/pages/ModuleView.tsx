@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
 import { toast } from "@/hooks/use-toast";
+import TestConfigSheet from "@/components/TestConfigSheet";
+import LearnConfigSheet from "@/components/LearnConfigSheet";
 
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +20,8 @@ export default function ModuleView() {
   const [refresherLoading, setRefresherLoading] = useState(false);
   const [books, setBooks] = useState<{ title: string; author: string; why: string }[] | null>(null);
   const [booksLoading, setBooksLoading] = useState(false);
+  const [testSheetOpen, setTestSheetOpen] = useState(false);
+  const [learnSheetOpen, setLearnSheetOpen] = useState(false);
 
   useEffect(() => {
     if (!user || !id) return;
@@ -119,7 +123,7 @@ export default function ModuleView() {
               <p className="text-[12px] font-sans text-ink-3 mt-1">Read it</p>
             </button>
             <button
-              onClick={() => navigate(`/test-config/${module.id}`)}
+              onClick={() => setTestSheetOpen(true)}
               className="bg-[hsl(var(--surface-1))] rounded-[32px] p-7 text-left hover:bg-[hsl(var(--surface-2))] hover:-translate-y-0.5 transition-all duration-[200ms] shadow-feather"
             >
               <Sparkles className="w-5 h-5 text-foreground mb-4" strokeWidth={1.5} />
@@ -134,7 +138,7 @@ export default function ModuleView() {
             <div className="bg-[hsl(var(--surface-1))] rounded-[32px] p-8 mb-6 text-center animate-fade-up stagger-2 shadow-feather">
               <p className="font-serif text-[20px] text-foreground tracking-tight mb-2">You've finished all the reading.</p>
               <button
-                onClick={() => navigate(`/test-config/${module.id}`)}
+                onClick={() => setTestSheetOpen(true)}
                 className="mt-4 rounded-pill bg-primary px-7 py-3.5 text-[13px] font-sans font-medium text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all tracking-wide"
               >
                 Now explain it back
@@ -267,6 +271,9 @@ export default function ModuleView() {
           </div>
         </div>
       )}
+
+      <TestConfigSheet open={testSheetOpen} onClose={() => setTestSheetOpen(false)} moduleId={module.id} />
+      <LearnConfigSheet open={learnSheetOpen} onClose={() => setLearnSheetOpen(false)} moduleId={module.id} />
     </div>
   );
 }

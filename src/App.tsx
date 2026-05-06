@@ -17,6 +17,7 @@ import Flashcards from "@/pages/Flashcards";
 import TestConfig from "@/pages/TestConfig";
 import Deadlines from "@/pages/Deadlines";
 import LearnConfig from "@/pages/LearnConfig";
+import Session from "@/pages/Session";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Pricing from "@/pages/Pricing";
@@ -81,6 +82,7 @@ const App = () => (
                     <Route path="/dialogue/:lessonId" element={<RequireAuth><Dialogue /></RequireAuth>} />
                     <Route path="/flashcards/:moduleId" element={<RequireAuth><Flashcards /></RequireAuth>} />
                     <Route path="/test-config/:moduleId" element={<RequireAuth><TestConfig /></RequireAuth>} />
+                    <Route path="/session/:moduleId" element={<RequireAuth><Session /></RequireAuth>} />
                     <Route path="/deadlines" element={<RequireAuth><Deadlines /></RequireAuth>} />
                     <Route path="/meeting/record" element={<RequireAuth><MeetingRecord /></RequireAuth>} />
                     <Route path="/meeting/:id" element={<RequireAuth><MeetingReview /></RequireAuth>} />
