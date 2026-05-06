@@ -43,7 +43,6 @@ export default function Growth() {
 
   // Quiet cohort presentation — no rankings, no sorting
   const cohort = COHORT;
-  void useMemo;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-8 pt-12 pb-40">
