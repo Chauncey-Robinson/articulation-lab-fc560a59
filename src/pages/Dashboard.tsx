@@ -41,6 +41,7 @@ export default function Dashboard() {
 
   const [meetings, setMeetings] = useState<any[]>([]);
   const [prepOpen, setPrepOpen] = useState(false);
+  const [sectionPick, setSectionPick] = useState<{ id: string; title: string; sections: any[] } | null>(null);
   useEffect(() => {
     if (!user) return;
     (async () => {
