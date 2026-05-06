@@ -400,6 +400,13 @@ export default function Dashboard() {
 
       <BottomNav />
       <PrepMeetingSheet open={prepOpen} onClose={() => setPrepOpen(false)} />
+      <SectionSelectSheet
+        open={!!sectionPick}
+        onClose={() => setSectionPick(null)}
+        moduleId={sectionPick?.id || ""}
+        moduleTitle={sectionPick?.title || ""}
+        sections={sectionPick?.sections || []}
+      />
     </div>
   );
 }
