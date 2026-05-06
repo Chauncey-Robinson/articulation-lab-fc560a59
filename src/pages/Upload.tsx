@@ -355,9 +355,9 @@ export default function Upload() {
         <div className="mt-auto pt-8 animate-fade-up stagger-5">
           <button
             onClick={handleUpload}
-            disabled={!isValid || loading || fileProcessing}
+            disabled={!isValid || loading || uploading}
             className="w-full rounded-pill bg-primary py-6 text-[15px] font-sans font-semibold text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all duration-[200ms] disabled:opacity-30 disabled:cursor-not-allowed tracking-wide">
-            {loading ? "Processing..." : "Start coaching session"}
+            {uploading ? "Uploading…" : loading ? "Processing..." : method === "file" ? "Upload and process" : "Start coaching session"}
           </button>
           <p className="text-[12px] font-sans text-ink-3 text-center mt-4 leading-[1.6]">
             AI will split this into 3–5 sessions you can study and explain back.
