@@ -240,7 +240,7 @@ export default function Upload() {
           </div>
         )}
 
-        {/* File upload */}
+        {/* File upload — direct-to-storage with progress */}
         {method === "file" && (
           <div className="animate-fade-up stagger-4 mb-4">
             <input
@@ -251,15 +251,15 @@ export default function Upload() {
               className="hidden"
             />
 
-            {!fileName ? (
+            {!selectedFile ? (
               <button
                 onClick={() => fileInputRef.current?.click()}
-                disabled={loading || fileProcessing}
+                disabled={uploading}
                 className="w-full rounded-[28px] bg-surface-1 hover:bg-surface-2 transition-all duration-[180ms] p-12 flex flex-col items-center gap-4"
               >
                 <FileText className="w-10 h-10 text-ink-3" strokeWidth={1.25} />
                 <p className="text-[15px] font-sans font-medium text-foreground">Choose a file</p>
-                <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT, Markdown · Max 20 MB</p>
+                <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT · Max 50 MB</p>
               </button>
             ) : (
               <div className="rounded-[28px] bg-surface-1 p-7">
@@ -267,43 +267,40 @@ export default function Upload() {
                   <div className="flex items-center gap-3">
                     <FileText className="w-5 h-5 text-ink-3" />
                     <div>
-                      <p className="text-[14px] font-sans font-medium text-foreground truncate max-w-[220px]">{fileName}</p>
-                      {fileProcessing ? (
-                        <p className="text-[11px] font-sans text-ink-3 mt-0.5">Extracting text...</p>
-                      ) : content.length > 0 ? (
-                        <p className="text-[11px] font-sans text-sage mt-0.5">{content.length.toLocaleString()} characters extracted</p>
-                      ) : (
-                        <p className="text-[11px] font-sans text-destructive mt-0.5">No text extracted</p>
-                      )}
+                      <p className="text-[14px] font-sans font-medium text-foreground truncate max-w-[220px]">{selectedFile.name}</p>
+                      <p className="text-[11px] font-sans text-ink-3 mt-0.5">{(selectedFile.size / 1024 / 1024).toFixed(1)} MB</p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => { setFileName(""); setContent(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}
-                    className="text-[12px] font-sans text-ink-3 hover:text-destructive transition-colors"
-                  >
-                    Remove
-                  </button>
+                  {!uploading && (
+                    <button
+                      onClick={() => { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                      className="text-[12px] font-sans text-ink-3 hover:text-destructive transition-colors"
+                    >
+                      Remove
+                    </button>
+                  )}
                 </div>
 
-                {content.length > 0 && (
-                  <div className="bg-surface-2 rounded-[20px] p-5 max-h-[140px] overflow-y-auto">
-                    <p className="text-[13px] font-serif text-ink-2 leading-[1.7] whitespace-pre-wrap">{content.slice(0, 500)}{content.length > 500 ? "..." : ""}</p>
+                {uploading && (
+                  <div className="mt-5">
+                    <div className="h-1.5 w-full bg-surface-2 rounded-pill overflow-hidden">
+                      <div
+                        className="h-full bg-foreground transition-all duration-200"
+                        style={{ width: `${uploadPct}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] font-sans text-ink-3 mt-2 tabular-nums">{status} {uploadPct}%</p>
                   </div>
                 )}
 
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="text-[12px] font-sans text-foreground hover:opacity-70 transition-opacity mt-4"
-                >
-                  Choose different file →
-                </button>
-              </div>
-            )}
-
-            {fileProcessing && (
-              <div className="flex items-center gap-3 mt-4">
-                <div className="w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
-                <p className="text-[13px] font-sans text-ink-3">Reading file contents...</p>
+                {!uploading && (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-[12px] font-sans text-foreground hover:opacity-70 transition-opacity mt-4"
+                  >
+                    Choose different file →
+                  </button>
+                )}
               </div>
             )}
           </div>
