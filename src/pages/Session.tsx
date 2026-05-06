@@ -17,13 +17,14 @@ const STEP_LABEL: Record<StepKind, string> = {
 
 /**
  * Adaptive session length — Lily picks the number of cards.
- * 5 min: read + quiz
- * 10 min (default): read + quiz + flashcards + explain
- * 20 min: read + quiz + flashcards + explain + apply
+ * 5 min  → 2 cards: read + quiz
+ * 10 min → 4 cards: read + quiz + flashcards + explain
+ * 20 min → 8 cards: read + quiz + flashcards + explain + apply + read + quiz + explain
  */
 function planFor(minutes: number): StepKind[] {
   if (minutes <= 5) return ["study", "quiz"];
-  if (minutes >= 20) return ["study", "quiz", "flashcards", "teach-back", "apply"];
+  if (minutes >= 20)
+    return ["study", "quiz", "flashcards", "teach-back", "apply", "study", "quiz", "teach-back"];
   return ["study", "quiz", "flashcards", "teach-back"];
 }
 

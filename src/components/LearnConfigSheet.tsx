@@ -15,10 +15,13 @@ interface LearnConfigSheetProps {
   moduleId: string;
 }
 
+const LENGTHS = [5, 10, 20] as const;
+
 export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfigSheetProps) {
   const navigate = useNavigate();
   const [pace, setPace] = useState("standard");
   const [link, setLink] = useState(false);
+  const [length, setLength] = useState<number>(10);
 
   useEffect(() => {
     if (!open) return;
@@ -27,6 +30,7 @@ export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfi
       if (saved) {
         if (saved.digestPeriod) setPace(saved.digestPeriod);
         if (typeof saved.priorKnowledge === "boolean") setLink(saved.priorKnowledge);
+        if (typeof saved.length === "number" && LENGTHS.includes(saved.length as any)) setLength(saved.length);
       }
     } catch {}
   }, [open, moduleId]);
@@ -34,10 +38,10 @@ export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfi
   const handleStart = () => {
     localStorage.setItem(
       `learn_config_${moduleId}`,
-      JSON.stringify({ digestPeriod: pace, priorKnowledge: link })
+      JSON.stringify({ digestPeriod: pace, priorKnowledge: link, length })
     );
     onClose();
-    navigate(`/module/${moduleId}`);
+    navigate(`/session/${moduleId}?len=${length}`);
   };
 
   return (
@@ -93,6 +97,28 @@ export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfi
             />
           </span>
         </button>
+
+        <p className="text-[10px] font-sans font-medium uppercase tracking-[0.18em] text-ink-3 mb-3">
+          Session length
+        </p>
+        <div className="flex gap-2 mb-6">
+          {LENGTHS.map((mins) => {
+            const on = length === mins;
+            return (
+              <button
+                key={mins}
+                onClick={() => setLength(mins)}
+                className={`flex-1 rounded-pill py-3 text-[12px] font-sans font-medium transition-all duration-[180ms] ${
+                  on
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface-2 text-ink-2 hover:bg-surface-3"
+                }`}
+              >
+                {mins} min
+              </button>
+            );
+          })}
+        </div>
 
         <button
           onClick={handleStart}
