@@ -269,9 +269,14 @@ export default function Dashboard() {
                 const pct = mod.lesson_count > 0 ? Math.min((mod.completed_lessons / mod.lesson_count) * 100, 100) : 0;
                 const proc = mod.processing_state;
                 const isProcessing = proc === "pending" || proc === "processing";
+                const awaiting = proc === "awaiting_selection";
                 const failed = proc === "failed";
                 const onClick = () => {
                   if (isProcessing) return;
+                  if (awaiting) {
+                    setSectionPick({ id: mod.id, title: mod.title, sections: (mod.sections as any[]) || [] });
+                    return;
+                  }
                   if (failed) { navigate("/upload"); return; }
                   navigate(`/module/${mod.id}`);
                 };
@@ -281,7 +286,7 @@ export default function Dashboard() {
                     disabled={isProcessing}
                     className="relative w-full text-left rounded-[28px] p-7 hover:-translate-y-0.5 hover:shadow-tile-hover transition-all duration-[220ms] animate-fade-up overflow-hidden bg-surface-1 disabled:cursor-default disabled:hover:translate-y-0 disabled:hover:shadow-none"
                     style={{ animationDelay: `${(idx + 3) * 80}ms` }}>
-                    {!isProcessing && (
+                    {!isProcessing && !awaiting && (
                       <div
                         className="absolute inset-0 bg-surface-2 transition-all duration-500 ease-out"
                         style={{ width: `${pct}%` }}
@@ -295,6 +300,10 @@ export default function Dashboard() {
                             <span className="w-2 h-2 rounded-full bg-ink-3 animate-pulse" />
                             Processing your content
                           </span>
+                        ) : awaiting ? (
+                          <span className="text-[10px] font-sans font-medium uppercase tracking-[0.16em] px-3 py-1 rounded-pill bg-surface-2 text-foreground">
+                            Choose sections
+                          </span>
                         ) : failed ? (
                           <span className="text-[10px] font-sans font-medium uppercase tracking-[0.16em] px-3 py-1 rounded-pill bg-destructive/10 text-destructive">
                             Failed — tap to retry
@@ -304,13 +313,16 @@ export default function Dashboard() {
                             {getStatusLabel(mod.status)}
                           </span>
                         )}
-                        {!isProcessing && !failed && mod.lesson_count > 0 && (
+                        {!isProcessing && !awaiting && !failed && mod.lesson_count > 0 && (
                           <span className="text-[11px] font-sans text-ink-3">{Math.min(mod.completed_lessons, mod.lesson_count)} / {mod.lesson_count}</span>
                         )}
                       </div>
                       <h3 className="font-serif text-[22px] leading-[1.2] text-foreground tracking-tight">{mod.title}</h3>
                       {isProcessing && (
                         <p className="text-[12px] font-sans text-ink-3 mt-2">Estimated time · about 1 minute. We'll build your session as soon as it's ready.</p>
+                      )}
+                      {awaiting && (
+                        <p className="text-[12px] font-sans text-ink-3 mt-2">This is a long document. Tap to pick the sections you want first.</p>
                       )}
                       {failed && mod.processing_error && (
                         <p className="text-[12px] font-sans text-ink-3 mt-2 line-clamp-2">{mod.processing_error}</p>
