@@ -87,6 +87,14 @@ export function TutorProvider({ children }: { children: ReactNode }) {
     })();
   }, [user]);
 
+  // Poll while any module is still being processed in the background
+  useEffect(() => {
+    const hasPending = modules.some(m => m.processing_state === "pending" || m.processing_state === "processing");
+    if (!hasPending) return;
+    const t = setInterval(() => { refreshModules(); }, 4000);
+    return () => clearInterval(t);
+  }, [modules, refreshModules]);
+
   const saveProfile = useCallback(async (data: Partial<Profile>) => {
     if (!user) return;
     const profileData = { ...data, user_id: user.id };
