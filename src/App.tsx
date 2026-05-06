@@ -17,6 +17,7 @@ import Flashcards from "@/pages/Flashcards";
 import TestConfig from "@/pages/TestConfig";
 import Deadlines from "@/pages/Deadlines";
 import LearnConfig from "@/pages/LearnConfig";
+import Session from "@/pages/Session";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import Pricing from "@/pages/Pricing";
