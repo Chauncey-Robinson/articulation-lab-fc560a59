@@ -1,7 +1,8 @@
 // Background processor: downloads uploaded file from Storage, extracts text,
-// generates lessons via Lovable AI, writes lessons, and marks the module ready.
+// generates lessons via Anthropic Claude, writes lessons, and marks the module ready.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders, requireUser } from "../_shared/auth.ts";
+import { callAnthropic } from "../_shared/anthropic.ts";
 
 const MAX_CHARS = 80_000;
 
