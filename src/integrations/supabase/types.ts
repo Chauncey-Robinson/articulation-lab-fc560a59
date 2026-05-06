@@ -162,9 +162,13 @@ export type Database = {
           created_at: string | null
           id: string
           lesson_count: number | null
+          processing_error: string | null
+          processing_started_at: string | null
+          processing_state: string
           source_content: string
           source_type: string
           status: string
+          storage_path: string | null
           title: string
           user_id: string
         }
@@ -173,9 +177,13 @@ export type Database = {
           created_at?: string | null
           id?: string
           lesson_count?: number | null
+          processing_error?: string | null
+          processing_started_at?: string | null
+          processing_state?: string
           source_content?: string
           source_type?: string
           status?: string
+          storage_path?: string | null
           title: string
           user_id: string
         }
@@ -184,9 +192,13 @@ export type Database = {
           created_at?: string | null
           id?: string
           lesson_count?: number | null
+          processing_error?: string | null
+          processing_started_at?: string | null
+          processing_state?: string
           source_content?: string
           source_type?: string
           status?: string
+          storage_path?: string | null
           title?: string
           user_id?: string
         }
