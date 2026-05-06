@@ -29,6 +29,7 @@ import Growth from "@/pages/Growth";
 
 import { TutorProvider } from "@/lib/TutorContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { useTutor } from "@/lib/TutorContext";
 import IPhoneFrame from "@/components/IPhoneFrame";
 
 const queryClient = new QueryClient();
@@ -49,8 +50,10 @@ function PublicOnly({ children }: { children: React.ReactNode }) {
 
 function RootRedirect() {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen bg-background" />;
-  return user ? <Navigate to="/dashboard" replace /> : <Landing />;
+  const { profile, loading: profileLoading } = useTutor();
+  if (loading || (user && profileLoading)) return <div className="min-h-screen bg-background" />;
+  if (!user) return <Landing />;
+  return <Navigate to={profile?.onboarded ? "/dashboard" : "/onboarding"} replace />;
 }
 
 const App = () => (
