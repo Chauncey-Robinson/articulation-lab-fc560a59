@@ -41,11 +41,9 @@ export default function Growth() {
     .slice(0, 2)
     .toUpperCase();
 
-  const leaderboard = useMemo(() => {
-    const me = { initials, name: displayName + " (you)", score: growthScore, isMe: true };
-    const list = [...COHORT.map((c) => ({ ...c, isMe: false })), me].sort((a, b) => b.score - a.score);
-    return list;
-  }, [growthScore, initials, displayName]);
+  // Quiet cohort presentation — no rankings, no sorting
+  const cohort = COHORT;
+  void useMemo;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-8 pt-12 pb-40">
