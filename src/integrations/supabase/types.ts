@@ -165,6 +165,8 @@ export type Database = {
           processing_error: string | null
           processing_started_at: string | null
           processing_state: string
+          sections: Json | null
+          selected_section_indices: Json | null
           source_content: string
           source_type: string
           status: string
@@ -180,6 +182,8 @@ export type Database = {
           processing_error?: string | null
           processing_started_at?: string | null
           processing_state?: string
+          sections?: Json | null
+          selected_section_indices?: Json | null
           source_content?: string
           source_type?: string
           status?: string
@@ -195,6 +199,8 @@ export type Database = {
           processing_error?: string | null
           processing_started_at?: string | null
           processing_state?: string
+          sections?: Json | null
+          selected_section_indices?: Json | null
           source_content?: string
           source_type?: string
           status?: string
