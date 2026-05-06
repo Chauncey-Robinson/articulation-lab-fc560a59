@@ -3,22 +3,14 @@ import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import BottomNav from "@/components/BottomNav";
 
-// Static cohort styled like an Oxford S25 reading list
+// Quiet cohort — placeholder, no rankings
 const COHORT = [
-  { initials: "EM", name: "Eleanor M.", score: 412 },
-  { initials: "JR", name: "Jamie R.", score: 388 },
-  { initials: "AS", name: "Aaron S.", score: 354 },
-  { initials: "PV", name: "Priya V.", score: 327 },
-  { initials: "TO", name: "Tomás O.", score: 309 },
-  { initials: "KH", name: "Kira H.", score: 281 },
+  { initials: "EM", name: "Eleanor M.", score: 412, topic: "Behavioural economics" },
+  { initials: "JR", name: "Jamie R.", score: 388, topic: "Systems thinking" },
+  { initials: "AS", name: "Aaron S.", score: 354, topic: "Negotiation tactics" },
+  { initials: "PV", name: "Priya V.", score: 327, topic: "Revenue recognition" },
+  { initials: "TO", name: "Tomás O.", score: 309, topic: "Strategic planning" },
 ];
-
-function medalTone(rank: number): string {
-  if (rank === 0) return "text-[hsl(35,30%,55%)]"; // muted gold
-  if (rank === 1) return "text-[hsl(220,8%,55%)]"; // silver
-  if (rank === 2) return "text-[hsl(20,25%,45%)]"; // bronze
-  return "text-ink-3";
-}
 
 export default function Growth() {
   const { modules, progress, profile } = useTutor();
