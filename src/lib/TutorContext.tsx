@@ -12,6 +12,10 @@ export interface Module {
   lesson_count: number;
   completed_lessons: number;
   created_at: string;
+  processing_state?: "pending" | "processing" | "ready" | "failed";
+  processing_started_at?: string | null;
+  processing_error?: string | null;
+  storage_path?: string | null;
 }
 
 export interface Lesson {
