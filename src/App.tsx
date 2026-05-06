@@ -29,6 +29,7 @@ import Growth from "@/pages/Growth";
 
 import { TutorProvider } from "@/lib/TutorContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { useTutor } from "@/lib/TutorContext";
 import IPhoneFrame from "@/components/IPhoneFrame";
 
 const queryClient = new QueryClient();
