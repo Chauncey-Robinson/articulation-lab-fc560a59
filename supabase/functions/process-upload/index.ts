@@ -75,8 +75,8 @@ async function processModule(admin: any, mod: any) {
     }
     if (text.length > MAX_CHARS) text = text.slice(0, MAX_CHARS);
 
-    // 3. Generate lessons via AI
-    const lessons = await generateLessons(text, LOVABLE_API_KEY);
+    // 3. Generate lessons via Anthropic Claude
+    const lessons = await generateLessons(text);
 
     // 4. Insert lessons + update module
     const lessonRows = lessons.lessons.map((l, i) => ({
