@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useTutor, type Lesson, type Module } from "@/lib/TutorContext";
 import { toast } from "@/hooks/use-toast";
+import TestConfigSheet from "@/components/TestConfigSheet";
+import LearnConfigSheet from "@/components/LearnConfigSheet";
 
 export default function ModuleView() {
   const { id } = useParams<{ id: string }>();
