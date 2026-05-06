@@ -123,7 +123,7 @@ export default function ModuleView() {
               <p className="text-[12px] font-sans text-ink-3 mt-1">Read it</p>
             </button>
             <button
-              onClick={() => navigate(`/test-config/${module.id}`)}
+              onClick={() => setTestSheetOpen(true)}
               className="bg-[hsl(var(--surface-1))] rounded-[32px] p-7 text-left hover:bg-[hsl(var(--surface-2))] hover:-translate-y-0.5 transition-all duration-[200ms] shadow-feather"
             >
               <Sparkles className="w-5 h-5 text-foreground mb-4" strokeWidth={1.5} />
@@ -138,7 +138,7 @@ export default function ModuleView() {
             <div className="bg-[hsl(var(--surface-1))] rounded-[32px] p-8 mb-6 text-center animate-fade-up stagger-2 shadow-feather">
               <p className="font-serif text-[20px] text-foreground tracking-tight mb-2">You've finished all the reading.</p>
               <button
-                onClick={() => navigate(`/test-config/${module.id}`)}
+                onClick={() => setTestSheetOpen(true)}
                 className="mt-4 rounded-pill bg-primary px-7 py-3.5 text-[13px] font-sans font-medium text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all tracking-wide"
               >
                 Now explain it back
