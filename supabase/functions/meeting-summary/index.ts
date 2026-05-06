@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { corsHeaders, requireUser } from "../_shared/auth.ts";
+import { callAnthropic, AnthropicLimitError } from "../_shared/anthropic.ts";
 
 const MAX_TRANSCRIPT_LENGTH = 100000;
 
@@ -12,93 +13,45 @@ serve(async (req) => {
 
     const { transcript, meetingType } = await req.json();
     if (typeof transcript !== "string" || transcript.length === 0 || transcript.length > MAX_TRANSCRIPT_LENGTH) {
-      return new Response(
-        JSON.stringify({ error: `Transcript must be a non-empty string under ${MAX_TRANSCRIPT_LENGTH} characters` }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return json({ error: `Transcript must be a non-empty string under ${MAX_TRANSCRIPT_LENGTH} characters` }, 400);
     }
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `You are an expert meeting analyst. Analyze the following ${meetingType || "meeting"} transcript and extract structured insights.
+    const system = `You are an expert meeting analyst. Analyze the following ${meetingType || "meeting"} transcript and extract structured insights. Be thorough but concise. Focus on actionable and educational content.`;
 
-Return a JSON object with these fields:
-- title: A concise, descriptive title for the meeting (string)
-- summary: A clear 2-4 paragraph summary of what was discussed (string)
-- action_items: Array of action items/tasks mentioned (array of strings)
-- key_learnings: Array of key concepts, insights, or takeaways someone could study (array of strings)
-- decisions: Array of decisions that were made (array of strings)
-- questions_raised: Array of open questions or unresolved items (array of strings)
-
-Be thorough but concise. Focus on actionable and educational content.`;
-
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: transcript },
-        ],
-        tools: [{
-          type: "function",
-          function: {
-            name: "meeting_analysis",
-            description: "Return structured meeting analysis",
-            parameters: {
-              type: "object",
-              properties: {
-                title: { type: "string" },
-                summary: { type: "string" },
-                action_items: { type: "array", items: { type: "string" } },
-                key_learnings: { type: "array", items: { type: "string" } },
-                decisions: { type: "array", items: { type: "string" } },
-                questions_raised: { type: "array", items: { type: "string" } },
-              },
-              required: ["title", "summary", "action_items", "key_learnings", "decisions", "questions_raised"],
-              additionalProperties: false,
-            },
+    const { tool_input } = await callAnthropic({
+      system,
+      messages: [{ role: "user", content: transcript }],
+      max_tokens: 2048,
+      tool: {
+        name: "meeting_analysis",
+        description: "Return structured meeting analysis",
+        input_schema: {
+          type: "object",
+          properties: {
+            title: { type: "string", description: "Concise descriptive title" },
+            summary: { type: "string", description: "2-4 paragraph summary" },
+            action_items: { type: "array", items: { type: "string" } },
+            key_learnings: { type: "array", items: { type: "string" } },
+            decisions: { type: "array", items: { type: "string" } },
+            questions_raised: { type: "array", items: { type: "string" } },
           },
-        }],
-        tool_choice: { type: "function", function: { name: "meeting_analysis" } },
-      }),
+          required: ["title", "summary", "action_items", "key_learnings", "decisions", "questions_raised"],
+        },
+      },
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limited. Please try again in a moment." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Please add funds." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const errText = await response.text();
-      throw new Error(`AI gateway error [${response.status}]: ${errText}`);
-    }
-
-    const result = await response.json();
-    const toolCall = result.choices?.[0]?.message?.tool_calls?.[0];
-    if (!toolCall) throw new Error("No tool call in AI response");
-
-    const analysis = JSON.parse(toolCall.function.arguments);
-
-    return new Response(JSON.stringify(analysis), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    if (!tool_input) throw new Error("No structured analysis returned");
+    return json(tool_input);
   } catch (e) {
+    if (e instanceof AnthropicLimitError) return json({ error: e.message, limited: true });
     console.error("meeting-summary error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return json({ error: e instanceof Error ? e.message : "Unknown error" }, 500);
   }
 });
+
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}

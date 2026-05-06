@@ -1,7 +1,8 @@
 // Background processor: downloads uploaded file from Storage, extracts text,
-// generates lessons via Lovable AI, writes lessons, and marks the module ready.
+// generates lessons via Anthropic Claude, writes lessons, and marks the module ready.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders, requireUser } from "../_shared/auth.ts";
+import { callAnthropic } from "../_shared/anthropic.ts";
 
 const MAX_CHARS = 80_000;
 
@@ -20,7 +21,6 @@ Deno.serve(async (req) => {
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
 
     const { data: mod, error: modErr } = await admin
@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
     if (!mod.storage_path) return json({ error: "No file attached" }, 400);
 
     // Kick off background work; respond immediately
-    EdgeRuntime.waitUntil(processModule(admin, mod, LOVABLE_API_KEY));
+    EdgeRuntime.waitUntil(processModule(admin, mod));
     return json({ ok: true, module_id });
   } catch (e) {
     console.error("process-upload error:", e);
@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
   }
 });
 
-async function processModule(admin: any, mod: any, LOVABLE_API_KEY: string) {
+async function processModule(admin: any, mod: any) {
   const moduleId = mod.id;
   try {
     await admin.from("modules").update({
@@ -75,8 +75,8 @@ async function processModule(admin: any, mod: any, LOVABLE_API_KEY: string) {
     }
     if (text.length > MAX_CHARS) text = text.slice(0, MAX_CHARS);
 
-    // 3. Generate lessons via AI
-    const lessons = await generateLessons(text, LOVABLE_API_KEY);
+    // 3. Generate lessons via Anthropic Claude
+    const lessons = await generateLessons(text);
 
     // 4. Insert lessons + update module
     const lessonRows = lessons.lessons.map((l, i) => ({
@@ -117,13 +117,15 @@ function json(body: unknown, status = 200) {
 }
 
 // ---- AI ----
-async function generateLessons(content: string, apiKey: string) {
-  const tool = {
-    type: "function",
-    function: {
+async function generateLessons(content: string) {
+  const { tool_input } = await callAnthropic({
+    system: `You are an expert educator. Read the uploaded material and identify the 3-5 most important concepts. For each, write a mini-lecture: clear title (<10 words), 80-150 word explanation, and a one-sentence key idea (<25 words). Order foundational to advanced.`,
+    messages: [{ role: "user", content }],
+    max_tokens: 4000,
+    tool: {
       name: "create_lessons",
       description: "Create structured lessons from the uploaded content",
-      parameters: {
+      input_schema: {
         type: "object",
         properties: {
           title: { type: "string", description: "Overall topic title, under 8 words" },
@@ -143,32 +145,9 @@ async function generateLessons(content: string, apiKey: string) {
         required: ["title", "lessons"],
       },
     },
-  };
-
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      max_tokens: 2500,
-      reasoning: { effort: "medium" },
-      messages: [
-        { role: "system", content: `You are an expert educator. Read the uploaded material and identify the 3-5 most important concepts. For each, write a mini-lecture: clear title (<10 words), 80-150 word explanation, and a one-sentence key idea (<25 words). Order foundational to advanced.` },
-        { role: "user", content },
-      ],
-      tools: [tool],
-      tool_choice: { type: "function", function: { name: "create_lessons" } },
-    }),
   });
-
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`AI gateway ${res.status}: ${txt.slice(0, 200)}`);
-  }
-  const data = await res.json();
-  const call = data.choices?.[0]?.message?.tool_calls?.[0];
-  if (!call) throw new Error("AI returned no lessons");
-  return JSON.parse(call.function.arguments) as { title: string; lessons: { title: string; content: string; key_idea: string }[] };
+  if (!tool_input) throw new Error("AI returned no lessons");
+  return tool_input as { title: string; lessons: { title: string; content: string; key_idea: string }[] };
 }
 
 // ---- PDF text extraction (heuristic, handles uncompressed text streams) ----

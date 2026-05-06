@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { corsHeaders, requireUser } from "../_shared/auth.ts";
+import { callAnthropic, AnthropicLimitError } from "../_shared/anthropic.ts";
 
 interface ToolDef {
   name: string;
@@ -241,74 +242,55 @@ serve(async (req) => {
       });
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
-
-    // Build OpenAI-compatible request for Lovable AI Gateway (Gemini)
-    const requestBody: Record<string, unknown> = {
-      model: "google/gemini-2.5-flash",
-      max_tokens: config.maxTokens,
-      reasoning: { effort: "medium" },
-    };
+    let messages: Array<{ role: "user" | "assistant"; content: string }>;
+    let systemPrompt: string;
+    let tool: { name: string; description: string; input_schema: Record<string, unknown> } | undefined;
 
     if (config.type === "dialogue") {
-      const dialogueConfig = config as { type: string; systemPrompt: string; messages: Array<{ role: string; content: string }>; maxTokens: number };
-      requestBody.messages = [
-        { role: "system", content: dialogueConfig.systemPrompt },
-        ...(dialogueConfig.messages.length > 0 ? dialogueConfig.messages : [{ role: "user", content: "Tell me about this topic." }]),
-      ];
+      const dc = config as { type: string; systemPrompt: string; messages: Array<{ role: string; content: string }>; maxTokens: number };
+      systemPrompt = dc.systemPrompt;
+      const incoming = dc.messages.length > 0
+        ? dc.messages
+        : [{ role: "user", content: "Tell me about this topic." }];
+      messages = incoming.map((m) => ({
+        role: m.role === "assistant" ? "assistant" : "user",
+        content: m.content,
+      }));
     } else {
-      const stdConfig = config as { type: string; systemPrompt: string; userMessage: string; maxTokens: number; tool: ToolDef | null };
-      requestBody.messages = [
-        { role: "system", content: stdConfig.systemPrompt },
-        { role: "user", content: stdConfig.userMessage },
-      ];
-
-      if (stdConfig.tool) {
-        requestBody.tools = [{
-          type: "function",
-          function: {
-            name: stdConfig.tool.name,
-            description: stdConfig.tool.description,
-            parameters: stdConfig.tool.input_schema,
-          },
-        }];
-        requestBody.tool_choice = { type: "function", function: { name: stdConfig.tool.name } };
+      const sc = config as { type: string; systemPrompt: string; userMessage: string; maxTokens: number; tool: ToolDef | null };
+      systemPrompt = sc.systemPrompt;
+      messages = [{ role: "user", content: sc.userMessage }];
+      if (sc.tool) {
+        tool = {
+          name: sc.tool.name,
+          description: sc.tool.description,
+          input_schema: sc.tool.input_schema,
+        };
       }
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
+    const { text, tool_input } = await callAnthropic({
+      system: systemPrompt,
+      messages,
+      max_tokens: config.maxTokens,
+      tool,
     });
 
-    if (!response.ok) {
-      const status = response.status;
-      if (status === 429) return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly.", limited: true }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (status === 402) return new Response(JSON.stringify({ error: "AI usage limit reached. Please add credits in Settings → Workspace → Usage.", limited: true }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      const t = await response.text();
-      console.error("AI gateway error:", status, t);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (tool_input) {
+      return new Response(JSON.stringify(tool_input), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
-
-    const data = await response.json();
-
-    // Extract tool call results
-    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
-    if (toolCall) {
-      const parsed = JSON.parse(toolCall.function.arguments);
-      return new Response(JSON.stringify(parsed), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    // Extract text content
-    const content = data.choices?.[0]?.message?.content || "";
-    return new Response(JSON.stringify({ content }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-
+    return new Response(JSON.stringify({ content: text }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (e) {
+    if (e instanceof AnthropicLimitError) {
+      return new Response(JSON.stringify({ error: e.message, limited: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     console.error("ai-tutor error:", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
