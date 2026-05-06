@@ -87,7 +87,10 @@ export default function Upload() {
         setError("Could not extract enough text from this file. Try pasting the content directly.");
         setContent("");
       } else {
-        setContent(text);
+        // Cap to ~80k chars (~20k tokens) to stay within model context
+        const MAX_CHARS = 80_000;
+        const trimmed = text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) : text;
+        setContent(trimmed);
       }
     } catch (err: any) {
       setError(err.message || "Failed to process file.");
