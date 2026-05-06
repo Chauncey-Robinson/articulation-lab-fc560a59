@@ -1,24 +1,16 @@
-import { useMemo } from "react";
+// no hooks needed beyond render
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import BottomNav from "@/components/BottomNav";
 
-// Static cohort styled like an Oxford S25 reading list
+// Quiet cohort — placeholder, no rankings
 const COHORT = [
-  { initials: "EM", name: "Eleanor M.", score: 412 },
-  { initials: "JR", name: "Jamie R.", score: 388 },
-  { initials: "AS", name: "Aaron S.", score: 354 },
-  { initials: "PV", name: "Priya V.", score: 327 },
-  { initials: "TO", name: "Tomás O.", score: 309 },
-  { initials: "KH", name: "Kira H.", score: 281 },
+  { initials: "EM", name: "Eleanor M.", score: 412, topic: "Behavioural economics" },
+  { initials: "JR", name: "Jamie R.", score: 388, topic: "Systems thinking" },
+  { initials: "AS", name: "Aaron S.", score: 354, topic: "Negotiation tactics" },
+  { initials: "PV", name: "Priya V.", score: 327, topic: "Revenue recognition" },
+  { initials: "TO", name: "Tomás O.", score: 309, topic: "Strategic planning" },
 ];
-
-function medalTone(rank: number): string {
-  if (rank === 0) return "text-[hsl(35,30%,55%)]"; // muted gold
-  if (rank === 1) return "text-[hsl(220,8%,55%)]"; // silver
-  if (rank === 2) return "text-[hsl(20,25%,45%)]"; // bronze
-  return "text-ink-3";
-}
 
 export default function Growth() {
   const { modules, progress, profile } = useTutor();
@@ -49,11 +41,8 @@ export default function Growth() {
     .slice(0, 2)
     .toUpperCase();
 
-  const leaderboard = useMemo(() => {
-    const me = { initials, name: displayName + " (you)", score: growthScore, isMe: true };
-    const list = [...COHORT.map((c) => ({ ...c, isMe: false })), me].sort((a, b) => b.score - a.score);
-    return list;
-  }, [growthScore, initials, displayName]);
+  // Quiet cohort presentation — no rankings, no sorting
+  const cohort = COHORT;
 
   return (
     <div className="min-h-screen bg-background flex flex-col px-8 pt-12 pb-40">
@@ -99,32 +88,45 @@ export default function Growth() {
           </div>
         </div>
 
-        {/* Cohort leaderboard */}
-        <div className="mb-12">
-          <div className="flex items-baseline justify-between mb-5">
-            <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3">Cohort · Oxford S25</p>
-            <p className="text-[11px] font-sans text-ink-3">Fluency Score</p>
-          </div>
-          <div className="bg-surface-1 rounded-[28px] py-2">
-            {leaderboard.map((row, idx) => (
-              <div
-                key={row.name + idx}
-                className={`flex items-center gap-4 px-7 py-4 ${idx > 0 ? "" : ""} ${
-                  row.isMe ? "bg-surface-2" : ""
-                } ${idx === 0 ? "rounded-t-[26px]" : ""} ${idx === leaderboard.length - 1 ? "rounded-b-[26px]" : ""}`}
-              >
-                <span className={`font-serif text-[18px] tabular-nums w-6 ${medalTone(idx)}`}>{idx + 1}</span>
-                <div className="w-9 h-9 rounded-full bg-surface-3 flex items-center justify-center">
-                  <span className="text-[11px] font-sans font-medium text-foreground">{row.initials}</span>
-                </div>
-                <p className="flex-1 text-[14px] font-sans text-foreground">{row.name}</p>
-                <p className="font-serif text-[18px] text-foreground tabular-nums tracking-tight">{row.score}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-[11px] font-sans text-ink-3 text-center mt-4 italic">
-            Standings refresh weekly. Practice, don't perform.
+        {/* Your cohort — quiet, no rankings */}
+        <div className="mb-12 animate-fade-up stagger-4">
+          <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-5">
+            Your cohort
           </p>
+          <div className="space-y-3">
+            {cohort.map((row) => {
+              const r = 14;
+              const c = 2 * Math.PI * r;
+              const pct = Math.min(row.score / 500, 1);
+              const offset = c * (1 - pct);
+              return (
+                <div
+                  key={row.initials}
+                  className="bg-surface-1 rounded-[24px] px-6 py-4 flex items-center gap-5"
+                >
+                  <div className="relative w-9 h-9 shrink-0">
+                    <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                      <circle cx="18" cy="18" r={r} fill="none" stroke="hsl(var(--surface-3))" strokeWidth="2" />
+                      <circle
+                        cx="18" cy="18" r={r} fill="none"
+                        stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round"
+                        strokeDasharray={c} strokeDashoffset={offset}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[9px] font-sans font-medium text-foreground">{row.initials}</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-sans text-foreground truncate">{row.name}</p>
+                    <p className="text-[12px] font-sans text-ink-3 truncate mt-0.5">
+                      Working on <span className="text-ink-2">{row.topic}</span>
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
