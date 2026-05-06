@@ -124,23 +124,6 @@ export default function Dashboard() {
             <p className="text-[15px] font-sans text-ink-3 leading-[1.6]">All topics complete. Add something new or review what you know.</p>
           )}
 
-          {/* Persistent memory indicator — surfaces last tricky topic */}
-          {(() => {
-            const tricky = activeModules.find(
-              (m) => m.completed_lessons > 0 && m.completed_lessons < m.lesson_count
-            );
-            if (!tricky) return null;
-            return (
-              <button
-                onClick={() => navigate(`/session/${tricky.id}?len=10`)}
-                className="mt-4 block text-left text-[13px] font-sans text-ink-3 leading-[1.55] hover:text-foreground transition-colors"
-              >
-                Last time you found{" "}
-                <span className="italic text-foreground/80">{tricky.title}</span> tricky. Want to pick up there?
-              </button>
-            );
-          })()}
-
           {/* Daily goal toggle */}
           <button
             onClick={() => setDailyGoalOn((v) => !v)}
