@@ -57,52 +57,97 @@ export default function Upload() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
-  const [fileName, setFileName] = useState("");
-  const [fileProcessing, setFileProcessing] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadPct, setUploadPct] = useState(0);
+  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isValid = method === "text" ? content.trim().length >= 50
     : method === "url" ? url.trim().length > 10
     : method === "record" ? content.trim().length >= 50
-    : method === "file" ? content.trim().length >= 50
+    : method === "file" ? !!selectedFile
     : false;
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (file.size > MAX_FILE_SIZE) {
-      setError("File too large. Maximum size is 20 MB.");
+      setError(`File too large. Maximum size is 50 MB. Yours is ${(file.size / 1024 / 1024).toFixed(1)} MB.`);
+      e.target.value = "";
       return;
     }
-
+    const name = file.name.toLowerCase();
+    const ok = [".pdf", ".docx", ".doc", ".txt", ".md"].some(ext => name.endsWith(ext));
+    if (!ok) {
+      setError("Unsupported file type. Use PDF, DOCX, or TXT.");
+      e.target.value = "";
+      return;
+    }
     setError("");
-    setFileName(file.name);
-    setFileProcessing(true);
-    setStatus("Reading file...");
+    setSelectedFile(file);
+  };
+
+  // Upload file directly to Supabase Storage with progress, then create the
+  // module in `pending` state and trigger the background processor.
+  const handleFileFlow = async () => {
+    if (!user || !selectedFile) return;
+    setUploading(true);
+    setUploadPct(0);
+    setStatus("Uploading…");
 
     try {
-      const text = await extractTextFromFile(file);
-      if (text.trim().length < 50) {
-        setError("Could not extract enough text from this file. Try pasting the content directly.");
-        setContent("");
-      } else {
-        // Cap to ~80k chars (~20k tokens) to stay within model context
-        const MAX_CHARS = 80_000;
-        const trimmed = text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) : text;
-        setContent(trimmed);
-      }
-    } catch (err: any) {
-      setError(err.message || "Failed to process file.");
-      setContent("");
+      const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${user.id}/${Date.now()}-${safeName}`;
+
+      // Use signed-upload URL so we can stream with XHR and report progress
+      const { data: signed, error: signErr } = await supabase
+        .storage.from("uploads").createSignedUploadUrl(path);
+      if (signErr || !signed) throw new Error(signErr?.message || "Could not start upload");
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", signed.signedUrl);
+        xhr.setRequestHeader("Content-Type", selectedFile.type || "application/octet-stream");
+        xhr.upload.onprogress = (evt) => {
+          if (evt.lengthComputable) setUploadPct(Math.round((evt.loaded / evt.total) * 100));
+        };
+        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve() : reject(new Error(`Upload failed (${xhr.status})`));
+        xhr.onerror = () => reject(new Error("Network error during upload"));
+        xhr.send(selectedFile);
+      });
+
+      setStatus("Saving…");
+      const { data: moduleData, error: modErr } = await supabase.from("modules").insert({
+        user_id: user.id,
+        title: selectedFile.name.replace(/\.[^.]+$/, ""),
+        source_content: "",
+        source_type: `file:${selectedFile.name}`,
+        status: "learning",
+        lesson_count: 0,
+        completed_lessons: 0,
+        processing_state: "pending",
+        storage_path: path,
+      } as any).select().single();
+      if (modErr) throw modErr;
+      const moduleId = (moduleData as any).id;
+
+      // Fire background job (don't await long work, just the trigger)
+      supabase.functions.invoke("process-upload", { body: { module_id: moduleId } })
+        .catch(err => console.error("Failed to trigger processing:", err));
+
+      await refreshModules();
+      navigate("/dashboard");
+    } catch (e: any) {
+      setError(e.message || "Upload failed. Try again.");
     } finally {
-      setFileProcessing(false);
+      setUploading(false);
       setStatus("");
     }
   };
 
   const handleUpload = async () => {
     if (!user || !isValid) return;
+    if (method === "file") return handleFileFlow();
     setLoading(true);
     setError("");
 
@@ -119,7 +164,7 @@ export default function Upload() {
         user_id: user.id,
         title: result.title,
         source_content: materialContent,
-        source_type: method === "file" ? `file:${fileName}` : method,
+        source_type: method,
         status: "learning",
         lesson_count: result.lessons.length,
         completed_lessons: 0,
