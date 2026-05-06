@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+// no hooks needed beyond render
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import BottomNav from "@/components/BottomNav";
