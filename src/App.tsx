@@ -19,7 +19,6 @@ import Deadlines from "@/pages/Deadlines";
 import LearnConfig from "@/pages/LearnConfig";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
-import Demo from "@/pages/Demo";
 import Pricing from "@/pages/Pricing";
 import MeetingRecord from "@/pages/MeetingRecord";
 import MeetingReview from "@/pages/MeetingReview";
@@ -47,6 +46,12 @@ function PublicOnly({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function RootRedirect() {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="min-h-screen bg-background" />;
+  return <Navigate to={user ? "/dashboard" : "/onboarding"} replace />;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -54,7 +59,6 @@ const App = () => (
         <TutorProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/demo" element={<Demo />} />
               <Route path="/pricing" element={<Pricing />} />
               
               
@@ -62,7 +66,7 @@ const App = () => (
               <Route path="/*" element={
                 <IPhoneFrame>
                   <Routes>
-                    <Route path="/" element={<PublicOnly><Landing /></PublicOnly>} />
+                    <Route path="/" element={<RootRedirect />} />
                     <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
 
                     <Route path="/onboarding" element={<RequireAuth><Onboarding /></RequireAuth>} />
