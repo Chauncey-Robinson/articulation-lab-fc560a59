@@ -20,6 +20,8 @@ export default function ModuleView() {
   const [refresherLoading, setRefresherLoading] = useState(false);
   const [books, setBooks] = useState<{ title: string; author: string; why: string }[] | null>(null);
   const [booksLoading, setBooksLoading] = useState(false);
+  const [testSheetOpen, setTestSheetOpen] = useState(false);
+  const [learnSheetOpen, setLearnSheetOpen] = useState(false);
 
   useEffect(() => {
     if (!user || !id) return;
