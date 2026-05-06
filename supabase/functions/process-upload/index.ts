@@ -117,13 +117,15 @@ function json(body: unknown, status = 200) {
 }
 
 // ---- AI ----
-async function generateLessons(content: string, apiKey: string) {
-  const tool = {
-    type: "function",
-    function: {
+async function generateLessons(content: string) {
+  const { tool_input } = await callAnthropic({
+    system: `You are an expert educator. Read the uploaded material and identify the 3-5 most important concepts. For each, write a mini-lecture: clear title (<10 words), 80-150 word explanation, and a one-sentence key idea (<25 words). Order foundational to advanced.`,
+    messages: [{ role: "user", content }],
+    max_tokens: 4000,
+    tool: {
       name: "create_lessons",
       description: "Create structured lessons from the uploaded content",
-      parameters: {
+      input_schema: {
         type: "object",
         properties: {
           title: { type: "string", description: "Overall topic title, under 8 words" },
@@ -143,32 +145,9 @@ async function generateLessons(content: string, apiKey: string) {
         required: ["title", "lessons"],
       },
     },
-  };
-
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      max_tokens: 2500,
-      reasoning: { effort: "medium" },
-      messages: [
-        { role: "system", content: `You are an expert educator. Read the uploaded material and identify the 3-5 most important concepts. For each, write a mini-lecture: clear title (<10 words), 80-150 word explanation, and a one-sentence key idea (<25 words). Order foundational to advanced.` },
-        { role: "user", content },
-      ],
-      tools: [tool],
-      tool_choice: { type: "function", function: { name: "create_lessons" } },
-    }),
   });
-
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`AI gateway ${res.status}: ${txt.slice(0, 200)}`);
-  }
-  const data = await res.json();
-  const call = data.choices?.[0]?.message?.tool_calls?.[0];
-  if (!call) throw new Error("AI returned no lessons");
-  return JSON.parse(call.function.arguments) as { title: string; lessons: { title: string; content: string; key_idea: string }[] };
+  if (!tool_input) throw new Error("AI returned no lessons");
+  return tool_input as { title: string; lessons: { title: string; content: string; key_idea: string }[] };
 }
 
 // ---- PDF text extraction (heuristic, handles uncompressed text streams) ----
