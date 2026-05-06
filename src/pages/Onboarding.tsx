@@ -1,145 +1,116 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
-import { useAuth } from "@/hooks/useAuth";
-
-const professions = ["Executive / CEO", "Founder / Owner", "Manager", "Engineer", "Designer", "Researcher", "Healthcare", "Finance", "Legal", "Student", "Teacher", "Other"];
-const interestOptions = ["Business", "Technology", "Science", "Health", "Finance", "Leadership", "Psychology", "Law", "Design", "Marketing"];
-const presentationOptions = [
-  { key: "text", label: "Written" },
-  { key: "infographics", label: "Visual" },
-  { key: "podcast", label: "Audio" },
-];
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const { saveProfile } = useTutor();
-  const { user } = useAuth();
   const [step, setStep] = useState(0);
-  const [displayName, setDisplayName] = useState(() => {
-    return user?.user_metadata?.full_name || user?.user_metadata?.name || "";
-  });
-  const [profession, setProfession] = useState("");
-  const [interests, setInterests] = useState<string[]>([]);
-  const [presentations, setPresentations] = useState<string[]>(["text"]);
-  const [saving, setSaving] = useState(false);
 
-  const toggleInterest = (i: string) => {
-    setInterests(prev => prev.includes(i) ? prev.filter(x => x !== i) : [...prev, i]);
+  const markOnboarded = async () => {
+    try { await saveProfile({ onboarded: true } as any); } catch {}
   };
 
-  const togglePresentation = (key: string) => {
-    setPresentations(prev => prev.includes(key) ? prev.filter(x => x !== key) : [...prev, key]);
+  useEffect(() => {
+    if (step === 1) {
+      const t = setTimeout(() => setStep(2), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [step]);
+
+  const goUpload = async () => {
+    await markOnboarded();
+    navigate("/upload");
   };
 
-  const handleFinish = async () => {
-    setSaving(true);
-    await saveProfile({
-      profession, interests,
-      onboarded: true,
-      display_name: displayName.trim() || null,
-    } as any);
-    localStorage.setItem("tutor_presentation_prefs", JSON.stringify(presentations));
-    setSaving(false);
+  const goDashboard = async () => {
+    await markOnboarded();
     navigate("/dashboard");
   };
 
-  const handleSkip = async () => {
-    setSaving(true);
-    await saveProfile({ onboarded: true });
-    setSaving(false);
-    navigate("/dashboard");
+  const skipLater = async () => {
+    setStep(1);
   };
 
-  const totalSteps = 4;
+  const steps = [
+    {
+      heading: "Start with something you're learning.",
+      body: "Upload a book, article, PDF or paste a link. The app turns it into a session.",
+      action: { label: "Upload something", onClick: goUpload },
+      skip: { label: "I'll do this later.", onClick: skipLater },
+    },
+    {
+      heading: "Your session is built for you.",
+      body: "You'll get a summary, then practice explaining it back. That's how it sticks.",
+      action: null,
+      skip: null,
+    },
+    {
+      heading: "Your coach is always here.",
+      body: "Tap the mic at any time to explain what you know. It listens and helps you go deeper.",
+      action: { label: "Take me to my dashboard", onClick: goDashboard },
+      skip: null,
+    },
+  ];
+
+  const current = steps[step];
+
+  const handleTap = () => {
+    if (step === 1) setStep(2);
+  };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 pt-8 pb-10">
-      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col">
-        {/* Step counter */}
-        <p className="text-[13px] font-sans text-ink-3 mb-8">Step {step + 1} of {totalSteps}</p>
+    <div
+      className="min-h-screen flex flex-col px-6 pt-10 pb-10"
+      style={{ background: "#FDFCFB" }}
+      onClick={handleTap}
+    >
+      {/* Progress dots */}
+      <div className="flex items-center justify-center gap-2 mb-12">
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="rounded-pill transition-all duration-[180ms]"
+            style={{
+              width: i === step ? 24 : 6,
+              height: 6,
+              background: i === step ? "hsl(var(--primary))" : "hsl(var(--surface-3))",
+            }}
+          />
+        ))}
+      </div>
 
-        {/* Step 0: Name */}
-        {step === 0 && (
-          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
-            <h1 className="font-serif text-[2rem] text-foreground mb-2">What's your name?</h1>
-            <p className="text-[14px] font-sans text-ink-3 mb-6">We'll use this to personalise your experience.</p>
-            <input
-              type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Your name"
-              className="w-full rounded-[14px] border-[1.5px] border-border bg-surface-2 px-5 py-3 text-[15px] font-sans text-foreground placeholder:text-ink-3 focus:outline-none focus:border-accent-bright transition-colors mb-6"
-              autoFocus
-            />
-            <button onClick={() => setStep(1)} disabled={!displayName.trim()}
-              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
-              Continue
-            </button>
-          </div>
+      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col justify-center">
+        <div key={step} className="animate-fade-up">
+          <h1
+            className="font-serif text-foreground mb-5"
+            style={{ fontSize: "2.25rem", fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.01em" }}
+          >
+            {current.heading}
+          </h1>
+          <p className="font-sans text-ink-2" style={{ fontSize: 14, lineHeight: 1.6 }}>
+            {current.body}
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-[460px] mx-auto w-full">
+        {current.action && (
+          <button
+            onClick={(e) => { e.stopPropagation(); current.action!.onClick(); }}
+            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] animate-fade-up stagger-2"
+          >
+            {current.action.label}
+          </button>
         )}
-
-        {/* Step 1: Profession */}
-        {step === 1 && (
-          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
-            <h1 className="font-serif text-[2rem] text-foreground mb-2">What do you do?</h1>
-            <p className="text-[14px] font-sans text-ink-3 mb-6">Pick the one that fits best.</p>
-            <div className="grid grid-cols-2 gap-3">
-              {professions.map(p => (
-                <button key={p} onClick={() => { setProfession(p); setStep(2); }}
-                  className={`rounded-[14px] border-[1.5px] px-4 py-3 text-[14px] font-sans text-left transition-all duration-[180ms] ${profession === p ? "border-accent bg-accent-pale/30 text-foreground" : "border-border bg-card text-ink-2 hover:border-accent"}`}>
-                  {p}
-                </button>
-              ))}
-            </div>
-          </div>
+        {current.skip && (
+          <button
+            onClick={(e) => { e.stopPropagation(); current.skip!.onClick(); }}
+            className="w-full text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms] mt-4 text-center animate-fade-up stagger-3"
+          >
+            {current.skip.label}
+          </button>
         )}
-
-        {/* Step 2: Interests */}
-        {step === 2 && (
-          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
-            <h1 className="font-serif text-[2rem] text-foreground mb-2">What interests you?</h1>
-            <p className="text-[14px] font-sans text-ink-3 mb-6">What do you study or work on?</p>
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              {interestOptions.map(i => (
-                <button key={i} onClick={() => toggleInterest(i)}
-                  className={`rounded-[14px] border-[1.5px] px-4 py-3 text-[14px] font-sans text-left transition-all duration-[180ms] ${interests.includes(i) ? "border-accent bg-accent-pale/30 text-foreground" : "border-border bg-card text-ink-2 hover:border-accent"}`}>
-                  {i}
-                </button>
-              ))}
-            </div>
-            <button onClick={() => setStep(3)} disabled={interests.length === 0}
-              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
-              Continue
-            </button>
-          </div>
-        )}
-
-        {/* Step 3: Content format */}
-        {step === 3 && (
-          <div className="flex-1 flex flex-col animate-fade-up stagger-1">
-            <h1 className="font-serif text-[2rem] text-foreground mb-2">How do you want things explained?</h1>
-            <div className="flex flex-col gap-3 mb-6">
-              {presentationOptions.map(opt => (
-                <button key={opt.key} onClick={() => togglePresentation(opt.key)}
-                  className={`rounded-[16px] border-[1.5px] px-5 py-4 text-left transition-all duration-[180ms] ${
-                    presentations.includes(opt.key) ? "border-accent bg-accent-pale/20" : "border-border bg-card hover:border-accent"
-                  }`}>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[14px] font-sans text-ink-3">●</span>
-                    <p className="text-[14px] font-sans font-medium text-foreground">{opt.label}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <button onClick={handleFinish} disabled={saving || presentations.length === 0}
-              className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] disabled:opacity-40 mt-auto">
-              {saving ? "Setting things up..." : "Let's go"}
-            </button>
-          </div>
-        )}
-
-        <button onClick={handleSkip} className="text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms] mt-4 text-center">
-          Skip for now
-        </button>
       </div>
     </div>
   );
