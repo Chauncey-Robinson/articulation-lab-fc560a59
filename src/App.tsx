@@ -49,7 +49,7 @@ function PublicOnly({ children }: { children: React.ReactNode }) {
 function RootRedirect() {
   const { user, loading } = useAuth();
   if (loading) return <div className="min-h-screen bg-background" />;
-  return <Navigate to={user ? "/dashboard" : "/onboarding"} replace />;
+  return user ? <Navigate to="/dashboard" replace /> : <Landing />;
 }
 
 const App = () => (
