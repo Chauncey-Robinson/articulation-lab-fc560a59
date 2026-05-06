@@ -39,6 +39,7 @@ export default function Dashboard() {
   }, [loading, profile, user, navigate]);
 
   const [meetings, setMeetings] = useState<any[]>([]);
+  const [prepOpen, setPrepOpen] = useState(false);
   useEffect(() => {
     if (!user) return;
     (async () => {
