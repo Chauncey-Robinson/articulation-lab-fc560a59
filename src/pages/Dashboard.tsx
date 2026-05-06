@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus, Target } from "lucide-react";
+import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus, Target, Calendar } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import PrepMeetingSheet from "@/components/PrepMeetingSheet";
 
 function getStatusColor(status: string) {
   switch (status) {
