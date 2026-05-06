@@ -21,7 +21,6 @@ Deno.serve(async (req) => {
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
 
     const { data: mod, error: modErr } = await admin
@@ -34,7 +33,7 @@ Deno.serve(async (req) => {
     if (!mod.storage_path) return json({ error: "No file attached" }, 400);
 
     // Kick off background work; respond immediately
-    EdgeRuntime.waitUntil(processModule(admin, mod, LOVABLE_API_KEY));
+    EdgeRuntime.waitUntil(processModule(admin, mod));
     return json({ ok: true, module_id });
   } catch (e) {
     console.error("process-upload error:", e);
