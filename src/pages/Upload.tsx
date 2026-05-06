@@ -14,8 +14,8 @@ const inputMethods = [
   { key: "record", icon: Mic, label: "Record audio", desc: "Something you heard at a talk or meeting" },
 ];
 
-const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md,.csv,.json,.xml,.rtf";
-const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md";
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 async function extractTextFromFile(file: File): Promise<string> {
   const name = file.name.toLowerCase();
