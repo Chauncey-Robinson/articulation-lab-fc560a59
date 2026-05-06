@@ -19,7 +19,6 @@ import Deadlines from "@/pages/Deadlines";
 import LearnConfig from "@/pages/LearnConfig";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
-import Demo from "@/pages/Demo";
 import Pricing from "@/pages/Pricing";
 import MeetingRecord from "@/pages/MeetingRecord";
 import MeetingReview from "@/pages/MeetingReview";
