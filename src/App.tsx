@@ -60,7 +60,7 @@ const App = () => (
               <Route path="/*" element={
                 <IPhoneFrame>
                   <Routes>
-                    <Route path="/" element={<PublicOnly><Landing /></PublicOnly>} />
+                    <Route path="/" element={<RootRedirect />} />
                     <Route path="/signin" element={<PublicOnly><SignIn /></PublicOnly>} />
 
                     <Route path="/onboarding" element={<RequireAuth><Onboarding /></RequireAuth>} />
