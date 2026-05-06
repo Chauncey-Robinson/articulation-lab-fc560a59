@@ -271,6 +271,9 @@ export default function ModuleView() {
           </div>
         </div>
       )}
+
+      <TestConfigSheet open={testSheetOpen} onClose={() => setTestSheetOpen(false)} moduleId={module.id} />
+      <LearnConfigSheet open={learnSheetOpen} onClose={() => setLearnSheetOpen(false)} moduleId={module.id} />
     </div>
   );
 }
