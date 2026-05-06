@@ -12,10 +12,12 @@ export interface Module {
   lesson_count: number;
   completed_lessons: number;
   created_at: string;
-  processing_state?: "pending" | "processing" | "ready" | "failed";
+  processing_state?: "pending" | "processing" | "ready" | "failed" | "awaiting_selection";
   processing_started_at?: string | null;
   processing_error?: string | null;
   storage_path?: string | null;
+  sections?: { title: string; preview: string; start: number; end: number }[] | null;
+  selected_section_indices?: number[] | null;
 }
 
 export interface Lesson {
