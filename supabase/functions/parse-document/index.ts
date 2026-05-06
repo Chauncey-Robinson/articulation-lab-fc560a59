@@ -130,30 +130,30 @@ function extractTextFromPdfRaw(bytes: Uint8Array): string {
     }
   }
 
-  let result = textChunks.join(" ").replace(/\s+/g, " ").trim();
+  const result = textChunks.join(" ").replace(/\s+/g, " ").trim();
 
-  // If raw extraction didn't yield much, try a broader approach
-  if (result.length < 50) {
-    // Try extracting any readable strings from the PDF
-    const readable = raw
-      .replace(/[^\x20-\x7E\n\r\t]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    
-    // Filter out PDF structural keywords
-    const pdfKeywords = /\b(obj|endobj|stream|endstream|xref|trailer|startxref|%%EOF)\b/g;
-    const filtered = readable.replace(pdfKeywords, " ").replace(/\s+/g, " ").trim();
-    
-    if (filtered.length > result.length) {
-      result = filtered;
-    }
-  }
-
-  if (result.length < 50) {
-    return "Could not extract text from this PDF. The file may use compressed streams or scanned images. Try pasting the text directly.";
+  // Quality check: real prose should be mostly letters with reasonable word length.
+  // Garbled PDF binary tends to have lots of symbols, slashes, and short tokens.
+  if (!looksLikeProse(result)) {
+    throw new Error("This PDF appears to be scanned or uses compressed streams we can't read. Try exporting it as text, or paste the content directly.");
   }
 
   return result;
+}
+
+function looksLikeProse(s: string): boolean {
+  if (s.length < 200) return false;
+  const letters = (s.match(/[a-zA-Z]/g) || []).length;
+  const letterRatio = letters / s.length;
+  if (letterRatio < 0.6) return false;
+  // Average token length sanity check
+  const tokens = s.split(/\s+/).filter(Boolean);
+  if (tokens.length < 30) return false;
+  const avgLen = letters / tokens.length;
+  if (avgLen < 2.5) return false;
+  // Reject if it contains obvious PDF binary signatures
+  if (/<<\/|\/Linearized|\/Filter|\/FlateDecode|endobj|xref/i.test(s.slice(0, 2000))) return false;
+  return true;
 }
 
 function decodeEscaped(s: string): string {
