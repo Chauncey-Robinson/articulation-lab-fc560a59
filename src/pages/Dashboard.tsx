@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus, Target } from "lucide-react";
+import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus, Target, Calendar } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import PrepMeetingSheet from "@/components/PrepMeetingSheet";
 
 function getStatusColor(status: string) {
   switch (status) {
@@ -38,6 +39,7 @@ export default function Dashboard() {
   }, [loading, profile, user, navigate]);
 
   const [meetings, setMeetings] = useState<any[]>([]);
+  const [prepOpen, setPrepOpen] = useState(false);
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -151,6 +153,15 @@ export default function Dashboard() {
             </span>
           </button>
         </div>
+
+        {/* Prep for a meeting — directive entry point */}
+        <button
+          onClick={() => setPrepOpen(true)}
+          className="mb-8 inline-flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 text-ink-2 hover:bg-surface-3 transition-all duration-[180ms] animate-fade-up stagger-2"
+        >
+          <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
+          <span className="text-[12px] font-sans font-medium whitespace-nowrap">Prep for a meeting</span>
+        </button>
 
         {/* Smart suggestion chips */}
         {modules.length > 0 && (
@@ -348,6 +359,7 @@ export default function Dashboard() {
       </div>
 
       <BottomNav />
+      <PrepMeetingSheet open={prepOpen} onClose={() => setPrepOpen(false)} />
     </div>
   );
 }
