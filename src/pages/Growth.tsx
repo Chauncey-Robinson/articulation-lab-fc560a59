@@ -89,32 +89,45 @@ export default function Growth() {
           </div>
         </div>
 
-        {/* Cohort leaderboard */}
-        <div className="mb-12">
-          <div className="flex items-baseline justify-between mb-5">
-            <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3">Cohort · Oxford S25</p>
-            <p className="text-[11px] font-sans text-ink-3">Fluency Score</p>
-          </div>
-          <div className="bg-surface-1 rounded-[28px] py-2">
-            {leaderboard.map((row, idx) => (
-              <div
-                key={row.name + idx}
-                className={`flex items-center gap-4 px-7 py-4 ${idx > 0 ? "" : ""} ${
-                  row.isMe ? "bg-surface-2" : ""
-                } ${idx === 0 ? "rounded-t-[26px]" : ""} ${idx === leaderboard.length - 1 ? "rounded-b-[26px]" : ""}`}
-              >
-                <span className={`font-serif text-[18px] tabular-nums w-6 ${medalTone(idx)}`}>{idx + 1}</span>
-                <div className="w-9 h-9 rounded-full bg-surface-3 flex items-center justify-center">
-                  <span className="text-[11px] font-sans font-medium text-foreground">{row.initials}</span>
-                </div>
-                <p className="flex-1 text-[14px] font-sans text-foreground">{row.name}</p>
-                <p className="font-serif text-[18px] text-foreground tabular-nums tracking-tight">{row.score}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-[11px] font-sans text-ink-3 text-center mt-4 italic">
-            Standings refresh weekly. Practice, don't perform.
+        {/* Your cohort — quiet, no rankings */}
+        <div className="mb-12 animate-fade-up stagger-4">
+          <p className="text-[10px] font-sans font-medium uppercase tracking-[0.22em] text-ink-3 mb-5">
+            Your cohort
           </p>
+          <div className="space-y-3">
+            {cohort.map((row) => {
+              const r = 14;
+              const c = 2 * Math.PI * r;
+              const pct = Math.min(row.score / 500, 1);
+              const offset = c * (1 - pct);
+              return (
+                <div
+                  key={row.initials}
+                  className="bg-surface-1 rounded-[24px] px-6 py-4 flex items-center gap-5"
+                >
+                  <div className="relative w-9 h-9 shrink-0">
+                    <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                      <circle cx="18" cy="18" r={r} fill="none" stroke="hsl(var(--surface-3))" strokeWidth="2" />
+                      <circle
+                        cx="18" cy="18" r={r} fill="none"
+                        stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round"
+                        strokeDasharray={c} strokeDashoffset={offset}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[9px] font-sans font-medium text-foreground">{row.initials}</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-sans text-foreground truncate">{row.name}</p>
+                    <p className="text-[12px] font-sans text-ink-3 truncate mt-0.5">
+                      Working on <span className="text-ink-2">{row.topic}</span>
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
