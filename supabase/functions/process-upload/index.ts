@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
   }
 });
 
-async function processModule(admin: any, mod: any, LOVABLE_API_KEY: string) {
+async function processModule(admin: any, mod: any) {
   const moduleId = mod.id;
   try {
     await admin.from("modules").update({
