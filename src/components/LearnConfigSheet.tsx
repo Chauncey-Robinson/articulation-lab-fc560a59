@@ -15,10 +15,13 @@ interface LearnConfigSheetProps {
   moduleId: string;
 }
 
+const LENGTHS = [5, 10, 20] as const;
+
 export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfigSheetProps) {
   const navigate = useNavigate();
   const [pace, setPace] = useState("standard");
   const [link, setLink] = useState(false);
+  const [length, setLength] = useState<number>(10);
 
   useEffect(() => {
     if (!open) return;
@@ -27,6 +30,7 @@ export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfi
       if (saved) {
         if (saved.digestPeriod) setPace(saved.digestPeriod);
         if (typeof saved.priorKnowledge === "boolean") setLink(saved.priorKnowledge);
+        if (typeof saved.length === "number" && LENGTHS.includes(saved.length as any)) setLength(saved.length);
       }
     } catch {}
   }, [open, moduleId]);
@@ -34,10 +38,10 @@ export default function LearnConfigSheet({ open, onClose, moduleId }: LearnConfi
   const handleStart = () => {
     localStorage.setItem(
       `learn_config_${moduleId}`,
-      JSON.stringify({ digestPeriod: pace, priorKnowledge: link })
+      JSON.stringify({ digestPeriod: pace, priorKnowledge: link, length })
     );
     onClose();
-    navigate(`/module/${moduleId}`);
+    navigate(`/session/${moduleId}?len=${length}`);
   };
 
   return (
