@@ -82,6 +82,7 @@ const App = () => (
                     <Route path="/dialogue/:lessonId" element={<RequireAuth><Dialogue /></RequireAuth>} />
                     <Route path="/flashcards/:moduleId" element={<RequireAuth><Flashcards /></RequireAuth>} />
                     <Route path="/test-config/:moduleId" element={<RequireAuth><TestConfig /></RequireAuth>} />
+                    <Route path="/session/:moduleId" element={<RequireAuth><Session /></RequireAuth>} />
                     <Route path="/deadlines" element={<RequireAuth><Deadlines /></RequireAuth>} />
                     <Route path="/meeting/record" element={<RequireAuth><MeetingRecord /></RequireAuth>} />
                     <Route path="/meeting/:id" element={<RequireAuth><MeetingReview /></RequireAuth>} />
