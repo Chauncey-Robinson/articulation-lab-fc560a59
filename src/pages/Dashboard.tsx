@@ -359,6 +359,7 @@ export default function Dashboard() {
       </div>
 
       <BottomNav />
+      <PrepMeetingSheet open={prepOpen} onClose={() => setPrepOpen(false)} />
     </div>
   );
 }
