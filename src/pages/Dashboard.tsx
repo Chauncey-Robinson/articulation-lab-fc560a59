@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Flame, CheckCircle, Mic, GraduationCap, Briefcase, Zap, Brain, RotateCcw, Plus, Target, Calendar } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import PrepMeetingSheet from "@/components/PrepMeetingSheet";
+import SectionSelectSheet from "@/components/SectionSelectSheet";
 
 function getStatusColor(status: string) {
   switch (status) {
