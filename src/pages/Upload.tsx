@@ -14,8 +14,8 @@ const inputMethods = [
   { key: "record", icon: Mic, label: "Record audio", desc: "Something you heard at a talk or meeting" },
 ];
 
-const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md,.csv,.json,.xml,.rtf";
-const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const ACCEPTED_TYPES = ".pdf,.docx,.doc,.txt,.md";
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 async function extractTextFromFile(file: File): Promise<string> {
   const name = file.name.toLowerCase();
@@ -57,52 +57,97 @@ export default function Upload() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
-  const [fileName, setFileName] = useState("");
-  const [fileProcessing, setFileProcessing] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadPct, setUploadPct] = useState(0);
+  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isValid = method === "text" ? content.trim().length >= 50
     : method === "url" ? url.trim().length > 10
     : method === "record" ? content.trim().length >= 50
-    : method === "file" ? content.trim().length >= 50
+    : method === "file" ? !!selectedFile
     : false;
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (file.size > MAX_FILE_SIZE) {
-      setError("File too large. Maximum size is 20 MB.");
+      setError(`File too large. Maximum size is 50 MB. Yours is ${(file.size / 1024 / 1024).toFixed(1)} MB.`);
+      e.target.value = "";
       return;
     }
-
+    const name = file.name.toLowerCase();
+    const ok = [".pdf", ".docx", ".doc", ".txt", ".md"].some(ext => name.endsWith(ext));
+    if (!ok) {
+      setError("Unsupported file type. Use PDF, DOCX, or TXT.");
+      e.target.value = "";
+      return;
+    }
     setError("");
-    setFileName(file.name);
-    setFileProcessing(true);
-    setStatus("Reading file...");
+    setSelectedFile(file);
+  };
+
+  // Upload file directly to Supabase Storage with progress, then create the
+  // module in `pending` state and trigger the background processor.
+  const handleFileFlow = async () => {
+    if (!user || !selectedFile) return;
+    setUploading(true);
+    setUploadPct(0);
+    setStatus("Uploading…");
 
     try {
-      const text = await extractTextFromFile(file);
-      if (text.trim().length < 50) {
-        setError("Could not extract enough text from this file. Try pasting the content directly.");
-        setContent("");
-      } else {
-        // Cap to ~80k chars (~20k tokens) to stay within model context
-        const MAX_CHARS = 80_000;
-        const trimmed = text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) : text;
-        setContent(trimmed);
-      }
-    } catch (err: any) {
-      setError(err.message || "Failed to process file.");
-      setContent("");
+      const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${user.id}/${Date.now()}-${safeName}`;
+
+      // Use signed-upload URL so we can stream with XHR and report progress
+      const { data: signed, error: signErr } = await supabase
+        .storage.from("uploads").createSignedUploadUrl(path);
+      if (signErr || !signed) throw new Error(signErr?.message || "Could not start upload");
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", signed.signedUrl);
+        xhr.setRequestHeader("Content-Type", selectedFile.type || "application/octet-stream");
+        xhr.upload.onprogress = (evt) => {
+          if (evt.lengthComputable) setUploadPct(Math.round((evt.loaded / evt.total) * 100));
+        };
+        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve() : reject(new Error(`Upload failed (${xhr.status})`));
+        xhr.onerror = () => reject(new Error("Network error during upload"));
+        xhr.send(selectedFile);
+      });
+
+      setStatus("Saving…");
+      const { data: moduleData, error: modErr } = await supabase.from("modules").insert({
+        user_id: user.id,
+        title: selectedFile.name.replace(/\.[^.]+$/, ""),
+        source_content: "",
+        source_type: `file:${selectedFile.name}`,
+        status: "learning",
+        lesson_count: 0,
+        completed_lessons: 0,
+        processing_state: "pending",
+        storage_path: path,
+      } as any).select().single();
+      if (modErr) throw modErr;
+      const moduleId = (moduleData as any).id;
+
+      // Fire background job (don't await long work, just the trigger)
+      supabase.functions.invoke("process-upload", { body: { module_id: moduleId } })
+        .catch(err => console.error("Failed to trigger processing:", err));
+
+      await refreshModules();
+      navigate("/dashboard");
+    } catch (e: any) {
+      setError(e.message || "Upload failed. Try again.");
     } finally {
-      setFileProcessing(false);
+      setUploading(false);
       setStatus("");
     }
   };
 
   const handleUpload = async () => {
     if (!user || !isValid) return;
+    if (method === "file") return handleFileFlow();
     setLoading(true);
     setError("");
 
@@ -119,7 +164,7 @@ export default function Upload() {
         user_id: user.id,
         title: result.title,
         source_content: materialContent,
-        source_type: method === "file" ? `file:${fileName}` : method,
+        source_type: method,
         status: "learning",
         lesson_count: result.lessons.length,
         completed_lessons: 0,
@@ -195,7 +240,7 @@ export default function Upload() {
           </div>
         )}
 
-        {/* File upload */}
+        {/* File upload — direct-to-storage with progress */}
         {method === "file" && (
           <div className="animate-fade-up stagger-4 mb-4">
             <input
@@ -206,15 +251,15 @@ export default function Upload() {
               className="hidden"
             />
 
-            {!fileName ? (
+            {!selectedFile ? (
               <button
                 onClick={() => fileInputRef.current?.click()}
-                disabled={loading || fileProcessing}
+                disabled={uploading}
                 className="w-full rounded-[28px] bg-surface-1 hover:bg-surface-2 transition-all duration-[180ms] p-12 flex flex-col items-center gap-4"
               >
                 <FileText className="w-10 h-10 text-ink-3" strokeWidth={1.25} />
                 <p className="text-[15px] font-sans font-medium text-foreground">Choose a file</p>
-                <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT, Markdown · Max 20 MB</p>
+                <p className="text-[12px] font-sans text-ink-3">PDF, DOCX, TXT · Max 50 MB</p>
               </button>
             ) : (
               <div className="rounded-[28px] bg-surface-1 p-7">
@@ -222,43 +267,40 @@ export default function Upload() {
                   <div className="flex items-center gap-3">
                     <FileText className="w-5 h-5 text-ink-3" />
                     <div>
-                      <p className="text-[14px] font-sans font-medium text-foreground truncate max-w-[220px]">{fileName}</p>
-                      {fileProcessing ? (
-                        <p className="text-[11px] font-sans text-ink-3 mt-0.5">Extracting text...</p>
-                      ) : content.length > 0 ? (
-                        <p className="text-[11px] font-sans text-sage mt-0.5">{content.length.toLocaleString()} characters extracted</p>
-                      ) : (
-                        <p className="text-[11px] font-sans text-destructive mt-0.5">No text extracted</p>
-                      )}
+                      <p className="text-[14px] font-sans font-medium text-foreground truncate max-w-[220px]">{selectedFile.name}</p>
+                      <p className="text-[11px] font-sans text-ink-3 mt-0.5">{(selectedFile.size / 1024 / 1024).toFixed(1)} MB</p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => { setFileName(""); setContent(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}
-                    className="text-[12px] font-sans text-ink-3 hover:text-destructive transition-colors"
-                  >
-                    Remove
-                  </button>
+                  {!uploading && (
+                    <button
+                      onClick={() => { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                      className="text-[12px] font-sans text-ink-3 hover:text-destructive transition-colors"
+                    >
+                      Remove
+                    </button>
+                  )}
                 </div>
 
-                {content.length > 0 && (
-                  <div className="bg-surface-2 rounded-[20px] p-5 max-h-[140px] overflow-y-auto">
-                    <p className="text-[13px] font-serif text-ink-2 leading-[1.7] whitespace-pre-wrap">{content.slice(0, 500)}{content.length > 500 ? "..." : ""}</p>
+                {uploading && (
+                  <div className="mt-5">
+                    <div className="h-1.5 w-full bg-surface-2 rounded-pill overflow-hidden">
+                      <div
+                        className="h-full bg-foreground transition-all duration-200"
+                        style={{ width: `${uploadPct}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] font-sans text-ink-3 mt-2 tabular-nums">{status} {uploadPct}%</p>
                   </div>
                 )}
 
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="text-[12px] font-sans text-foreground hover:opacity-70 transition-opacity mt-4"
-                >
-                  Choose different file →
-                </button>
-              </div>
-            )}
-
-            {fileProcessing && (
-              <div className="flex items-center gap-3 mt-4">
-                <div className="w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
-                <p className="text-[13px] font-sans text-ink-3">Reading file contents...</p>
+                {!uploading && (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-[12px] font-sans text-foreground hover:opacity-70 transition-opacity mt-4"
+                  >
+                    Choose different file →
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -313,9 +355,9 @@ export default function Upload() {
         <div className="mt-auto pt-8 animate-fade-up stagger-5">
           <button
             onClick={handleUpload}
-            disabled={!isValid || loading || fileProcessing}
+            disabled={!isValid || loading || uploading}
             className="w-full rounded-pill bg-primary py-6 text-[15px] font-sans font-semibold text-primary-foreground hover:opacity-95 active:scale-[0.99] transition-all duration-[200ms] disabled:opacity-30 disabled:cursor-not-allowed tracking-wide">
-            {loading ? "Processing..." : "Start coaching session"}
+            {uploading ? "Uploading…" : loading ? "Processing..." : method === "file" ? "Upload and process" : "Start coaching session"}
           </button>
           <p className="text-[12px] font-sans text-ink-3 text-center mt-4 leading-[1.6]">
             AI will split this into 3–5 sessions you can study and explain back.
