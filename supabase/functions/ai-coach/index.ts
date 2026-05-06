@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { corsHeaders, requireUser } from "../_shared/auth.ts";
+import { callAnthropic, AnthropicLimitError } from "../_shared/anthropic.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -11,15 +12,11 @@ serve(async (req) => {
     const body = await req.json();
     const { type } = body;
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
-
     let systemPrompt: string;
     let userMessage: string;
     let maxTokens = 300;
 
     if (type === "extract") {
-      // [APP] AI finds the key idea from pasted content or topic
       systemPrompt = `You are a sharp personal thinking coach.
 The user has shared something they are learning.
 Your job is to read it and do the work for them.
@@ -73,7 +70,6 @@ Context: ${body.context}.`;
       userMessage = `Original idea: ${body.keyIdea}\nFirst try: ${body.attempt1}\nSecond try: ${body.attempt2}`;
       maxTokens = 400;
     } else if (type === "scenario") {
-      // [APP] Scenario mode — generates a realistic professional situation for returning concepts
       systemPrompt = `You are a sharp thinking coach creating a realistic scenario.
 The user has practiced this concept before and is returning to it.
 Read the key idea and topic.
@@ -85,72 +81,36 @@ Do not explain the concept. Do not give hints. Just the scenario.`;
       userMessage = `Topic: ${body.topicSnippet}\nKey idea: ${body.keyIdea}`;
       maxTokens = 100;
     } else {
-      return new Response(JSON.stringify({ error: "Invalid type" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return json({ error: "Invalid type" }, 400);
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userMessage },
-        ],
-        max_tokens: maxTokens,
-      }),
+    const { text } = await callAnthropic({
+      system: systemPrompt,
+      messages: [{ role: "user", content: userMessage }],
+      max_tokens: maxTokens,
     });
 
-    if (!response.ok) {
-      const status = response.status;
-      if (status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (status === 402) {
-        return new Response(JSON.stringify({ error: "AI usage limit reached." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const t = await response.text();
-      console.error("AI gateway error:", status, t);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "";
-
-    // For extract type, parse the KEY IDEA and QUESTION
     if (type === "extract") {
-      const keyIdeaMatch = content.match(/KEY IDEA:\s*(.+?)(?:\n|$)/i);
-      const questionMatch = content.match(/QUESTION:\s*(.+?)(?:\n|$)/i);
-      const keyIdea = keyIdeaMatch ? keyIdeaMatch[1].trim() : content;
+      const keyIdeaMatch = text.match(/KEY IDEA:\s*(.+?)(?:\n|$)/i);
+      const questionMatch = text.match(/QUESTION:\s*(.+?)(?:\n|$)/i);
+      const keyIdea = keyIdeaMatch ? keyIdeaMatch[1].trim() : text;
       const question = questionMatch ? questionMatch[1].trim() : "Explain this back to me like you are telling a friend who has never heard of this.";
-      return new Response(JSON.stringify({ keyIdea, question }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return json({ keyIdea, question });
     }
 
-    return new Response(JSON.stringify({ content }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return json({ content: text });
   } catch (e) {
+    if (e instanceof AnthropicLimitError) {
+      return json({ error: e.message, limited: true });
+    }
     console.error("ai-coach error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return json({ error: e instanceof Error ? e.message : "Unknown error" }, 500);
   }
 });
+
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
