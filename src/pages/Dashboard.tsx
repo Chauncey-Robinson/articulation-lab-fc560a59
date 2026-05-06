@@ -154,6 +154,15 @@ export default function Dashboard() {
           </button>
         </div>
 
+        {/* Prep for a meeting — directive entry point */}
+        <button
+          onClick={() => setPrepOpen(true)}
+          className="mb-8 inline-flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 text-ink-2 hover:bg-surface-3 transition-all duration-[180ms] animate-fade-up stagger-2"
+        >
+          <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
+          <span className="text-[12px] font-sans font-medium whitespace-nowrap">Prep for a meeting</span>
+        </button>
+
         {/* Smart suggestion chips */}
         {modules.length > 0 && (
           <div className="flex gap-2.5 overflow-x-auto pb-1 mb-10 animate-fade-up stagger-2 scrollbar-hide -mx-2 px-2">
