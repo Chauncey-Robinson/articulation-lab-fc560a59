@@ -137,7 +137,23 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Prep for a meeting — directive entry point */}
+        {/* Persistent memory line — most recent incomplete topic */}
+        {(() => {
+          const tricky = activeModules.find(
+            (m) => m.completed_lessons > 0 && m.completed_lessons < m.lesson_count
+          ) || activeModules[0];
+          if (!tricky) return null;
+          return (
+            <button
+              onClick={() => navigate(`/session/${tricky.id}?len=10`)}
+              className="block text-left text-[14px] font-sans text-ink-3 leading-[1.55] mb-8 hover:text-foreground transition-colors animate-fade-up stagger-2"
+              style={{ fontFamily: "Inter, system-ui, sans-serif" }}
+            >
+              Last time you found <span className="italic text-foreground/80">{tricky.title}</span> tricky. Want to pick up there?
+            </button>
+          );
+        })()}
+
         <button
           onClick={() => setPrepOpen(true)}
           className="mb-8 inline-flex items-center gap-2 rounded-pill bg-surface-2 px-5 py-3 text-ink-2 hover:bg-surface-3 transition-all duration-[180ms] animate-fade-up stagger-2"
