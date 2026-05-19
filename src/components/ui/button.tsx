@@ -5,21 +5,21 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-pill text-[13px] font-sans font-medium ring-offset-background transition-all duration-[180ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-[1.75]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] text-[13px] font-sans font-medium tracking-[-0.01em] ring-offset-background transition-all duration-[180ms] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/40 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-[1.5]",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:opacity-95 active:scale-[0.99]",
+        default: "bg-foreground text-background hover:bg-ink-2 active:scale-[0.99]",
         destructive: "bg-destructive text-destructive-foreground hover:opacity-90",
-        outline: "bg-[hsl(var(--surface-1))] text-foreground hover:bg-[hsl(var(--surface-2))]",
+        outline: "bg-transparent text-foreground border border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-1))]",
         secondary: "bg-[hsl(var(--surface-1))] text-foreground hover:bg-[hsl(var(--surface-2))]",
         ghost: "hover:bg-[hsl(var(--surface-1))] text-foreground",
         link: "text-foreground underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-11 px-5 py-2.5",
-        sm: "h-9 rounded-[12px] px-3",
-        lg: "h-14 px-8 text-[14px] tracking-wide",
+        default: "h-10 px-5 py-2.5",
+        sm: "h-8 rounded-[8px] px-3 text-[12px]",
+        lg: "h-12 px-7 text-[14px]",
         icon: "h-10 w-10",
       },
     },

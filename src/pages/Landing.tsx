@@ -1,86 +1,81 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { useState } from "react";
 
-const CASCADE_ROWS = [
-  "F",
-  "l u",
-  "e n c",
-  "y F l u",
-  "e n c y F",
-  "l u e n c y",
-  "F l u e n c y",
-  "F l u e n c y F",
-  "l u e n c y F l u",
-];
-
+/**
+ * Fluency — landing.
+ * A single hairline. A single graphite mark. One sentence in editorial serif.
+ * Restraint as positioning.
+ */
 export default function Landing() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [slide, setSlide] = useState(0);
+  const [now, setNow] = useState<string>("");
 
-  const handleStart = () => {
-    navigate(user ? "/dashboard" : "/signin");
-  };
+  useEffect(() => {
+    const tick = () => {
+      const d = new Date();
+      const hh = d.getUTCHours().toString().padStart(2, "0");
+      const mm = d.getUTCMinutes().toString().padStart(2, "0");
+      setNow(`${hh}:${mm} UTC`);
+    };
+    tick();
+    const i = setInterval(tick, 30000);
+    return () => clearInterval(i);
+  }, []);
+
+  const handleStart = () => navigate(user ? "/dashboard" : "/signin");
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 pt-16 pb-10">
-      <div className="flex-1 flex flex-col items-center w-full max-w-[460px] mx-auto">
-        {/* Cascading typographic mark */}
-        <div
-          className="flex flex-col items-center gap-1.5 mb-12 animate-fade-up stagger-1 select-none"
-          aria-hidden="true"
-        >
-          {CASCADE_ROWS.map((row, i) => {
-            const opacity = 0.25 + (i / (CASCADE_ROWS.length - 1)) * 0.55;
-            return (
-              <div
-                key={i}
-                className="flex justify-center gap-3 font-serif text-[15px] tracking-[0.05em]"
-                style={{ color: `hsl(var(--foreground) / ${opacity})` }}
-              >
-                {row.split(" ").map((ch, j) => (
-                  <span key={j}>{ch}</span>
-                ))}
-              </div>
-            );
-          })}
-        </div>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Top frame — meta strip, mono, monocle-issue energy */}
+      <header className="px-8 pt-7 pb-5 flex items-center justify-between animate-fade-in stagger-1">
+        <div className="meta-label">Fluency / Edition 01</div>
+        <div className="meta-label tabular">{now}</div>
+      </header>
 
-        {/* Wordmark */}
-        <h1 className="font-serif text-[3.4rem] leading-[1] tracking-[-2px] text-foreground mb-4 animate-fade-up stagger-2">
-          Fluency.
+      <div className="h-px w-full bg-[hsl(var(--border))] animate-trace stagger-2" />
+
+      {/* Body */}
+      <main className="flex-1 flex flex-col px-8 pt-20 pb-12 max-w-[640px] mx-auto w-full">
+        <div className="meta-label mb-10 animate-fade-up stagger-2">A cognitive operating system</div>
+
+        <h1 className="editorial text-[clamp(3rem,9vw,5.5rem)] text-foreground mb-8 animate-fade-up stagger-3">
+          For people whose<br />
+          decisions <span className="editorial-italic">compound</span>.
         </h1>
-        <p className="font-sans text-[15px] text-ink-3 mb-12 animate-fade-up stagger-3">
-          Turn knowledge into action.
+
+        <p className="text-[15px] text-ink-2 leading-[1.55] max-w-[440px] mb-16 animate-fade-up stagger-4">
+          Fluency converts expertise into leverage. A private layer for sharpening
+          judgment between meetings, decisions, and the work that defines you.
         </p>
 
-        <div className="flex-1" />
+        <div className="flex-1 min-h-[40px]" />
 
-        {/* CTA */}
-        <div className="w-full max-w-[340px] flex flex-col gap-3 animate-fade-up stagger-4">
+        {/* CTA — tight, decisive, no pill flourish */}
+        <div className="animate-fade-up stagger-5 flex flex-col gap-5">
           <button
             onClick={handleStart}
-            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms]"
+            className="group inline-flex items-center justify-between w-full max-w-[320px] bg-foreground text-background px-6 py-4 rounded-[10px] text-[14px] font-medium tracking-[-0.01em] hover:bg-ink-2 active:scale-[0.99] transition-all duration-[180ms]"
           >
-            Get started
+            <span>Begin</span>
+            <span className="mono text-[11px] opacity-60 group-hover:opacity-100 transition-opacity">↵</span>
+          </button>
+
+          <button
+            onClick={() => navigate("/signin")}
+            className="text-[12px] text-ink-3 hover:text-foreground transition-colors duration-[180ms] text-left tracking-wide"
+          >
+            Already a member  →
           </button>
         </div>
+      </main>
 
-        {/* Pagination dots */}
-        <div className="flex gap-2 mt-8 animate-fade-up stagger-5">
-          {[0, 1, 2].map((i) => (
-            <button
-              key={i}
-              onClick={() => setSlide(i)}
-              aria-label={`Slide ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-[180ms] ${
-                slide === i ? "w-6 bg-foreground" : "w-1.5 bg-foreground/25"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Bottom hairline + colophon */}
+      <footer className="border-t border-[hsl(var(--border))] px-8 py-5 flex items-center justify-between animate-fade-in stagger-6">
+        <div className="meta-label">Private  ·  By invitation</div>
+        <div className="meta-label tabular">№ 001</div>
+      </footer>
     </div>
   );
 }

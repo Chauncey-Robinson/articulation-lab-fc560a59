@@ -1,117 +1,157 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTutor } from "@/lib/TutorContext";
+
+/**
+ * Onboarding — three plates. Editorial restraint. No celebration.
+ * Each plate is a thesis statement, not a feature explainer.
+ * Motion: a single hairline traces in, then the type fades up. That's all.
+ */
+const PLATES = [
+  {
+    label: "I",
+    kicker: "Operate at a higher level",
+    title: ["You have read enough.", "What remains is", "fluency."],
+    italics: 2, // index of word to italicize
+    body: "Fluency is not retention. It is the speed at which what you know becomes what you can deploy.",
+  },
+  {
+    label: "II",
+    kicker: "Decisions compound",
+    title: ["Every session sharpens", "the instincts your work", "depends on."],
+    italics: 1,
+    body: "Sessions are short. The compounding is long. Your mind, kept in working condition.",
+  },
+  {
+    label: "III",
+    kicker: "Built for minds that matter",
+    title: ["A private layer", "between you and", "the work."],
+    italics: 0,
+    body: "No streaks. No badges. No noise. Only the cognitive instrument.",
+  },
+];
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const { saveProfile } = useTutor();
   const [step, setStep] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const markOnboarded = async () => {
     try { await saveProfile({ onboarded: true } as any); } catch {}
   };
 
-  useEffect(() => {
-    if (step === 1) {
-      const t = setTimeout(() => setStep(2), 3000);
-      return () => clearTimeout(t);
+  const next = async () => {
+    if (step < PLATES.length - 1) {
+      setStep(step + 1);
+    } else {
+      await markOnboarded();
+      navigate("/upload");
     }
-  }, [step]);
-
-  const goUpload = async () => {
-    await markOnboarded();
-    navigate("/upload");
   };
 
-  const goDashboard = async () => {
+  const skip = async () => {
     await markOnboarded();
     navigate("/dashboard");
   };
 
-  const skipLater = async () => {
-    setStep(1);
-  };
+  // Keyboard: Enter / Space / → advance, Esc skip
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
+        e.preventDefault(); next();
+      } else if (e.key === "Escape") {
+        skip();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
-  const steps = [
-    {
-      heading: "Start with something you're learning.",
-      body: "Upload a book, article, PDF or paste a link. The app turns it into a session.",
-      action: { label: "Upload something", onClick: goUpload },
-      skip: { label: "I'll do this later.", onClick: skipLater },
-    },
-    {
-      heading: "Your session is built for you.",
-      body: "You'll get a summary, then practice explaining it back. That's how it sticks.",
-      action: null,
-      skip: null,
-    },
-    {
-      heading: "Your coach is always here.",
-      body: "Tap the mic at any time to explain what you know. It listens and helps you go deeper.",
-      action: { label: "Take me to my dashboard", onClick: goDashboard },
-      skip: null,
-    },
-  ];
-
-  const current = steps[step];
-
-  const handleTap = () => {
-    if (step === 1) setStep(2);
-  };
+  const plate = PLATES[step];
+  const isFinal = step === PLATES.length - 1;
 
   return (
-    <div
-      className="min-h-screen flex flex-col px-6 pt-10 pb-10"
-      style={{ background: "#FDFCFB" }}
-      onClick={handleTap}
-    >
-      {/* Progress dots */}
-      <div className="flex items-center justify-center gap-2 mb-12">
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            className="rounded-pill transition-all duration-[180ms]"
-            style={{
-              width: i === step ? 24 : 6,
-              height: 6,
-              background: i === step ? "hsl(var(--primary))" : "hsl(var(--surface-3))",
-            }}
-          />
-        ))}
-      </div>
+    <div ref={containerRef} className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Header — fixed monocle strip */}
+      <header className="px-8 pt-7 pb-5 flex items-center justify-between">
+        <div className="meta-label">Fluency</div>
+        <div className="meta-label tabular">
+          {String(step + 1).padStart(2, "0")} / {String(PLATES.length).padStart(2, "0")}
+        </div>
+      </header>
 
-      <div className="max-w-[460px] mx-auto w-full flex-1 flex flex-col justify-center">
-        <div key={step} className="animate-fade-up">
-          <h1
-            className="font-serif text-foreground mb-5"
-            style={{ fontSize: "2.25rem", fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.01em" }}
-          >
-            {current.heading}
-          </h1>
-          <p className="font-sans text-ink-2" style={{ fontSize: 14, lineHeight: 1.6 }}>
-            {current.body}
-          </p>
+      <div className="h-px w-full bg-[hsl(var(--border))]" />
+
+      {/* Stepper rail — three thin segments, current one fills */}
+      <div className="px-8 pt-6">
+        <div className="flex gap-2 max-w-[640px] mx-auto w-full">
+          {PLATES.map((_, i) => (
+            <div
+              key={i}
+              className="h-px flex-1 overflow-hidden bg-[hsl(var(--border))]"
+            >
+              <div
+                className="h-full bg-foreground transition-transform duration-[700ms]"
+                style={{
+                  transform: `scaleX(${i < step ? 1 : i === step ? 1 : 0})`,
+                  transformOrigin: "left",
+                  transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="max-w-[460px] mx-auto w-full">
-        {current.action && (
+      {/* Body */}
+      <main className="flex-1 flex flex-col px-8 pt-24 pb-10 max-w-[640px] mx-auto w-full">
+        <div key={step} className="flex flex-col">
+          <div className="flex items-center gap-4 mb-12 animate-fade-up stagger-1">
+            <span className="meta-label tabular">{plate.label}</span>
+            <span className="h-px w-10 bg-[hsl(var(--border-strong))]" />
+            <span className="meta-label">{plate.kicker}</span>
+          </div>
+
+          <h1 className="editorial text-[clamp(2.5rem,7.5vw,4.5rem)] text-foreground leading-[1.04] tracking-[-0.02em] mb-10 animate-fade-up stagger-2">
+            {plate.title.map((line, i) => (
+              <span key={i} className="block">
+                {i === plate.italics ? <span className="editorial-italic">{line}</span> : line}
+              </span>
+            ))}
+          </h1>
+
+          <p className="text-[15px] text-ink-2 leading-[1.6] max-w-[460px] animate-fade-up stagger-3">
+            {plate.body}
+          </p>
+        </div>
+
+        <div className="flex-1 min-h-[40px]" />
+
+        {/* Footer actions */}
+        <div className="flex items-center justify-between gap-4 animate-fade-up stagger-4">
           <button
-            onClick={(e) => { e.stopPropagation(); current.action!.onClick(); }}
-            className="w-full rounded-pill bg-primary py-4 text-[13px] font-sans font-semibold text-primary-foreground hover:opacity-90 transition-all duration-[180ms] animate-fade-up stagger-2"
+            onClick={skip}
+            className="text-[12px] text-ink-3 hover:text-foreground transition-colors duration-[180ms] tracking-wide"
           >
-            {current.action.label}
+            Skip introduction
           </button>
-        )}
-        {current.skip && (
+
           <button
-            onClick={(e) => { e.stopPropagation(); current.skip!.onClick(); }}
-            className="w-full text-[12px] font-sans text-ink-3 hover:text-foreground transition-colors duration-[180ms] mt-4 text-center animate-fade-up stagger-3"
+            onClick={next}
+            className="group inline-flex items-center gap-3 bg-foreground text-background px-6 py-3.5 rounded-[10px] text-[14px] font-medium tracking-[-0.01em] hover:bg-ink-2 active:scale-[0.99] transition-all duration-[180ms]"
           >
-            {current.skip.label}
+            <span>{isFinal ? "Enter" : "Continue"}</span>
+            <span className="mono text-[11px] opacity-60 group-hover:opacity-100 transition-opacity">↵</span>
           </button>
-        )}
-      </div>
+        </div>
+      </main>
+
+      <footer className="border-t border-[hsl(var(--border))] px-8 py-5 flex items-center justify-between">
+        <div className="meta-label">Private  ·  By invitation</div>
+        <div className="meta-label">Press ↵ to continue</div>
+      </footer>
     </div>
   );
 }
