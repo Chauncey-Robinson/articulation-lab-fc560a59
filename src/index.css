@@ -4,7 +4,7 @@
 
 /* =========================================================================
    FLUENCY — Cognitive operating system
-   Editorial restraint. Graphite + ivory. Inter Tight + Instrument Serif.
+   Editorial restraint. Graphite + ivory. Inter Tight + Fraunces.
    ========================================================================= */
 
 @layer base {
@@ -100,18 +100,21 @@
     letter-spacing: -0.025em;
   }
 
-  /* Editorial display class — use sparingly, single hero moments only */
+  /* Editorial display class — Fraunces, used sparingly for hero moments */
   .editorial {
-    font-family: 'Instrument Serif', 'Times New Roman', serif;
+    font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
     font-weight: 400;
     font-style: normal;
-    letter-spacing: -0.015em;
-    line-height: 1.02;
+    font-optical-sizing: auto;
+    font-variation-settings: "SOFT" 30, "WONK" 0;
+    letter-spacing: -0.022em;
+    line-height: 1.0;
   }
   .editorial-italic {
-    font-family: 'Instrument Serif', 'Times New Roman', serif;
+    font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
     font-style: italic;
     font-weight: 400;
+    font-variation-settings: "SOFT" 30, "WONK" 1;
   }
 
   /* Monospace meta — terminal restraint, for labels, timestamps, counts */

@@ -15,8 +15,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter Tight", "Inter", "system-ui", "-apple-system", "sans-serif"],
-        serif: ["Instrument Serif", "Times New Roman", "Georgia", "serif"],
-        display: ["Instrument Serif", "Times New Roman", "serif"],
+        serif: ["Fraunces", "Times New Roman", "Georgia", "serif"],
+        display: ["Fraunces", "Times New Roman", "serif"],
         mono: ["JetBrains Mono", "ui-monospace", "SF Mono", "monospace"],
       },
       colors: {
