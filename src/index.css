@@ -100,21 +100,19 @@
     letter-spacing: -0.025em;
   }
 
-  /* Editorial display class — Fraunces, used sparingly for hero moments */
+  /* Editorial display — tightened Inter Tight, no serif. Hero moments only. */
   .editorial {
-    font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
-    font-weight: 400;
+    font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+    font-weight: 500;
     font-style: normal;
-    font-optical-sizing: auto;
-    font-variation-settings: "SOFT" 30, "WONK" 0;
-    letter-spacing: -0.022em;
-    line-height: 1.0;
+    letter-spacing: -0.045em;
+    line-height: 0.96;
   }
   .editorial-italic {
-    font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
+    font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
     font-style: italic;
     font-weight: 400;
-    font-variation-settings: "SOFT" 30, "WONK" 1;
+    letter-spacing: -0.035em;
   }
 
   /* Monospace meta — terminal restraint, for labels, timestamps, counts */
